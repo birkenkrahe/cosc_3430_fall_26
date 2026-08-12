@@ -1,4 +1,4 @@
-![img](./img/breughel_babel_1563.jpg)
+![img](./img/hokusai_great_wave.jpg)
 
 
 # Introduction to Artificial Intelligence (with Python)
