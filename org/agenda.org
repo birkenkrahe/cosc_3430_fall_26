@@ -1,0 +1,29 @@
+#+TITLE: Agenda - Artificial Intelligence 
+#+AUTHOR: Marcus Birkenkrahe 
+#+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+[[../img/breughel_icarus.jpg]]
+Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
+(1560)
+
+* W1S1: Overview of the course
+:LOGBOOK:
+CLOCK: [2026-08-24 Mon 16:10]
+:END:
+
+|   | Topic                                                        |
+|---+--------------------------------------------------------------|
+|   | Welcome & objectives                                         |
+|   | Get to know your teacher & share why you're here             |
+|   | Understand what this course is about                         |
+|   | Find out where to find stuff: Canvas, GitHub, textbooks etc. |
+|   | Whom to ask, formalities, and grading                        |
+|   | The project: Scrum sprints, tracks, and topic ideas          |
+|   | Weekly rhythm (in-class, exams, at-home) & setup             |
+|   | Assignments & what's next                                    |
+|---+--------------------------------------------------------------|
+
+File: See =org/1_overview.org= in GitHub
+
+
