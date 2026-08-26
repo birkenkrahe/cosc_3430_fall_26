@@ -7,10 +7,13 @@
 Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 (1560)
 
+* PRACTICE Preamble: The Fall of Icarus
+
+- What's this painting about?
+  
+- What has this to do with AI?
+
 * W1S1: Overview of the course
-:LOGBOOK:
-CLOCK: [2026-08-24 Mon 16:10]
-:END:
 
 |   | Topic                                                        |
 |---+--------------------------------------------------------------|
@@ -25,5 +28,4 @@ CLOCK: [2026-08-24 Mon 16:10]
 |---+--------------------------------------------------------------|
 
 File: See =org/1_overview.org= in GitHub
-
 

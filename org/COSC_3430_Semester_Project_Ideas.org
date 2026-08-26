@@ -1,0 +1,409 @@
+#+TITLE: COSC 3430 — Semester Project Ideas
+#+AUTHOR: Marcus Birkenkrahe with Claude AI
+#+SUBTITLE: Fall 2026 — Individual Projects, Scrum Sprints
+#+STARTUP: overview hideblocks indent entitiespretty:
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Overview
+
+In a team of 2-3, you'll pick one project (build or concept) and carry
+it through a semester-long scrum-style sprint structure with four
+sprint reviews, on the same dates for everyone in the class:
+
+- *Sprint 1 — Proposal:* propose your project's scope
+- *Sprint 2 — Literature Review:* research the algorithm(s)/approach(es)
+  you'll use
+- *Sprint 3 — Results:* build and test your MVP (Minimum Viable Product)
+- *Sprint 4 — Discussion/Presentation:* demo your project and reflect on it
+
+  Below are ten ideas for *build* projects. Each ties directly to a
+  specific chapter (or pair of chapters) of Géron's /Hands-On Machine
+  Learning/ — you'll be able to build these using techniques covered in
+  class. Scope down further if needed — a working, well-understood
+  small system beats an ambitious, half-understood one.
+
+  Instead of a build project, you could also elect to complete a
+  *concept* project. This requires picking one of the big course topics,
+  finding an interesting real-world application of it, or dig deep
+  into one or more existing Python packages, and explaining it to the
+  class, ideally with an interactive demonstration.
+
+  These are just ideas. You can also pick a coding problem or an
+  application yourself — just clear it with me first (via the project
+  proposal).
+
+  *A note on sources:* every idea below is grounded specifically in
+  Géron's /Hands-On Machine Learning with Scikit-Learn and PyTorch/
+  (2025). I have not drawn on any other textbook for this
+  document. When you research or build, always name your source — if
+  you bring in an idea, technique, or example from somewhere else (a
+  blog post, a paper, another textbook, Stack Overflow), say so
+  explicitly. Don't blend an unnamed outside source into something
+  that looks like it came from Géron.
+
+  *A note on grading philosophy:* because this is a lecture-only course
+  and I haven't built or solved these specific projects myself, I've
+  picked ideas that are either self-checking (there's a clear
+  correct/incorrect outcome — an accuracy number, a
+  working/non-working system) or that naturally support a "naive
+  version vs. improved version" comparison (e.g., a single decision
+  tree vs. a random forest). Favor a project you can evaluate
+  quantitatively over one that depends on subjective judgment of "how
+  good" your solution is.
+
+* Project Ideas (Build/Coding)
+
+** 1. Regression Project: Predict a Real-World Number, End to End
+
+Pick a small tabular regression dataset from a domain that is *not*
+housing prices — e.g., bike-share ride counts, restaurant tips,
+diamond prices, or a small Kaggle dataset of your choice — and walk
+it through the machine learning project workflow: frame the
+problem, explore the data, prepare it, train a baseline model, then
+improve it with regularization.
+
+- *MVP:* one dataset, train/test split, a plain linear regression
+  baseline, then a regularized model (ridge or lasso). Report and compare
+  RMSE on the test set. No need for the full "launch and monitor" stage
+  of the workflow — stop once you can defend your final RMSE.
+
+- *Naive vs. improved:* plain linear regression vs. regularized
+  regression — a lower test RMSE is your evidence the improvement
+  worked.
+
+- *Source:* Géron Ch. 1 (framing the problem), Ch. 2 (the end-to-end
+  project workflow), Ch. 4 (training models).
+
+** 2. Classification on an Imbalanced or Small Tabular Dataset
+
+Pick a binary classification dataset that is *not* MNIST — e.g., a small
+medical diagnosis dataset (like the Wisconsin breast cancer dataset),
+mushroom edibility, or a churn/loan-default dataset — and build a
+classifier, evaluated the way Géron insists you must: not just
+accuracy.
+
+- *MVP:* train/test split, one classifier (logistic regression or SGD),
+  confusion matrix, precision, recall, and an ROC curve. Compare your
+  model's accuracy against a "majority class" baseline (always predict
+  the most common label).
+
+- *Self-checking:* your model should visibly beat the majority-class
+  baseline, and you should be able to say *why* precision or recall
+  matters more for your chosen dataset (e.g., missing a cancer case is
+  worse than a false alarm).
+
+- *Source:* Géron Ch. 3 (classification, confusion matrices,
+  precision/recall, ROC).
+
+** 3. Image Classifier for a Non-MNIST Image Dataset
+
+Build a multiclass image classifier for a small, non-MNIST,
+non-Fashion- MNIST image dataset — e.g., Kuzushiji-MNIST (historical
+Japanese script), EMNIST letters, or a small Kaggle image set. Compare
+a simple baseline classifier against a scikit-learn MLP.
+
+- *MVP:* load a small (≤ ~20k image) dataset, train a k-nearest-neighbors
+  or SGD baseline, then an ~MLPClassifier~, report test accuracy for
+  both.
+
+- *Naive vs. improved:* KNN/SGD baseline vs. MLP — a real, reportable
+  accuracy gap.
+
+- *Source:* Géron Ch. 3 (classification techniques), Ch. 9 (MLPs for
+  image classification — modeled on Géron's own Fashion MNIST example,
+  but you must use a *different* image dataset).
+
+** 4. Decision Tree vs. Random Forest on a High-Stakes Tabular Dataset
+
+Pick a tabular dataset where a wrong prediction obviously matters — e.g.,
+mushroom edibility (edible/poisonous) or a loan-default dataset — and
+compare a single decision tree against a random forest.
+
+- *MVP:* train one ~DecisionTreeClassifier~ and one
+  ~RandomForestClassifier~ on the same train/test split. Report accuracy
+  for both, and retrain the single tree 3–5 times with different random
+  seeds to show how much a single tree's structure and accuracy can
+  swing — then show the forest is more stable.
+
+- *Self-checking:* mushroom edibility especially gives you a hard,
+  unambiguous correctness check.
+
+- *Source:* Géron Ch. 5 (decision trees, variance across retrains),
+  Ch. 6 (random forests).
+
+** 5. Ensemble Showdown: Voting vs. Bagging vs. Boosting
+
+Pick a tabular classification dataset different from the one you used in
+Idea 4, and compare three ensemble strategies head to head.
+
+- *MVP:* train 2–3 diverse base classifiers, combine them with a
+  ~VotingClassifier~ (soft voting), separately train a
+  ~BaggingClassifier~, and separately train an ~AdaBoostClassifier~ or
+  gradient boosting model. Report all four accuracies (three
+  ensembles + best individual base classifier) in one table.
+
+- *Self-checking:* does any ensemble actually beat the best individual
+  classifier? (Sometimes the honest answer is "barely" — that's a
+  fine, defensible result too.)
+
+- *Source:* Géron Ch. 6 (voting classifiers, bagging, boosting).
+
+** 6. K-Means Color Segmentation Tool with Automatic K Selection
+
+Build a small tool that takes any photo you supply, runs k-means color
+segmentation on it, and picks a reasonable number of clusters
+automatically instead of you guessing.
+
+- *MVP:* run k-means color segmentation (Géron's approach) for k = 2
+  through 12 on one image, plot the inertia (within-cluster sum of
+  squares) against k, and use the "elbow" to pick a final k
+  automatically. Show the segmented image at the naive default (e.g.,
+  k=8, fixed) next to the image at your chosen k.
+
+- *Naive vs. improved:* a fixed, arbitrary k vs. an elbow-selected k —
+  defend your choice with the inertia plot.
+
+- *Source:* Géron Ch. 8 (k-means for image segmentation). Use your own
+  photo, not the book's ladybug image.
+
+** 7. Dimensionality Reduction Visualizer for a Non-MNIST Dataset
+
+Pick a dataset with many features (not MNIST/digits) — e.g., a wine
+quality or gene-expression-style tabular dataset with 10+ features, or a
+small non-MNIST image set — and build a small tool that visualizes it in
+2D using PCA and t-SNE side by side, colored by class label.
+
+- *MVP:* compute the number of PCA components needed to preserve 95% of
+  variance, project to 2D with PCA, separately project to 2D with t-SNE,
+  and plot both, colored by class.
+
+- *Self-checking:* train a simple classifier (e.g., logistic regression)
+  on the raw features vs. on just the 2 PCA components, and compare
+  accuracy — this quantifies how much the 2D projection actually lost.
+
+- *Source:* Géron Ch. 7 (PCA, choosing the number of dimensions, t-SNE).
+
+** 8. Semi-Supervised Labeling: How Far Can Clustering Stretch a Few Labels?
+
+Simulate a "mostly unlabeled" situation: take a labeled dataset, keep
+only a small number of true labels (e.g., 50 out of thousands), and use
+clustering to propagate labels to the rest.
+
+- *MVP:* cluster the unlabeled data with k-means, propagate each
+  cluster's most common known label to all its members, then train a
+  classifier on the expanded label set. Compare its test accuracy
+  against a classifier trained on just the original 50 labeled
+  examples.
+
+- *Self-checking:* label-propagation should measurably beat the
+  tiny-labeled-set baseline — if it doesn't, that's still a valid,
+  explainable result.
+
+- *Source:* Géron Ch. 8 (clustering for semi-supervised learning). §Use
+  a dataset other than the ~digits~ dataset Géron uses for this
+  technique.
+
+** 9. From Scikit-Learn MLP to PyTorch MLP
+
+Pick a tabular dataset (not California housing, not CoverType — both are
+Géron's own examples) and build the *same* MLP architecture twice: once
+with scikit-learn's ~MLPRegressor~/~MLPClassifier~, once by hand in
+PyTorch following Géron's Ch. 10 approach.
+
+- *MVP:* one dataset, one fixed architecture (e.g., 2 hidden layers of a
+  given size), trained both ways. Report test performance for both and
+  the wall-clock training time for both.
+
+- *Self-checking:* the two versions should reach roughly comparable
+  performance — if they don't, that's a debugging exercise worth
+  discussing at Sprint 4.
+
+- *Source:* Géron Ch. 9 (MLPs with scikit-learn), Ch. 10 (building the
+  same kind of network in PyTorch).
+
+** 10. Shallow CNN vs. Deeper Regularized CNN
+
+Pick a small image classification dataset (not MNIST, not CIFAR-10, not
+ImageNet — all are Géron's or the field's standard running examples) and
+compare a naive shallow CNN against a deeper one that uses the training
+tricks from Ch. 11.
+
+- *MVP:* train a shallow CNN (1–2 conv layers) as your naive baseline,
+  then a deeper CNN (3–4 conv layers) that adds batch normalization
+  and/or dropout. Report test accuracy for both and a training/validation
+  loss curve for both.
+
+- *Naive vs. improved:* shallow vs. deeper+regularized — and if the
+  deeper model *doesn't* win, that's a legitimate and interesting
+  finding to present (it happens, especially on small datasets).
+
+- *Source:* Géron Ch. 11 (training deep networks: batch norm, dropout),
+  Ch. 12 (convolutional layers, CNN architecture).
+
+* Project Ideas (Concept/Explaining)
+
+Pick one topic below, find a real-world application of it, or dig deep
+into one or more existing Python packages, and explain it to the class
+— ideally with an interactive or live demo, not just a
+summary. "Explaining it to the class" means more than reciting what
+the book says: show a worked example, run a live or recorded demo, and
+be ready to answer questions about how it actually works under the
+hood.
+
+These are just examples - you can pick another concept from the book
+that we did not already cover in depth in class (that includes almost
+everything). The point is not to be original but go deep.
+
+** The ML Landscape (Ch. 1)
+
+- *Why your streaming app's recommendations "learn" instead of running
+  on hardcoded rules* — explain the difference between instance-based
+  and model-based learning using recommendation systems as the
+  example, and demo a tiny content-based "if you liked X, you might
+  like Y" similarity recommender built on a handful of items you
+  define.
+
+** The ML Project Workflow (Ch. 2)
+
+- *How a real pricing or estimation tool gets built, end to end* — walk
+  through Géron's eight-step ML project checklist (frame the problem,
+  get the data, explore, prepare, select and train, fine-tune,
+  present, launch/monitor) using a *different* domain and dataset than
+  the book's housing example — e.g., a small dataset predicting flight
+  delays, movie ratings, or restaurant wait times — and demo at least
+  the explore-and-prepare steps live on real data.
+
+** Classification Metrics (Ch. 3)
+
+- *Why "99% accurate" fraud detection can still be a bad model* —
+  explain precision, recall, and the accuracy trap on wildly
+  imbalanced data (fraud, rare disease screening, spam), and demo a
+  confusion matrix and precision-recall curve on a small imbalanced
+  dataset, showing how a "predict everything is normal" model gets
+  high accuracy and is useless.
+
+** Gradient Descent (Ch. 4)
+
+- *How your phone's GPS or a fitness tracker fits a smooth line through
+  noisy sensor data* — explain gradient descent as the general
+  mechanism behind fitting a model to noisy data, and demo an
+  interactive visualization where the learning rate is a slider: show
+  convergence at a good learning rate and divergence at too high a
+  learning rate.
+
+** Decision Trees & Ensembles (Ch. 5–6)
+
+- *Why medical and financial risk tools use "committees" of models, not
+  one* — explain why a single decision tree is unstable (high variance)
+  and how averaging many trees (a random forest) fixes that, and demo
+  retraining a single tree on the same data with different random
+  seeds to visually show how much its structure changes, next to a
+  stable random forest.
+
+** Dimensionality Reduction (Ch. 7)
+
+- *How a music app compresses "taste" into a handful of numbers* —
+  explain PCA as compressing many correlated features (genre signals,
+  tempo, energy, etc.) into a few components that capture most of the
+  variance, and demo an explained-variance plot plus a 2D PCA
+  projection of a small features dataset, colored by genre or mood
+  label.
+
+** Clustering (Ch. 8)
+
+- *How photo apps group your camera roll without being told the
+  categories* — explain unsupervised clustering (k-means or DBSCAN) as
+  grouping-without-labels, and demo clustering a small set of images
+  or feature vectors, discussing what happens when you pick k too
+  small or too large.
+
+** Artificial Neural Networks (Ch. 9)
+
+- *What's actually happening inside a "neural network" your phone's
+  keyboard uses to guess your next word or recognize your handwriting*
+  — explain the MLP as a stack of weighted sums and activation
+  functions, nothing more mysterious than that, and demo training a
+  tiny MLP live on a simple 2D dataset, showing its decision boundary
+  change as training progresses (similar in spirit to the "neural
+  network playground" tool Géron points to — cite it explicitly if you
+  use it, don't just reproduce the exercise as if it were new).
+
+** Deep Computer Vision / CNNs (Ch. 11–12)
+
+- *How a photo app finds edges, faces, and objects starting from raw
+  pixels* — explain convolution as a small sliding pattern-detector
+  with shared weights, and demo visualizing what the first-layer
+  filters of a small CNN you train actually detect (edges, color
+  blobs) by displaying their learned kernels or the feature maps they
+  produce on a sample image.
+
+** Transformers and LLMs (Ch. 15)
+
+- *How to Fine-Tuning a Pretrained Transformer for a Text*. Pick a text
+  classification or generation task on a domain-specific dataset
+  (e.g., product reviews, movie plot summaries, or a small custom text
+  corpus you assemble yourself) and fine-tune a small pretrained
+  transformer model from Hugging Face on it, comparing the fine-tuned
+  model's performance against a simple non-transformer baseline (e.g.,
+  logistic regression on TF-IDF features) to see how much the
+  pretrained language representation actually buys you.
+
+** Notes
+
+- You are not limited to Géron for background reading — official
+  documentation (scikit-learn, PyTorch), reputable ML blogs, or other
+  sources are fair game for the *application* half of your topic, but
+  *always name your source clearly* when presenting, and never present
+  something from another source as if it were Géron's own treatment.
+
+- These are starting points, not a required list — you're welcome to
+  propose your own real-world application of a course concept. If your
+  first idea for an application turns out to be one Géron already
+  covers as a worked example or exercise (as flagged above for a
+  couple of these), you're welcome to use it anyway with a clear
+  disclaimer that you know it's the book's own example — but try to
+  find your own application first.
+
+* AI Use Policy
+AI tools (ChatGPT, Claude, GitHub Copilot, etc.) are permitted on this
+project under the following rules:
+
+*Allowed without restriction:*
+- Sprint 2 (Literature Review) research
+- Debugging help — understanding an error message or why your code
+  doesn't behave as expected
+- Explaining unfamiliar syntax or library behavior
+
+  *Allowed with disclosure:*
+  - Using AI to generate starter code or a first draft of a method — but
+    you must be able to explain and reproduce the logic yourself, without
+    the AI present
+
+  *Not allowed:*
+  - Submitting AI-generated code you don't understand as final work
+  - Using AI to complete the Sprint 3 (Results) MVP end-to-end — this
+    sprint exists to show what *you* can build
+
+  *Disclosure requirement:*
+  Submit a short AI-use log with your Sprint 3 and Sprint 4 deliverables:
+  what tool you used, for what purpose, and what you changed or corrected.
+  Reasonable, disclosed use is not penalized.
+
+  *Spot-check:*
+  During Sprint 4, you may be asked to explain or modify any part of your
+  codebase live. Be ready to walk through your own code.
+
+* Acronyms Used in This Document
+
+| Acronym | Meaning                              |
+|---------+---------------------------------------|
+| MVP     | Minimum Viable Product               |
+| AI      | Artificial Intelligence              |
+| MLP     | Multilayer Perceptron                |
+| CNN     | Convolutional Neural Network          |
+| PCA     | Principal Component Analysis         |
+| KNN     | K-Nearest Neighbors                  |
+| SGD     | Stochastic Gradient Descent          |
+| RMSE    | Root Mean Squared Error              |
+| ROC     | Receiver Operating Characteristic    |
+| GPU     | Graphics Processing Unit             |

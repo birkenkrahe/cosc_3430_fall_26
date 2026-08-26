@@ -1,0 +1,247 @@
+#+TITLE: Syllabus
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 3430, Artificial Intelligence, Fall 2026 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Course Info
+
+- Where: FSC 372 | When: MWF 9:00-9:50 am
+- Canvas: [[https://augie.instructure.com/courses/15660][augie.instructure.com/courses/15660]]
+- AI use: permissive (details below)
+
+** Instructor
+
+- Office/student hours: in room FSC 386 - book via Navigate
+- Tue 1:00-3:00 pm, Thu 9:00 am-12:00 pm
+- Phone: 605.274.4285 | Email: marcus.birkenkrahe@augie.edu
+- More information: [[https://birkenkrahe.github.io][birkenkrahe.github.io]] or [[https://linkedin.com/in/birkenkrahe][linkedin.com/in/birkenkrahe]]
+
+* Course Description
+
+This course introduces the student to various aspects of artificial
+intelligence (AI), whose goals are the creation of more useful
+machines by making them more "intelligent." The course focuses on the
+fundamentals of machine learning (ML) and uses supervised,
+unsupervised, and reinforcement learning algorithms for classification
+and prediction tasks. The student will learn to build models from data
+using regression, logistic regression, classification and regression
+trees, random forests, ensemble and boosted methods, neural network
+techniques, and deep learning using convolutional neural networks
+(CNN). These algorithms are then applied to the areas of machine
+vision, image feature recognition, natural language processing (NLP),
+and general predictive techniques used in the field of Data Science.
+
+* Course AI Classification
+
+*AI Use in this Coursework: Permissive.*
+
+Students may use AI tools freely throughout this course, including
+on assessments, unless otherwise specified, provided use is
+disclosed and outputs are critically evaluated. AI tools are not
+permitted during exams unless explicitly stated on the exam itself.
+
+* Course Outcomes
+
+Students who complete this course will be able to:
+
+- Explain core machine learning paradigms (supervised, unsupervised,
+  reinforcement learning)
+- Implement regression and classification models
+- Evaluate model performance using appropriate metrics
+- Apply tree-based and ensemble methods
+- Perform clustering and dimensionality reduction
+- Build and train neural networks and CNNs
+- Describe and implement basic reinforcement learning methods
+- Analyze limitations, assumptions, and failure modes of AI systems
+
+* Prerequisites
+
+COSC 2230 or COSC 1300
+
+- *COSC 2230 (CS III):* You can write programs that don't just work,
+  but scale, perform, and hold up under real-world conditions, using
+  OOP design, generic functions, concurrency, core data structures
+  and algorithms. Usually taught with Java.
+
+- *COSC 1300 (Intro to DS):* Know tools to extract knowledge from
+  data, manipulate, model and visualize data using Python and/or R.
+
+* University Policies and Resources
+
+[[https://docs.google.com/document/d/1x8ypnPibHsLEuLwU0aZ4iuP3piRL4pbSakKhSW6ZATE/edit?usp=sharing][Use this link]] to access university-wide academic policies
+(Accessibility & Accommodations, Canvas, Honor Code, Illness
+Prevention & Protection, Student Well-being/Mental Health, Title IX
+Statement, and other Campus Resources including Help Desk, Registrar's
+Office, & Writing Center) are covered in a separate university-wide
+policy document.
+
+* Course Policies and Expectations
+
+Optional policies are noted where applicable.
+
+** Attendance/Punctuality
+
+This is a face-to-face course and you need to attend class to be
+successful in this topic. Many of our assignments will be started as
+in-class activities and will require your presence. If you are
+absent, make arrangements with a classmate to get class notes and a
+briefing on discussion topics, watch session recordings if
+available, and review the online material. Classes will start at the
+scheduled time and you should arrive 2-3 minutes prior to the start
+of class.
+** Absences
+
+Let me know via email if you cannot attend a class. Augustana
+University only recognizes University-related absences and absences
+due to medical illness (you must provide a doctor's note). 
+
+
+** Generative Artificial Intelligence Policy
+
+AI tools predict, they don't think, and they will confidently hand
+you wrong answers alongside right ones. Learning to verify, correct,
+and take responsibility for AI-assisted work - propose, test, find
+where it breaks, revise - is part of what this course teaches, and
+it's also just good scientific practice. What isn't allowed is using
+AI as a substitute for that judgment: undisclosed use, or submitting
+output you haven't checked, defeats the purpose. For more details on
+"should you use AI to help you code", see:
+[[https://github.com/birkenkrahe/org/blob/master/fall24/UsingAItoCode.pdf][github.com/birkenkrahe/org/.../UsingAItoCode.pdf]]
+
+** Course Modification (inclement weather, illness, etc.) Policy
+
+If significant inclement weather, professor illness, or any special
+circumstance arises that may require an adjustment to the course
+schedule (i.e. an alternative assignment, switching to synchronous
+online, canceling the class, etc.), every attempt will be made to
+communicate such changes to students by the night before the scheduled
+class. Communication to students will come via an announcement on the
+class LMS and/or an email to your AU email address. If you have reason
+to believe the class may not be able to be offered as scheduled,
+please keep an eye on these inboxes.
+
+** Exam Policy
+
+Exams during the term are based on material discussed in class.
+Make-up exams will only be given if a written excuse (a physician's
+note or evidence of a University-excused absence) is submitted to me
+prior to the exam. Make-up exams may be different than in-class
+exams and the material may generally be more difficult. During
+exams, no cell phones, calculators, or other electronic devices may
+be used. All notes and books must be out of sight, except for
+materials allowed (as specified during the review session). You may
+not leave the room during the exam.
+
+* Course Materials and Access
+
+** Required textbooks
+
+Aurélien Géron, "Hands-On Machine Learning with Scikit-Learn, Keras,
+and TensorFlow" - notebooks and code at
+[[https://github.com/ageron/handson-mlp][github.com/ageron/handson-mlp]]
+
+** Optional additional textbook
+
+Simon J. D. Prince, "Understanding Deep Learning" - free and online
+with many resources at [[https://udlbook.github.io/udlbook][udlbook.github.io/udlbook]]
+
+** Course platforms
+
+- GitHub for lectures, code: [[https://github.com/birkenkrahe/cosc_3430_fall_26][github.com/birkenkrahe/cosc_3430_fall_26]]
+- Google Chat Space for discussion and sharing: [[https://tinyurl.com/gspace-3430][tinyurl.com/gspace-3430]]
+- Google Drive for whiteboard photos and papers: [[https://tinyurl.com/fa26-photos-3430][tinyurl.com/fa26-photos-3430]]
+- DataCamp for additional optional practice: [[https://www.datacamp.com][datacamp.com]]
+- YouTube Playlist: [[https://tinyurl.com/youtube-3430][tinyurl.com/youtube-3430]]
+
+* Assignments and Grading Procedures
+
+** Grading table
+
+| Letter Grade | Percentage Range |
+|---------------+-------------------|
+| A             | 93-100%           |
+| A-            | 90-92%            |
+| B+            | 87-89%            |
+| B             | 83-86%            |
+| B-            | 80-82%            |
+| C+            | 77-79%            |
+| C             | 73-76%            |
+| C-            | 70-72%            |
+| D+            | 67-69%            |
+| D             | 63-66%            |
+| D-            | 60-62%            |
+| F             | Below 60%         |
+
+** Grade breakdown
+
+| What                     | When    | How much |
+|---------------------------+---------+----------|
+| Project (Scrum)          | monthly | 25%      |
+| Quizzes (not timed)      | weekly  | 15%      |
+| Programming assignments  | weekly  | 40%      |
+| Midterm exam (50 min)    | TBD     | 10%      |
+| Final exam (optional)    | TBD     | 10%      |
+
+- *Programming assignments:* at home, individual, AI allowed unless
+  specified - use must be disclosed, outputs critically evaluated
+  and tested. Estimated time: 40-55 hrs/term (3-4 hrs/week)
+- *Term Project* (team of 2-3): 3 sprint reviews (3 x 5%) +
+  presentation (10%)
+- *Quizzes:* multiple choice, not timed, at home, individual
+- *Midterm exam:* 50 min, individual, based on quizzes (with mock exam)
+- *Final exam:* 30 min, optional, oral
+
+* Course Schedule
+
+One quiz and one programming assignment per week (see Grading). This
+schedule may be subject to changes depending on class progress.
+
+| Date         | Topic                              | Notes                                              |
+|---------------+---------------------------------------+------------------------------------------------------|
+| Wed (8/26)   | Overview                           | Review the AI policy, clarify questions            |
+| Fri (8/28)   | Setup/projects                     |                                                     |
+| Mon (8/31)   | Ch 1. ML fundamentals 1/3          |                                                     |
+| Wed (9/2)    | Ch 1. ML fundamentals 2/3          | Last day for online reg./adding w/o signature      |
+| Fri (9/4)    | Ch 1. ML fundamentals 3/3          |                                                     |
+| Mon (9/7)    | NO CLASS - Labor Day               |                                                     |
+| Wed (9/9)    | Ch 2. End-to-end project 1/3       |                                                     |
+| Fri (9/11)   | Ch 2. End-to-end project 2/3       | Independent Study/Internship paperwork due         |
+| Mon (9/14)   | Ch 2. End-to-end project 3/3       |                                                     |
+| Wed (9/16)   | Ch 2. End-to-end project (cont.)   | Last day to drop without signatures                |
+| Fri (9/18)   | Ch 2. End-to-end project (cont.)   | Extended chapel service (until 11:15a)             |
+| Mon (9/21)   | Ch 3. Classification 1/3           |                                                     |
+| Wed (9/23)   | Ch 3. Classification 2/3           |                                                     |
+| Fri (9/25)   | Ch 3. Classification 3/3           | Sprint 1: Project Proposal                         |
+| Mon (9/28)   | Ch 4. Training models 1/3          |                                                     |
+| Wed (9/30)   | Ch 4. Training models 2/3          | Graduation Application Deadline (10/1)             |
+| Fri (10/2)   | Ch 4. Training models 3/3          |                                                     |
+| Mon (10/5)   | Ch 5. Decision trees 1/2           |                                                     |
+| Wed (10/7)   | Ch 5. Decision trees 2/2           |                                                     |
+| Fri (10/9)   | MIDTERM                            |                                                     |
+| Mon (10/12)  | NO CLASS - Native American Day     |                                                     |
+| Wed (10/14)  | NO CLASS - Fall Break              |                                                     |
+| Fri (10/16)  | Ch 6. Random forests 1/2           |                                                     |
+| Mon (10/19)  | Ch 6. Random forests 2/2           |                                                     |
+| Wed (10/21)  | Ch 7. Dimensionality reduction 1/2 |                                                     |
+| Fri (10/23)  | Ch 7. Dimensionality reduction 2/2 | Sprint 2: Literature Review / Method               |
+| Mon (10/26)  | Ch 8. Unsupervised learning 1/3    |                                                     |
+| Wed (10/28)  | Ch 8. Unsupervised learning 2/3    | Last day to drop with "W" or file S/U              |
+| Fri (10/30)  | Ch 8. Unsupervised learning 3/3    |                                                     |
+| Mon (11/2)   | Ch 9. Shallow neural networks 1/2  |                                                     |
+| Wed (11/4)   | Ch 9. Shallow neural networks 2/2  |                                                     |
+| Fri (11/6)   | Ch 9. Deep neural networks 1/2     |                                                     |
+| Mon (11/9)   | Ch 9. Deep neural networks 2/2     |                                                     |
+| Wed (11/11)  | NO CLASS - Veterans Day            |                                                     |
+| Fri (11/13)  | Ch 10. Intro to PyTorch 1/2        |                                                     |
+| Mon (11/16)  | Ch 10. Intro to PyTorch 2/2        | Interim 2027 & Spring 2027 registration (11/16-20) |
+| Wed (11/18)  | Ch 11. Training Neural Networks 1/3 |                                                    |
+| Fri (11/20)  | Ch 11. Training Neural Networks 2/3 | Sprint 3: Results / Abstract                      |
+| Mon (11/23)  | Ch 11. Training Neural Networks 3/3 |                                                    |
+| Wed (11/25)  | NO CLASS - Thanksgiving Break      |                                                     |
+| Fri (11/27)  | NO CLASS - Thanksgiving Break      |                                                     |
+| Mon (11/30)  | Presentations                      | Sprint 4: Discussion                               |
+| Wed (12/2)   | Presentations                      |                                                     |
+| Fri (12/4)   | Presentations                      | Last day of classes                                |
+| (12/7-12/11) | FINAL EXAM                         | Date/time/location TBD                             |
+|              |                                     | Final grades due Wed (12/16)                       |

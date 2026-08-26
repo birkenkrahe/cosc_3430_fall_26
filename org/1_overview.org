@@ -24,21 +24,21 @@
 * Get to know your teacher
 
 - For the professional stuff, I asked Gemini:
-  [[https://share.gemini.google/CbgAI2DtCW3h][share.gemini.google/CbgAI2DtCW3h]]
+  https://tinyurl.com/gemini-3430
   #+begin_quote
   I am going to take a course with Marcus Birkenkrahe, "COSC 3430
   Artificial Intelligence". Tell me something about him that might be
   interesting and useful. Is he up to teaching this class?
   #+end_quote
 
-- Privately:
-  + PhD in theoretical particle physics ("Big Bang Theory")
+- Private stuff:
+  + PhD in theoretical particle physics (lattice gauge theory)
   + Worked at large multi-national companies in IT positions
   + Came to the US in 2021 from Germany (US citizen since 2026)
   + Family: 1 wife, 1 daughter, 2 grandchildren, 3 dogs, 2 cats
   + Favorite OS: Linux
   + Favorite programming language: C
-  + Favorite programming environment: Emacs
+  + Favorite programming environment: Emacs (Lisp)
   + Favorite food: Schnitzel (aka Milanesa, tonkatsu, escalope)
   + Favorite drink: Peppermint tea
   + Favorite sport: USPSA practical shooting
@@ -48,11 +48,13 @@
 #+attr_html: :width 400px :float nil:
 [[../img/survey.jpeg]]
 
-- Even if you filled in the entry survey:
+- Hopefully, you filled in the entry survey
 
 - Let us hear why you're here
 
 - So that I can hear (and learn) your name.
+
+- I'll also take a picture for you to sign later on
 
 * Understand what this course is about
 
@@ -75,24 +77,53 @@
 
 - Prerequisites: COSC 2230 or COSC 1300
   #+begin_quote
-  COSC 2230 (CS III): You can write programs that don't just
+  Either COSC 2230 (CS III): You can write programs that don't just
   work, but scale, perform, and hold up under real-world conditions,
   using OOP design, generic functions, concurrency, core data
   structures and algorithms. Usually taught with Java.
 
-  COSC 1300 (Intro to DS): Know tools to extract knowledge from data,
-  manipulate, model and visualize data using Python and/or R.
+  Or COSC 1300 (Intro to DS): Know tools to extract knowledge from
+  data, manipulate, model and visualize data using Python and/or R.
   #+end_quote
 
 - What this (probably) means:
   #+begin_quote
   You can write solid programs for a wide variety of tasks, or you
-  already know how to wrangle and visualize data (in Python or R).
+  already know how to wrangle and visualize data (in Python or
+  R). Ideally both.
 
   Now you'll teach the computer to find patterns on its own. You'll
   build models that predict house prices from its features, sort
   emails into spam or ham, group similar customers automatically,
   recognize a cat in a photo, or analysing tweets for feelings.
+  #+end_quote
+
+- A concrete example of what you should be able to do:
+  #+begin_quote
+  Someone gives you a URL for a folder of a weather station CSVs, one
+  file per month, collected from a city's public sensor network over
+  one year. The files are not clean: some files use =MM/DD/YYYY=, others
+  use =YYYY-MM-DD=; some rows are blank or =NA= temperature readings, and
+  the =March= file has an extra =station_id= column. You are asked to
+  produce one chart showing average daily high temperature across the
+  full year, plus the three hottest and three coldest days.[fn:1]
+  #+end_quote
+
+- If you completed COSC 1300:
+  #+begin_quote
+  You can "Wrangle and visualize data": *load* all twelve files,
+  *normalize* the date formats, decide what to do with *missing* data,
+  *concatenate* all data into one clean table, mame the *plot* compute the
+  stats and *customize* the plot ready for consumption.
+  #+end_quote
+
+- If you completed COSC 2230:
+  #+begin_quote
+  Your loader shouldn't hardcode "12 files" or a fixed column list
+  (you should *glob* the directory), it should tolerate the extra
+  column, and not crash if next year's data has 13 files or another
+  extra field - you write a *function* or a small *class* with a clear
+  *interface* that returns a *DataFrame* and manages *edge cases*.
   #+end_quote
 
 - This is what the course is really about:
@@ -176,7 +207,7 @@
 
   1) Aurélien Géron, "Hands-On Machine Learning with Scikit-Learn,
      Keras, and TensorFlow" - notebooks and code at
-     [[https://github.com/ageron/handson-mlp][github.com/ageron/handson-mlp]] 
+     [[https://github.com/ageron/handson-mlp][github.com/ageron/handson-mlp]]
 
   2) Simon J. D. Prince, "Understanding Deep Learning" - free and
      online with many resources at [[https://udlbook.github.io/udlbook/][udlbook.github.io/udlbook]]
@@ -231,7 +262,7 @@
 - I upload photos and publicly available papers to GDrive:
   [[https://tinyurl.com/photos-fa26-3430][tinyurl.com/photos-fa26-3430]]
 
-- The class photo (to help me learn your names) is also here as an
+- The class photo (to help me learn your names) will be here as an
   editable Powerpoint slide: *please add your name* to your image.
 
 ** Chatbots / Generative AI Assistants
@@ -268,11 +299,12 @@
 
 - Next, ask me before, in, or after class
 
-- Come to my office hours: Tue 1-3pm, Thu 9am-12pm (book via Navigate)
+- Come to my office hours: Tue 1-3pm, Thu 9am-12pm (book via Navigate
+  or just drop by in case I'm free). Or email me for an appointment.
 
 * Find out about the formal stuff
 
-- Read the fine print in the syllabus.
+- Read the fine print in the syllabus (in Canvas, GitHub).
 
 - This course is an *AI-enabled course:* AI tools are welcome for
   research, debugging, and drafting, but every line of code you submit
@@ -294,7 +326,7 @@
 | Total                   |         | 100%     |
 
 - *Programming assignments:* at home, individual, AI allowed unless
-  specified[fn:1], estimated time: 40-55 hrs/term (3-4 hrs/week)
+  specified, estimated time: 40-55 hrs/term (3-4 hrs/week)
 
 - *Term Project*: individual, 3 sprint reviews (3*5%)+presentation (10%)
 
@@ -309,6 +341,9 @@
 [[../img/scrum.jpg]]
 
 - Scrum = agile method (software engineering)
+
+- Find out more via the short YouTube clip "[[https://youtu.be/9TycLR0TqFA?si=em8wpiyNMI4TAthx][Introduction to Scrum]]"
+  posted in the Google Chat (also in the course playlist).
 
 - 4 sprint reviews (prototype presentation):
   + Sprint 1: Project Proposal (What do you want to do?)
@@ -479,7 +514,3 @@ At home (survival minimum):
 | Org-mode             | Emacs mode for notes, code, and literate documents   |
 | scikit-learn         | Python ML library: regression, trees, pipelines      |
 | PyTorch              | Deep learning framework, used for neural nets        |
-
-* Footnotes
-[fn:1]Caveat (see syllabus): your use must be disclosed. Your outputs
-must be visibly critically evaluated and tested. No AI during exams.
