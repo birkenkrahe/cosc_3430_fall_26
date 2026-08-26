@@ -41,8 +41,6 @@
   + Favorite programming environment: Emacs (Lisp)
   + Favorite food: Schnitzel (aka Milanesa, tonkatsu, escalope)
   + Favorite drink: Peppermint tea
-  + Favorite sport: USPSA practical shooting
-  + Religious affiliation: Traditional Roman Catholic
 
 ** PRACTICE Your turn - why are you here?
 #+attr_html: :width 400px :float nil:
@@ -106,7 +104,7 @@
   use =YYYY-MM-DD=; some rows are blank or =NA= temperature readings, and
   the =March= file has an extra =station_id= column. You are asked to
   produce one chart showing average daily high temperature across the
-  full year, plus the three hottest and three coldest days.[fn:1]
+  full year, plus the three hottest and three coldest days.
   #+end_quote
 
 - If you completed COSC 1300:
