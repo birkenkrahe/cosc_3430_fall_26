@@ -49,6 +49,15 @@
 - Hopefully, you filled in the entry survey
 
 - Let us hear why you're here
+  1) Lucy: Architecture of generative AI & environmental impact
+  2) Applications of AI to data mining especially in GIS
+  3) Bentley: How did GenAI get so good with writing code
+  4) Fenera/Season: Learning how to build an ML model and how decide which one
+  5) Lumu: Understand how to make the leap to AI applications
+  6) Patrick: Please professor, end my confusion (esp. the math)
+  7) Reetica: interested in genomic data (sequencing)
+  8) Arvin: understand how ML/AI are impacting the financial sector
+  9) Rebecca: I had to pick this class (how do I not die here!)
 
 - So that I can hear (and learn) your name.
 

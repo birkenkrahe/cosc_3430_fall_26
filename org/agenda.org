@@ -17,9 +17,9 @@ Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 
 |   | Topic                                                        |
 |---+--------------------------------------------------------------|
-|   | Welcome & objectives                                         |
-|   | Get to know your teacher & share why you're here             |
-|   | Understand what this course is about                         |
+| x | Welcome & objectives                                         |
+| x | Get to know your teacher & share why you're here             |
+| x | Understand what this course is about                         |
 |   | Find out where to find stuff: Canvas, GitHub, textbooks etc. |
 |   | Whom to ask, formalities, and grading                        |
 |   | The project: Scrum sprints, tracks, and topic ideas          |
