@@ -272,7 +272,7 @@
 - The class photo (to help me learn your names) will be here as an
   editable Powerpoint slide: *please add your name* to your image.
 
-** Chatbots / Generative AI Assistants
+* Chatbots / Generative AI Assistants
 #+attr_html: :width 300px :float nil:
 [[../img/cyberprof.jpg]]
 
@@ -297,6 +297,13 @@
 ** PRACTICE *How do you use AI?*
 #+attr_html: :width 300px :float nil:
 [[../img/using_ai.png]]
+
+- Validate my writing (be as specific as posssible, and
+  take the sycophantic nature of AI into account)
+- Research a project for packages to use and literature [be careful
+  because the responses are not replicable by design]
+- Verify expert issues that I don't know about [make sure you
+  obtain independent, non-AI validation]
 
 ** PRACTICE Have you heard of ELIZA?
   #+attr_html: :width 400px :float nil:
@@ -339,7 +346,8 @@
 - *Programming assignments:* at home, individual, AI allowed unless
   specified, estimated time: 40-55 hrs/term (3-4 hrs/week)
 
-- *Term Project*: individual, 3 sprint reviews (3*5%)+presentation (10%)
+- *Term Project*: individual or 2-3, 3 sprint reviews
+  (3*5%)+presentation (10%)
 
 - *Quizzes*: multiple choice, not timed, at home, individual
 

@@ -1,5 +1,5 @@
-#+TITLE: Agenda - Artificial Intelligence 
-#+AUTHOR: Marcus Birkenkrahe 
+#+TITLE: Agenda - Artificial Intelligence
+#+AUTHOR: Marcus Birkenkrahe
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
 #+OPTIONS: toc:nil num:nil ^:nil
@@ -7,13 +7,13 @@
 Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 (1560)
 
-* PRACTICE Preamble: The Fall of Icarus
+* DONE Preamble: The Fall of Icarus
 
 - What's this painting about?
-  
+
 - What has this to do with AI?
 
-* W1S1: Overview of the course
+* DONE W1S1: Overview of the course
 
 |   | Topic                                                        |
 |---+--------------------------------------------------------------|
@@ -29,16 +29,7 @@ Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 
 File: See =org/1_overview.org= in GitHub
 
-* W1S2: Finish overview/projects & look at Colab + Python
-
-|   | Topic                                               |
-|---+-----------------------------------------------------|
-|   | Use of generative AI                                |
-|   | Whom to ask, formalities, and grading               |
-|   | The project: Scrum sprints, tracks, and topic ideas |
-|   | Weekly rhythm (in-class, exams, at-home) & setup    |
-|   | Assignments & what's next                           |
-|---+-----------------------------------------------------|
+* DONE W1S2: Finish overview/projects & look at Colab + Python
 
 - Short check-in: What (if anything) do you remember from last time?
 
@@ -50,7 +41,16 @@ File: See =org/1_overview.org= in GitHub
 
 - If there's time, we start with an excursion into Colab + Python.
 
-* W2S1: Colab + Python: get, explore and visualize a dataset  
+|   | Topic                                               |
+|---+-----------------------------------------------------|
+| x | Use of generative AI                                |
+| x | Whom to ask, formalities, and grading               |
+| x | The project: Scrum sprints, tracks, and topic ideas |
+| x | Weekly rhythm (in-class, exams, at-home) & setup    |
+| x | Assignments & what's next                           |
+|---+-----------------------------------------------------|
+
+* W2S1: Colab + Python: get, explore and visualize a dataset
 
 - Let's make a simple plot with Python in Colab and learn a few things
   about Python along the way.
@@ -73,4 +73,3 @@ File: See =org/1_overview.org= in GitHub
 - Open https://colab.research.google.com
 
 - Code along with me!
-
