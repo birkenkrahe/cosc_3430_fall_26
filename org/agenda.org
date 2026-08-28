@@ -31,19 +31,46 @@ File: See =org/1_overview.org= in GitHub
 
 * W1S2: Finish overview/projects & look at Colab + Python
 
-|   | Topic                                                        |
-|---+--------------------------------------------------------------|
-|   | Find out where to find stuff: Canvas, GitHub, textbooks etc. |
-|   | Whom to ask, formalities, and grading                        |
-|   | The project: Scrum sprints, tracks, and topic ideas          |
-|   | Weekly rhythm (in-class, exams, at-home) & setup             |
-|   | Assignments & what's next                                    |
-|---+--------------------------------------------------------------|
+|   | Topic                                               |
+|---+-----------------------------------------------------|
+|   | Use of generative AI                                |
+|   | Whom to ask, formalities, and grading               |
+|   | The project: Scrum sprints, tracks, and topic ideas |
+|   | Weekly rhythm (in-class, exams, at-home) & setup    |
+|   | Assignments & what's next                           |
+|---+-----------------------------------------------------|
+
+- Short check-in: What (if anything) do you remember from last time?
+
+- I sorted the Google Space problem out (with the help of IT): You
+  should have received an invitation from me.
+
+- I added the link to the class photo to Canvas in the Google Space:
+  did I get it right? ([[https://docs.google.com/presentation/d/1BU6DaMT_l4J-lS6OvxLjBkuAryi1qO1cXFhCPdvC8Wg/edit?usp=sharing][Link]])
 
 - If there's time, we start with an excursion into Colab + Python.
 
 * W2S1: Colab + Python: get, explore and visualize a dataset  
 
+- Let's make a simple plot with Python in Colab and learn a few things
+  about Python along the way.
+
+  1) Import ~pandas~ library for data frame manipulation.
+  2) Download the ~Iris~ dataset from Kaggle.
+  3) Load dataset into a ~pandas~ ~DataFrame~.
+  4) Include exception handling with ~try~ ~except~.
+  5) Explore the dataset
+  6) Create a simple plot
+  7) Summarize and check your understanding
+
+- Along the way, you're also going to pick up:
+  1) Create text cells with markdown language.
+  2) Create and run code cells.
+  3) Use the terminal (aka shell).
+  4) Understand Colab controls and settings.
+  5) Use Gemini AI in Colab.
+
 - Open https://colab.research.google.com
 
-- Code along with me
+- Code along with me!
+

@@ -256,7 +256,7 @@
 
 - Feel free to join or leave it at any time.
 
-- Link: [[https://chat.google.com/room/AAQAobnyhsI?cls=7][chat.google.com/room/AAQAobnyhsI?cls=7]] (open to all of Augie)
+- You'll be invited to the space by me.
 
 - Link to the YouTube playlist:
   [[https://www.youtube.com/watch?v=PeMlggyqz0Y&list=PLFUFOWcukHvs][youtube.com/watch?v=PeMlggyqz0Y&list=PLFUFOWcukHvs]]
@@ -297,6 +297,10 @@
 ** PRACTICE *How do you use AI?*
 #+attr_html: :width 300px :float nil:
 [[../img/using_ai.png]]
+
+** PRACTICE Have you heard of ELIZA?
+  #+attr_html: :width 400px :float nil:
+  [[../img/eliza.png]]
 
 * Find out whom to ask when
 
