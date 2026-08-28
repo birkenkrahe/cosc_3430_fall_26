@@ -142,7 +142,7 @@
      reading, and predicting.
   #+end_quote
 
-* Find out where to find stuff
+* NEXT Find out where to find stuff
 
 - Canvas
 - GitHub

@@ -29,3 +29,21 @@ Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 
 File: See =org/1_overview.org= in GitHub
 
+* W1S2: Finish overview/projects & look at Colab + Python
+
+|   | Topic                                                        |
+|---+--------------------------------------------------------------|
+|   | Find out where to find stuff: Canvas, GitHub, textbooks etc. |
+|   | Whom to ask, formalities, and grading                        |
+|   | The project: Scrum sprints, tracks, and topic ideas          |
+|   | Weekly rhythm (in-class, exams, at-home) & setup             |
+|   | Assignments & what's next                                    |
+|---+--------------------------------------------------------------|
+
+- If there's time, we start with an excursion into Colab + Python.
+
+* W2S1: Colab + Python: get, explore and visualize a dataset  
+
+- Open https://colab.research.google.com
+
+- Code along with me
