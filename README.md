@@ -1,12 +1,12 @@
 ![img](./img/breughel_icarus.jpg)
 
 
-# Introduction to Artificial Intelligence (with Python)
+# Artificial Intelligence (with Python)
 
 
 # What's in this repo?
 
--   Repository for COSC 3430 - Intro to AI (with Python)
+-   Repository for COSC 3430 - AI (with Python)
 -   Emacs Org-mode files( `.org`) are rendered as Markdown (not on
     mobile app but works well in mobile browser).
 -   Reference links in the files lead to a 404 error. You always find
