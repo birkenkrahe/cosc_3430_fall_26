@@ -29,7 +29,7 @@ Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
 
 File: See =org/1_overview.org= in GitHub
 
-* DONE W1S2: Finish overview/projects & look at Colab + Python
+* DONE W1S2: Finish overview/projects
 
 - Short check-in: What (if anything) do you remember from last time?
 
@@ -52,8 +52,27 @@ File: See =org/1_overview.org= in GitHub
 
 * W2S1: Colab + Python: get, explore and visualize a dataset
 
-- Let's make a simple plot with Python in Colab and learn a few things
-  about Python along the way.
+** Housekeeping
+
+- I sent you a long (weekly) email (twice, by mistake). Did you get
+  it/read it? You may have to change your Canvas settings: Account >
+  Notifications > Announcements > Notify immediately.
+
+- This week's programming assignment follows the Colab + Python
+  code-along lecture - due Friday September 4 (11:59 pm).
+
+- Since we won't finish this project until Wednesday, you should
+  already start with the assignment (in Colab) and get as far as we
+  did in class.
+
+** Colab [Google Colaboratory] + Python [python3]
+
+- *Why Colab?* JupyterLite is good for most purposes (unless you need
+  free GPU computing time); it does not have Gemini (generative AI),
+  and it does not save files automatically in your GDrive.
+
+- Let's make a simple plot with Python in Colab and learn a few
+  things about Python along the way.
 
   1) Import ~pandas~ library for data frame manipulation.
   2) Download the ~Iris~ dataset from Kaggle.
@@ -67,9 +86,14 @@ File: See =org/1_overview.org= in GitHub
   1) Create text cells with markdown language.
   2) Create and run code cells.
   3) Use the terminal (aka shell).
-  4) Understand Colab controls and settings.
+  4) Understand Jupyter controls and settings.
   5) Use Gemini AI in Colab.
 
-- Open https://colab.research.google.com
+- Open  https://colab.research.google.com
 
 - Code along with me!
+
+- Upload your final Colab .ipynb file no later than Monday Sept 7.
+
+** Checkout
+
