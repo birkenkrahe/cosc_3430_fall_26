@@ -50,7 +50,7 @@ File: See =org/1_overview.org= in GitHub
 | x | Assignments & what's next                           |
 |---+-----------------------------------------------------|
 
-* W2S1: Colab + Python: get, explore and visualize a dataset
+* W2S1: Colab + Python: Jupyter notebooks, Python packages
 
 ** Housekeeping
 
@@ -95,5 +95,7 @@ File: See =org/1_overview.org= in GitHub
 
 - Upload your final Colab .ipynb file no later than Monday Sept 7.
 
-** Checkout
 
+* W2S2: Colab + Python: get, explore and visualize a dataset
+
+* W2S3: Machine Learning Fundamentals
