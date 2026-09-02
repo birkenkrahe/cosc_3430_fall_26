@@ -50,7 +50,7 @@ File: See =org/1_overview.org= in GitHub
 | x | Assignments & what's next                           |
 |---+-----------------------------------------------------|
 
-* W2S1: Colab + Python: Jupyter notebooks, Python packages
+* DONE W2S1: Colab + Python: Jupyter notebooks, Python packages
 
 ** Housekeeping
 
@@ -95,7 +95,101 @@ File: See =org/1_overview.org= in GitHub
 
 - Upload your final Colab .ipynb file no later than Monday Sept 7.
 
-
 * W2S2: Colab + Python: get, explore and visualize a dataset
+
+** Review
+
+The review usually is for you to check in with yourself if you know
+the answer. Sometimes it'll come in the form of a surprise
+quiz. Sometimes it give additional details last forgotten.
+
+1) Where is the Colab file that you worked on last time?
+   #+begin_quote
+   A copy of the ~.ipynb~ notebook is stored on your personal GDrive, in
+   a folder called ~Colab notebooks~.
+   #+end_quote
+
+2) Where does the name "Jupyter notebook" come from?
+   #+begin_quote
+   Jupyter notebooks offer three runtime types (language kernels): for
+   Julia, Python, and R. You can change this in the ~Runtime~ menu. When
+   you run another language, the chosen kernel serves as a wrapper to
+   create files in that language (with the ~%%writefile~ command).
+   #+end_quote
+
+3) What is "Markdown"?
+   #+begin_quote
+   It is a lightweight *markup* language when editing with data + layout
+   separated (as opposed to WYSIWIG = What You See Is What You Get).
+
+   You use plain, readable characters instead of a visual editor or raw
+   HTML (= HyperText Markup Language).
+
+   For example: =##= generates a level-2 headline, =**= tags bold face,
+   and =[text](https://...)= creates an inline link for =text=.
+   #+end_quote
+
+4) What's a ~DataFrame~?
+   #+begin_quote
+   A ~DataFrame~ is a two-dimensional table of data with labeled rows
+   and columns. Each column can hold a different data type, every
+   value within a column shares the same data type. Rows and columns
+   have labels (row-index and column-name). It supports operations
+   like: filtering rows, sorting, grouping, aggregating, joining,
+   handling missing values, and reshaping the data. In Python, it is
+   implemented in the ~pandas~ 
+   #+end_quote
+   Example:
+   #+begin_src python :results output :exports both :session *Python* :python python3 
+     import pandas as pd  # import pandas library
+
+     df = pd.DataFrame({  # define DataFrame
+         "name": ["Alice", "Bob", "Carol"],   # define a `name` column
+         "age": [30, 25, 35],                 # define a `age` column
+         "city": ["NYC", "LA", "Chicago"]     # define a `city` column
+         })
+
+     print(df[df["age"] > 27]) # filter rows where `age` is greater than 27
+   #+end_src
+
+5) What's a *list comprehension* in Python?
+   #+begin_quote
+   A ~list~ is a fundamental data structure in Python. It is actually
+   not implemented like a list in C++ or Java but as a dynamic array,
+   closer to the ~std::vector~ class in C++ (contiguous memory storage).
+
+   A *list comprehension* is a compact way to build a list by *looping*
+   over an *iterable* and optionally filtering/transforming its items,
+   all in a single line instead of writing a ~for~ loop with ~.append~.
+   #+end_quote
+   Example:
+   #+begin_src python :results output :exports both :session *Python* :python python3 
+     # squares from 0 to 9 as list comprehension
+     squares = [x**2 for x in range(10)]
+     print(squares)
+
+     # squares from 0 to 9 with a for loop:
+     squares2 = []
+     for x in range(10):
+         squares2.append(x**2)
+
+     print(squares2)
+   #+end_src
+
+   #+RESULTS:
+   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+   
+** Continued: Colab + Python part 2
+
+- We continue with our [p]review of Colab notebooks and Python.
+
+- Open the notebook you were working on last.
+
+- Alternatively, open my notebook and make a copy to edit it:
+  https://tinyurl.com/colab-demo-ipynb
+
+- You will have to upload your notebook at the end of this session.
+
 
 * W2S3: Machine Learning Fundamentals
