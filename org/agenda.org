@@ -137,7 +137,8 @@ quiz. Sometimes it give additional details last forgotten.
    have labels (row-index and column-name). It supports operations
    like: filtering rows, sorting, grouping, aggregating, joining,
    handling missing values, and reshaping the data. In Python, it is
-   implemented in the ~pandas~ 
+   implemented in the ~pandas~ library (but there are many more like
+   it).
    #+end_quote
    Example:
    #+begin_src python :results output :exports both :session *Python* :python python3 
@@ -151,6 +152,8 @@ quiz. Sometimes it give additional details last forgotten.
 
      print(df[df["age"] > 27]) # filter rows where `age` is greater than 27
    #+end_src
+
+   #+RESULTS:
 
 5) What's a *list comprehension* in Python?
    #+begin_quote
@@ -175,10 +178,6 @@ quiz. Sometimes it give additional details last forgotten.
 
      print(squares2)
    #+end_src
-
-   #+RESULTS:
-   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
    
 ** Continued: Colab + Python part 2
 
