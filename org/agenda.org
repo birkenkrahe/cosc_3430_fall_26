@@ -50,7 +50,7 @@ File: See =org/1_overview.org= in GitHub
 | x | Assignments & what's next                           |
 |---+-----------------------------------------------------|
 
-* DONE W2S1: Colab + Python: Jupyter notebooks, Python packages
+* DONE W2S1: Colab + Python 1: Jupyter notebooks, Python packages
 
 ** Housekeeping
 
@@ -95,7 +95,7 @@ File: See =org/1_overview.org= in GitHub
 
 - Upload your final Colab .ipynb file no later than Monday Sept 7.
 
-* W2S2: Colab + Python: get, explore and visualize a dataset
+* DONE W2S2: Colab + Python 2: get and explore a dataset
 
 ** Review
 
@@ -137,8 +137,7 @@ quiz. Sometimes it give additional details last forgotten.
    have labels (row-index and column-name). It supports operations
    like: filtering rows, sorting, grouping, aggregating, joining,
    handling missing values, and reshaping the data. In Python, it is
-   implemented in the ~pandas~ library (but there are many more like
-   it).
+   implemented in the ~pandas~ 
    #+end_quote
    Example:
    #+begin_src python :results output :exports both :session *Python* :python python3 
@@ -152,8 +151,6 @@ quiz. Sometimes it give additional details last forgotten.
 
      print(df[df["age"] > 27]) # filter rows where `age` is greater than 27
    #+end_src
-
-   #+RESULTS:
 
 5) What's a *list comprehension* in Python?
    #+begin_quote
@@ -178,8 +175,12 @@ quiz. Sometimes it give additional details last forgotten.
 
      print(squares2)
    #+end_src
+
+   #+RESULTS:
+   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+   : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
    
-** Continued: Colab + Python part 2
+** Colab + Python part 2
 
 - We continue with our [p]review of Colab notebooks and Python.
 
@@ -190,5 +191,92 @@ quiz. Sometimes it give additional details last forgotten.
 
 - You will have to upload your notebook at the end of this session.
 
+* W2S3: Colab + Python 3: Explore and visualize a DataFrame
 
-* W2S3: Machine Learning Fundamentals
+** Review
+
+1) What are the three levels ("stateful layers") we're operating on
+   when using Jupyter?
+   #+begin_quote
+   1. The notebook (.ipynb, Jupyter server)
+   2. Python session (kernel, .py)
+   3. OS environment (shell, environment)
+   #+end_quote
+2) What's a Python list?
+   #+begin_quote
+   A Python list is a built-in, mutable, ordered sequence types that
+   stores an indexed collection of references to objects.
+
+   It's implemented as a dynamic array (contiguous block of pointers
+   to objects in memory). Index access performs O(1) (a[i] is just
+   base_address + i * pointer_size, while linked list performs O(n) -
+   must walk from the head, node by node.
+   #+end_quote
+3) How can you extract the =age= column from a dataframe =df=?
+   #+begin_src python :results output :exports both :session *Python* 
+     import pandas as pd
+
+     df = pd.DataFrame({
+         "age" : [30,25,27]
+         })
+     print(df)
+     print(df["age"]) # the footer is the metadata of the Series
+     print(df["age"].to_string(index=False))     
+   #+end_src
+4) How do I filter only the fields with age smaller or equal to 27?
+   #+begin_src python :results output :exports both :session *Python* :python python3 
+     print(df["age"] <= 27)  # boolean flag vector
+     print(df[df["age"] <= 27])  # boolean flag vector     
+   #+end_src
+
+   #+RESULTS:
+   : 0    False
+   : 1     True
+   : 2     True
+   : Name: age, dtype: bool
+   :    age
+   : 1   25
+   : 2   27
+5) In Python, division by zero generates a ~ZeroDivisionError~
+   exception. How can you guard against that?
+   #+begin_src bash :results output :exports both
+     python3 -c "1/0" 2>&1
+   #+end_src
+
+   #+RESULTS:
+   : Traceback (most recent call last):
+   :   File "<string>", line 1, in <module>
+   :     1/0
+   :     ~^~
+   : ZeroDivisionError: division by zero
+
+   #+begin_src python :results output :exports both :session *Python* :python python3
+     x = 0
+     try:                     
+         print(1/x)
+     except ZeroDivisionError as e:  # e is an alias 
+         print(f"{e}")
+   #+end_src
+
+   #+RESULTS:
+   : division by zero
+
+** Colab + Python part 3
+
+- We continue with our [p]review of Colab notebooks and Python.
+
+- Open the notebook you were working on last.
+
+- Alternatively, open my notebook and make a copy to edit it:
+  https://tinyurl.com/colab-demo-ipynb
+
+- *Upload your updated notebook to Canvas at the end of the session.*
+
+** Take away
+
+** Long weekend
+
+- Look at chapter 1 of the textbook.
+- Look at "Understanding Machine Learning" in DataCamp.
+
+* W3S1: Machine Learning Fundamentals

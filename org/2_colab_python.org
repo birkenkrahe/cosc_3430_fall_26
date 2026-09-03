@@ -3,7 +3,6 @@
 #+SUBTITLE:CS 540 - Principles of AI - Catholic Polytechnic U, summer 2026
 #+STARTUP: overview hideblocks indent
 #+OPTIONS: toc:nil num:nil ^:nil
-#+PROPERTY: header-args:python :session *Python* :results output :exports both :noweb yes
 #+STARTUP: overview hideblocks indent entitiespretty:
 #+OPTIONS: toc:1 num:nil ^:nil:
 * Objectives
@@ -67,12 +66,12 @@ Other things you can do:
 
   #+RESULTS:
   : Defaulting to user installation because normal site-packages is not writeable
-  : Requirement already satisfied: pandas in /home/aletheia/.local/lib/python3.10/site-packages (2.2.3)
-  : Requirement already satisfied: numpy>=1.22.4 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2.0.0)
-  : Requirement already satisfied: pytz>=2020.1 in /usr/lib/python3/dist-packages (from pandas) (2022.1)
-  : Requirement already satisfied: tzdata>=2022.7 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2024.2)
-  : Requirement already satisfied: python-dateutil>=2.8.2 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
-  : Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+  : Requirement already satisfied: pandas in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (2.3.3)
+  : Requirement already satisfied: numpy>=1.22.4 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2.0.2)
+  : Requirement already satisfied: python-dateutil>=2.8.2 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2.9.0.post0)
+  : Requirement already satisfied: pytz>=2020.1 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2026.3.post1)
+  : Requirement already satisfied: tzdata>=2022.7 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2026.3)
+  : Requirement already satisfied: six>=1.5 in /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages (from python-dateutil>=2.8.2->pandas) (1.15.0)
 
 - In Colab, you can run shell (~bash(1)~) commands in iPython code cells
   by putting a ~!~ in front of the command:
@@ -89,14 +88,14 @@ Other things you can do:
   #+end_src
 
   #+RESULTS:
-  : /usr/bin/pip
+  : /Users/mbirkenkrahe/Library/Python/3.9/bin/pip
   : Defaulting to user installation because normal site-packages is not writeable
-  : Requirement already satisfied: pandas in /home/aletheia/.local/lib/python3.10/site-packages (2.2.3)
-  : Requirement already satisfied: pytz>=2020.1 in /usr/lib/python3/dist-packages (from pandas) (2022.1)
-  : Requirement already satisfied: numpy>=1.22.4 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2.0.0)
-  : Requirement already satisfied: tzdata>=2022.7 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2024.2)
-  : Requirement already satisfied: python-dateutil>=2.8.2 in /home/aletheia/.local/lib/python3.10/site-packages (from pandas) (2.9.0.post0)
-  : Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+  : Requirement already satisfied: pandas in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (2.3.3)
+  : Requirement already satisfied: numpy>=1.22.4 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2.0.2)
+  : Requirement already satisfied: python-dateutil>=2.8.2 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2.9.0.post0)
+  : Requirement already satisfied: pytz>=2020.1 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2026.3.post1)
+  : Requirement already satisfied: tzdata>=2022.7 in /Users/mbirkenkrahe/Library/Python/3.9/lib/python/site-packages (from pandas) (2026.3)
+  : Requirement already satisfied: six>=1.5 in /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages (from python-dateutil>=2.8.2->pandas) (1.15.0)
 
 ** Optional: pip provenance (ask Gemini) :skip:
 
@@ -133,7 +132,7 @@ Other things you can do:
 
 - We can now ~import~ the ~pandas~ library into the current Python
   session.
-  #+begin_src python :results none :exports both :session *Python* :python python3
+  #+begin_src python :results none :exports both :session *Python*
     import pandas as pd
   #+end_src
 
@@ -145,7 +144,7 @@ Other things you can do:
 
 - To check that the library is loaded and available in the current
   session:
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     import sys
     print('pandas' in sys.modules)
   #+end_src
@@ -175,21 +174,21 @@ Other things you can do:
 
 - You can also check what names ~pandas~ put into your namespace (analog
   to ~data()~ in R):
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(dir(pd))
   #+end_src
 
   #+RESULTS:
-  : ['ArrowDtype', 'BooleanDtype', 'Categorical', 'CategoricalDtype', 'CategoricalIndex', 'DataFrame', 'DateOffset', 'DatetimeIndex', 'DatetimeTZDtype', 'ExcelFile', 'ExcelWriter', 'Flags', 'Float32Dtype', 'Float64Dtype', 'Grouper', 'HDFStore', 'Index', 'IndexSlice', 'Int16Dtype', 'Int32Dtype', 'Int64Dtype', 'Int8Dtype', 'Interval', 'IntervalDtype', 'IntervalIndex', 'MultiIndex', 'NA', 'NaT', 'NamedAgg', 'Period', 'PeriodDtype', 'PeriodIndex', 'RangeIndex', 'Series', 'SparseDtype', 'StringDtype', 'Timedelta', 'TimedeltaIndex', 'Timestamp', 'UInt16Dtype', 'UInt32Dtype', 'UInt64Dtype', 'UInt8Dtype', '__all__', '__builtins__', '__cached__', '__doc__', '__docformat__', '__file__', '__git_version__', '__loader__', '__name__', '__package__', '__path__', '__spec__', '__version__', '_built_with_meson', '_config', '_is_numpy_dev', '_libs', '_pandas_datetime_CAPI', '_pandas_parser_CAPI', '_testing', '_typing', '_version_meson', 'annotations', 'api', 'array', 'arrays', 'bdate_range', 'compat', 'concat', 'core', 'crosstab', 'cut', 'date_range', 'describe_option', 'errors', 'eval', 'factorize', 'from_dummies', 'get_dummies', 'get_option', 'infer_freq', 'interval_range', 'io', 'isna', 'isnull', 'json_normalize', 'lreshape', 'melt', 'merge', 'merge_asof', 'merge_ordered', 'notna', 'notnull', 'offsets', 'option_context', 'options', 'pandas', 'period_range', 'pivot', 'pivot_table', 'plotting', 'qcut', 'read_clipboard', 'read_csv', 'read_excel', 'read_feather', 'read_fwf', 'read_gbq', 'read_hdf', 'read_html', 'read_json', 'read_orc', 'read_parquet', 'read_pickle', 'read_sas', 'read_spss', 'read_sql', 'read_sql_query', 'read_sql_table', 'read_stata', 'read_table', 'read_xml', 'reset_option', 'set_eng_float_format', 'set_option', 'show_versions', 'test', 'testing', 'timedelta_range', 'to_datetime', 'to_numeric', 'to_pickle', 'to_timedelta', 'tseries', 'unique', 'util', 'value_counts', 'wide_to_long']
+  : ['ArrowDtype', 'BooleanDtype', 'Categorical', 'CategoricalDtype', 'CategoricalIndex', 'DataFrame', 'DateOffset', 'DatetimeIndex', 'DatetimeTZDtype', 'ExcelFile', 'ExcelWriter', 'Flags', 'Float32Dtype', 'Float64Dtype', 'Grouper', 'HDFStore', 'Index', 'IndexSlice', 'Int16Dtype', 'Int32Dtype', 'Int64Dtype', 'Int8Dtype', 'Interval', 'IntervalDtype', 'IntervalIndex', 'MultiIndex', 'NA', 'NaT', 'NamedAgg', 'Period', 'PeriodDtype', 'PeriodIndex', 'RangeIndex', 'Series', 'SparseDtype', 'StringDtype', 'Timedelta', 'TimedeltaIndex', 'Timestamp', 'UInt16Dtype', 'UInt32Dtype', 'UInt64Dtype', 'UInt8Dtype', '__all__', '__builtins__', '__cached__', '__doc__', '__docformat__', '__file__', '__git_version__', '__loader__', '__name__', '__package__', '__path__', '__spec__', '__version__', '_built_with_meson', '_config', '_is_numpy_dev', '_libs', '_pandas_datetime_CAPI', '_pandas_parser_CAPI', '_testing', '_typing', '_version_meson', 'annotations', 'api', 'array', 'arrays', 'bdate_range', 'col', 'compat', 'concat', 'core', 'crosstab', 'cut', 'date_range', 'describe_option', 'errors', 'eval', 'factorize', 'from_dummies', 'get_dummies', 'get_option', 'infer_freq', 'interval_range', 'io', 'isna', 'isnull', 'json_normalize', 'lreshape', 'melt', 'merge', 'merge_asof', 'merge_ordered', 'notna', 'notnull', 'offsets', 'option_context', 'options', 'pandas', 'period_range', 'pivot', 'pivot_table', 'plotting', 'qcut', 'read_clipboard', 'read_csv', 'read_excel', 'read_feather', 'read_fwf', 'read_hdf', 'read_html', 'read_iceberg', 'read_json', 'read_orc', 'read_parquet', 'read_pickle', 'read_sas', 'read_spss', 'read_sql', 'read_sql_query', 'read_sql_table', 'read_stata', 'read_table', 'read_xml', 'reset_option', 'set_eng_float_format', 'set_option', 'show_versions', 'test', 'testing', 'timedelta_range', 'to_datetime', 'to_numeric', 'to_pickle', 'to_timedelta', 'tseries', 'unique', 'util', 'wide_to_long']
 
 - This is hard to check. You can filter over the printed data with a
   list comprehension:
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(sorted([m for m in sys.modules if 'pandas' in m]))
   #+end_src
 
   #+RESULTS:
-  : ['pandas', 'pandas._config', 'pandas._config.config', 'pandas._config.dates', 'pandas._config.display', 'pandas._config.localization', 'pandas._libs', 'pandas._libs.algos', 'pandas._libs.arrays', 'pandas._libs.groupby', 'pandas._libs.hashing', 'pandas._libs.hashtable', 'pandas._libs.index', 'pandas._libs.indexing', 'pandas._libs.internals', 'pandas._libs.interval', 'pandas._libs.join', 'pandas._libs.json', 'pandas._libs.lib', 'pandas._libs.missing', 'pandas._libs.ops', 'pandas._libs.ops_dispatch', 'pandas._libs.pandas_datetime', 'pandas._libs.pandas_parser', 'pandas._libs.parsers', 'pandas._libs.properties', 'pandas._libs.reshape', 'pandas._libs.sparse', 'pandas._libs.testing', 'pandas._libs.tslib', 'pandas._libs.tslibs', 'pandas._libs.tslibs.base', 'pandas._libs.tslibs.ccalendar', 'pandas._libs.tslibs.conversion', 'pandas._libs.tslibs.dtypes', 'pandas._libs.tslibs.fields', 'pandas._libs.tslibs.nattype', 'pandas._libs.tslibs.np_datetime', 'pandas._libs.tslibs.offsets', 'pandas._libs.tslibs.parsing', 'pandas._libs.tslibs.period', 'pandas._libs.tslibs.strptime', 'pandas._libs.tslibs.timedeltas', 'pandas._libs.tslibs.timestamps', 'pandas._libs.tslibs.timezones', 'pandas._libs.tslibs.tzconversion', 'pandas._libs.tslibs.vectorized', 'pandas._libs.window', 'pandas._libs.window.aggregations', 'pandas._libs.window.indexers', 'pandas._libs.writers', 'pandas._testing', 'pandas._testing._io', 'pandas._testing._warnings', 'pandas._testing.asserters', 'pandas._testing.compat', 'pandas._testing.contexts', 'pandas._typing', 'pandas._version_meson', 'pandas.api', 'pandas.api.extensions', 'pandas.api.indexers', 'pandas.api.interchange', 'pandas.api.types', 'pandas.api.typing', 'pandas.arrays', 'pandas.compat', 'pandas.compat._constants', 'pandas.compat._optional', 'pandas.compat.compressors', 'pandas.compat.numpy', 'pandas.compat.numpy.function', 'pandas.compat.pickle_compat', 'pandas.compat.pyarrow', 'pandas.core', 'pandas.core._numba', 'pandas.core._numba.executor', 'pandas.core.accessor', 'pandas.core.algorithms', 'pandas.core.api', 'pandas.core.apply', 'pandas.core.array_algos', 'pandas.core.array_algos.datetimelike_accumulations', 'pandas.core.array_algos.masked_accumulations', 'pandas.core.array_algos.masked_reductions', 'pandas.core.array_algos.putmask', 'pandas.core.array_algos.quantile', 'pandas.core.array_algos.replace', 'pandas.core.array_algos.take', 'pandas.core.array_algos.transforms', 'pandas.core.arraylike', 'pandas.core.arrays', 'pandas.core.arrays._arrow_string_mixins', 'pandas.core.arrays._mixins', 'pandas.core.arrays._ranges', 'pandas.core.arrays._utils', 'pandas.core.arrays.arrow', 'pandas.core.arrays.arrow.accessors', 'pandas.core.arrays.arrow.array', 'pandas.core.arrays.base', 'pandas.core.arrays.boolean', 'pandas.core.arrays.categorical', 'pandas.core.arrays.datetimelike', 'pandas.core.arrays.datetimes', 'pandas.core.arrays.floating', 'pandas.core.arrays.integer', 'pandas.core.arrays.interval', 'pandas.core.arrays.masked', 'pandas.core.arrays.numeric', 'pandas.core.arrays.numpy_', 'pandas.core.arrays.period', 'pandas.core.arrays.sparse', 'pandas.core.arrays.sparse.accessor', 'pandas.core.arrays.sparse.array', 'pandas.core.arrays.string_', 'pandas.core.arrays.string_arrow', 'pandas.core.arrays.timedeltas', 'pandas.core.base', 'pandas.core.common', 'pandas.core.computation', 'pandas.core.computation.align', 'pandas.core.computation.api', 'pandas.core.computation.check', 'pandas.core.computation.common', 'pandas.core.computation.engines', 'pandas.core.computation.eval', 'pandas.core.computation.expr', 'pandas.core.computation.expressions', 'pandas.core.computation.ops', 'pandas.core.computation.parsing', 'pandas.core.computation.pytables', 'pandas.core.computation.scope', 'pandas.core.config_init', 'pandas.core.construction', 'pandas.core.dtypes', 'pandas.core.dtypes.api', 'pandas.core.dtypes.astype', 'pandas.core.dtypes.base', 'pandas.core.dtypes.cast', 'pandas.core.dtypes.common', 'pandas.core.dtypes.concat', 'pandas.core.dtypes.dtypes', 'pandas.core.dtypes.generic', 'pandas.core.dtypes.inference', 'pandas.core.dtypes.missing', 'pandas.core.flags', 'pandas.core.frame', 'pandas.core.generic', 'pandas.core.groupby', 'pandas.core.groupby.base', 'pandas.core.groupby.categorical', 'pandas.core.groupby.generic', 'pandas.core.groupby.groupby', 'pandas.core.groupby.grouper', 'pandas.core.groupby.indexing', 'pandas.core.groupby.numba_', 'pandas.core.groupby.ops', 'pandas.core.indexers', 'pandas.core.indexers.objects', 'pandas.core.indexers.utils', 'pandas.core.indexes', 'pandas.core.indexes.accessors', 'pandas.core.indexes.api', 'pandas.core.indexes.base', 'pandas.core.indexes.category', 'pandas.core.indexes.datetimelike', 'pandas.core.indexes.datetimes', 'pandas.core.indexes.extension', 'pandas.core.indexes.frozen', 'pandas.core.indexes.interval', 'pandas.core.indexes.multi', 'pandas.core.indexes.period', 'pandas.core.indexes.range', 'pandas.core.indexes.timedeltas', 'pandas.core.indexing', 'pandas.core.interchange', 'pandas.core.interchange.dataframe_protocol', 'pandas.core.interchange.from_dataframe', 'pandas.core.interchange.utils', 'pandas.core.internals', 'pandas.core.internals.api', 'pandas.core.internals.array_manager', 'pandas.core.internals.base', 'pandas.core.internals.blocks', 'pandas.core.internals.concat', 'pandas.core.internals.construction', 'pandas.core.internals.managers', 'pandas.core.internals.ops', 'pandas.core.methods', 'pandas.core.methods.describe', 'pandas.core.methods.selectn', 'pandas.core.missing', 'pandas.core.nanops', 'pandas.core.ops', 'pandas.core.ops.array_ops', 'pandas.core.ops.common', 'pandas.core.ops.dispatch', 'pandas.core.ops.docstrings', 'pandas.core.ops.invalid', 'pandas.core.ops.mask_ops', 'pandas.core.ops.missing', 'pandas.core.resample', 'pandas.core.reshape', 'pandas.core.reshape.api', 'pandas.core.reshape.concat', 'pandas.core.reshape.encoding', 'pandas.core.reshape.melt', 'pandas.core.reshape.merge', 'pandas.core.reshape.pivot', 'pandas.core.reshape.tile', 'pandas.core.reshape.util', 'pandas.core.roperator', 'pandas.core.sample', 'pandas.core.series', 'pandas.core.shared_docs', 'pandas.core.sorting', 'pandas.core.strings', 'pandas.core.strings.accessor', 'pandas.core.strings.base', 'pandas.core.strings.object_array', 'pandas.core.tools', 'pandas.core.tools.datetimes', 'pandas.core.tools.numeric', 'pandas.core.tools.timedeltas', 'pandas.core.tools.times', 'pandas.core.util', 'pandas.core.util.hashing', 'pandas.core.util.numba_', 'pandas.core.window', 'pandas.core.window.common', 'pandas.core.window.doc', 'pandas.core.window.ewm', 'pandas.core.window.expanding', 'pandas.core.window.numba_', 'pandas.core.window.online', 'pandas.core.window.rolling', 'pandas.errors', 'pandas.io', 'pandas.io._util', 'pandas.io.api', 'pandas.io.clipboards', 'pandas.io.common', 'pandas.io.excel', 'pandas.io.excel._base', 'pandas.io.excel._calamine', 'pandas.io.excel._odfreader', 'pandas.io.excel._odswriter', 'pandas.io.excel._openpyxl', 'pandas.io.excel._pyxlsb', 'pandas.io.excel._util', 'pandas.io.excel._xlrd', 'pandas.io.excel._xlsxwriter', 'pandas.io.feather_format', 'pandas.io.formats', 'pandas.io.formats.console', 'pandas.io.formats.format', 'pandas.io.formats.info', 'pandas.io.formats.printing', 'pandas.io.gbq', 'pandas.io.html', 'pandas.io.json', 'pandas.io.json._json', 'pandas.io.json._normalize', 'pandas.io.json._table_schema', 'pandas.io.orc', 'pandas.io.parquet', 'pandas.io.parsers', 'pandas.io.parsers.arrow_parser_wrapper', 'pandas.io.parsers.base_parser', 'pandas.io.parsers.c_parser_wrapper', 'pandas.io.parsers.python_parser', 'pandas.io.parsers.readers', 'pandas.io.pickle', 'pandas.io.pytables', 'pandas.io.sas', 'pandas.io.sas.sasreader', 'pandas.io.spss', 'pandas.io.sql', 'pandas.io.stata', 'pandas.io.xml', 'pandas.plotting', 'pandas.plotting._core', 'pandas.plotting._misc', 'pandas.testing', 'pandas.tseries', 'pandas.tseries.api', 'pandas.tseries.frequencies', 'pandas.tseries.offsets', 'pandas.util', 'pandas.util._decorators', 'pandas.util._exceptions', 'pandas.util._print_versions', 'pandas.util._tester', 'pandas.util._validators', 'pandas.util.version']
+  : ['pandas', 'pandas._config', 'pandas._config.config', 'pandas._config.dates', 'pandas._config.display', 'pandas._config.localization', 'pandas._libs', 'pandas._libs._cyutility', 'pandas._libs.algos', 'pandas._libs.arrays', 'pandas._libs.groupby', 'pandas._libs.hashing', 'pandas._libs.hashtable', 'pandas._libs.index', 'pandas._libs.indexing', 'pandas._libs.internals', 'pandas._libs.interval', 'pandas._libs.join', 'pandas._libs.json', 'pandas._libs.lib', 'pandas._libs.missing', 'pandas._libs.ops', 'pandas._libs.ops_dispatch', 'pandas._libs.pandas_datetime', 'pandas._libs.pandas_parser', 'pandas._libs.parsers', 'pandas._libs.properties', 'pandas._libs.reshape', 'pandas._libs.sparse', 'pandas._libs.testing', 'pandas._libs.tslib', 'pandas._libs.tslibs', 'pandas._libs.tslibs.base', 'pandas._libs.tslibs.ccalendar', 'pandas._libs.tslibs.conversion', 'pandas._libs.tslibs.dtypes', 'pandas._libs.tslibs.fields', 'pandas._libs.tslibs.nattype', 'pandas._libs.tslibs.np_datetime', 'pandas._libs.tslibs.offsets', 'pandas._libs.tslibs.parsing', 'pandas._libs.tslibs.period', 'pandas._libs.tslibs.strptime', 'pandas._libs.tslibs.timedeltas', 'pandas._libs.tslibs.timestamps', 'pandas._libs.tslibs.timezones', 'pandas._libs.tslibs.tzconversion', 'pandas._libs.tslibs.vectorized', 'pandas._libs.window', 'pandas._libs.window.aggregations', 'pandas._libs.window.indexers', 'pandas._libs.writers', 'pandas._testing', 'pandas._testing._io', 'pandas._testing._warnings', 'pandas._testing.asserters', 'pandas._testing.compat', 'pandas._testing.contexts', 'pandas._typing', 'pandas._version_meson', 'pandas.api', 'pandas.api.executors', 'pandas.api.extensions', 'pandas.api.indexers', 'pandas.api.interchange', 'pandas.api.types', 'pandas.api.typing', 'pandas.arrays', 'pandas.compat', 'pandas.compat._constants', 'pandas.compat._optional', 'pandas.compat.numpy', 'pandas.compat.numpy.function', 'pandas.compat.pickle_compat', 'pandas.compat.pyarrow', 'pandas.core', 'pandas.core._numba', 'pandas.core._numba.executor', 'pandas.core.accessor', 'pandas.core.algorithms', 'pandas.core.api', 'pandas.core.apply', 'pandas.core.array_algos', 'pandas.core.array_algos.datetimelike_accumulations', 'pandas.core.array_algos.masked_accumulations', 'pandas.core.array_algos.masked_reductions', 'pandas.core.array_algos.putmask', 'pandas.core.array_algos.quantile', 'pandas.core.array_algos.replace', 'pandas.core.array_algos.take', 'pandas.core.array_algos.transforms', 'pandas.core.arraylike', 'pandas.core.arrays', 'pandas.core.arrays._arrow_string_mixins', 'pandas.core.arrays._mixins', 'pandas.core.arrays._ranges', 'pandas.core.arrays._utils', 'pandas.core.arrays.arrow', 'pandas.core.arrays.arrow.accessors', 'pandas.core.arrays.arrow.array', 'pandas.core.arrays.base', 'pandas.core.arrays.boolean', 'pandas.core.arrays.categorical', 'pandas.core.arrays.datetimelike', 'pandas.core.arrays.datetimes', 'pandas.core.arrays.floating', 'pandas.core.arrays.integer', 'pandas.core.arrays.interval', 'pandas.core.arrays.masked', 'pandas.core.arrays.numeric', 'pandas.core.arrays.numpy_', 'pandas.core.arrays.period', 'pandas.core.arrays.sparse', 'pandas.core.arrays.sparse.accessor', 'pandas.core.arrays.sparse.array', 'pandas.core.arrays.string_', 'pandas.core.arrays.string_arrow', 'pandas.core.arrays.timedeltas', 'pandas.core.base', 'pandas.core.col', 'pandas.core.common', 'pandas.core.computation', 'pandas.core.computation.align', 'pandas.core.computation.api', 'pandas.core.computation.check', 'pandas.core.computation.common', 'pandas.core.computation.engines', 'pandas.core.computation.eval', 'pandas.core.computation.expr', 'pandas.core.computation.expressions', 'pandas.core.computation.ops', 'pandas.core.computation.parsing', 'pandas.core.computation.pytables', 'pandas.core.computation.scope', 'pandas.core.config_init', 'pandas.core.construction', 'pandas.core.dtypes', 'pandas.core.dtypes.api', 'pandas.core.dtypes.astype', 'pandas.core.dtypes.base', 'pandas.core.dtypes.cast', 'pandas.core.dtypes.common', 'pandas.core.dtypes.concat', 'pandas.core.dtypes.dtypes', 'pandas.core.dtypes.generic', 'pandas.core.dtypes.inference', 'pandas.core.dtypes.missing', 'pandas.core.flags', 'pandas.core.frame', 'pandas.core.generic', 'pandas.core.groupby', 'pandas.core.groupby.base', 'pandas.core.groupby.categorical', 'pandas.core.groupby.generic', 'pandas.core.groupby.groupby', 'pandas.core.groupby.grouper', 'pandas.core.groupby.indexing', 'pandas.core.groupby.numba_', 'pandas.core.groupby.ops', 'pandas.core.indexers', 'pandas.core.indexers.objects', 'pandas.core.indexers.utils', 'pandas.core.indexes', 'pandas.core.indexes.accessors', 'pandas.core.indexes.api', 'pandas.core.indexes.base', 'pandas.core.indexes.category', 'pandas.core.indexes.datetimelike', 'pandas.core.indexes.datetimes', 'pandas.core.indexes.extension', 'pandas.core.indexes.frozen', 'pandas.core.indexes.interval', 'pandas.core.indexes.multi', 'pandas.core.indexes.period', 'pandas.core.indexes.range', 'pandas.core.indexes.timedeltas', 'pandas.core.indexing', 'pandas.core.interchange', 'pandas.core.interchange.dataframe_protocol', 'pandas.core.interchange.from_dataframe', 'pandas.core.interchange.utils', 'pandas.core.internals', 'pandas.core.internals.api', 'pandas.core.internals.blocks', 'pandas.core.internals.concat', 'pandas.core.internals.construction', 'pandas.core.internals.managers', 'pandas.core.internals.ops', 'pandas.core.methods', 'pandas.core.methods.describe', 'pandas.core.methods.selectn', 'pandas.core.missing', 'pandas.core.nanops', 'pandas.core.ops', 'pandas.core.ops.array_ops', 'pandas.core.ops.common', 'pandas.core.ops.dispatch', 'pandas.core.ops.docstrings', 'pandas.core.ops.invalid', 'pandas.core.ops.mask_ops', 'pandas.core.ops.missing', 'pandas.core.resample', 'pandas.core.reshape', 'pandas.core.reshape.api', 'pandas.core.reshape.concat', 'pandas.core.reshape.encoding', 'pandas.core.reshape.melt', 'pandas.core.reshape.merge', 'pandas.core.reshape.pivot', 'pandas.core.reshape.tile', 'pandas.core.roperator', 'pandas.core.sample', 'pandas.core.series', 'pandas.core.shared_docs', 'pandas.core.sorting', 'pandas.core.strings', 'pandas.core.strings.accessor', 'pandas.core.strings.object_array', 'pandas.core.tools', 'pandas.core.tools.datetimes', 'pandas.core.tools.numeric', 'pandas.core.tools.timedeltas', 'pandas.core.tools.times', 'pandas.core.util', 'pandas.core.util.hashing', 'pandas.core.util.numba_', 'pandas.core.window', 'pandas.core.window.common', 'pandas.core.window.ewm', 'pandas.core.window.expanding', 'pandas.core.window.numba_', 'pandas.core.window.online', 'pandas.core.window.rolling', 'pandas.errors', 'pandas.errors.cow', 'pandas.io', 'pandas.io._util', 'pandas.io.api', 'pandas.io.clipboards', 'pandas.io.common', 'pandas.io.excel', 'pandas.io.excel._base', 'pandas.io.excel._calamine', 'pandas.io.excel._odfreader', 'pandas.io.excel._odswriter', 'pandas.io.excel._openpyxl', 'pandas.io.excel._pyxlsb', 'pandas.io.excel._util', 'pandas.io.excel._xlrd', 'pandas.io.excel._xlsxwriter', 'pandas.io.feather_format', 'pandas.io.formats', 'pandas.io.formats.console', 'pandas.io.formats.format', 'pandas.io.formats.info', 'pandas.io.formats.printing', 'pandas.io.html', 'pandas.io.iceberg', 'pandas.io.json', 'pandas.io.json._json', 'pandas.io.json._normalize', 'pandas.io.json._table_schema', 'pandas.io.orc', 'pandas.io.parquet', 'pandas.io.parsers', 'pandas.io.parsers.arrow_parser_wrapper', 'pandas.io.parsers.base_parser', 'pandas.io.parsers.c_parser_wrapper', 'pandas.io.parsers.python_parser', 'pandas.io.parsers.readers', 'pandas.io.pickle', 'pandas.io.pytables', 'pandas.io.sas', 'pandas.io.sas.sasreader', 'pandas.io.spss', 'pandas.io.sql', 'pandas.io.stata', 'pandas.io.xml', 'pandas.plotting', 'pandas.plotting._core', 'pandas.plotting._misc', 'pandas.testing', 'pandas.tseries', 'pandas.tseries.api', 'pandas.tseries.frequencies', 'pandas.tseries.offsets', 'pandas.util', 'pandas.util._decorators', 'pandas.util._exceptions', 'pandas.util._print_versions', 'pandas.util._tester', 'pandas.util._validators', 'pandas.util.version']
 
   This prints a sorted list of all module names in ~sys.modules~ that
   contain the substring ~'pandas'~. We're going to to some I/O but that
@@ -197,7 +196,7 @@ Other things you can do:
   we use ~pd.read_csv~ to read CSV data into a data frame.
 
 - The list comprehension is a one line version of a loop:
-  #+begin_src python :results output :exports both :session *Python* :python python3 
+  #+begin_src python :results output :exports both :session *Python*
     import sys # import system function library
     import pandas as pd # import pandas function library (DataFrames)
     for m in sorted(sys.modules): # loop over the sorted list of loaded
@@ -208,7 +207,7 @@ Other things you can do:
   #+end_src
 
   #+RESULTS:
-  : pandas, pandas._config, pandas._config.config, pandas._config.dates, pandas._config.display, pandas._config.localization, pandas._libs, pandas._libs.algos, pandas._libs.arrays, pandas._libs.groupby, pandas._libs.hashing, pandas._libs.hashtable, pandas._libs.index, pandas._libs.indexing, pandas._libs.internals, pandas._libs.interval, pandas._libs.join, pandas._libs.json, pandas._libs.lib, pandas._libs.missing, pandas._libs.ops, pandas._libs.ops_dispatch, pandas._libs.pandas_datetime, pandas._libs.pandas_parser, pandas._libs.parsers, pandas._libs.properties, pandas._libs.reshape, pandas._libs.sparse, pandas._libs.testing, pandas._libs.tslib, pandas._libs.tslibs, pandas._libs.tslibs.base, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.conversion, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.fields, pandas._libs.tslibs.nattype, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.offsets, pandas._libs.tslibs.parsing, pandas._libs.tslibs.period, pandas._libs.tslibs.strptime, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.timestamps, pandas._libs.tslibs.timezones, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.vectorized, pandas._libs.window, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.writers, pandas._testing, pandas._testing._io, pandas._testing._warnings, pandas._testing.asserters, pandas._testing.compat, pandas._testing.contexts, pandas._typing, pandas._version_meson, pandas.api, pandas.api.extensions, pandas.api.indexers, pandas.api.interchange, pandas.api.types, pandas.api.typing, pandas.arrays, pandas.compat, pandas.compat._constants, pandas.compat._optional, pandas.compat.compressors, pandas.compat.numpy, pandas.compat.numpy.function, pandas.compat.pickle_compat, pandas.compat.pyarrow, pandas.core, pandas.core._numba, pandas.core._numba.executor, pandas.core.accessor, pandas.core.algorithms, pandas.core.api, pandas.core.apply, pandas.core.array_algos, pandas.core.array_algos.datetimelike_accumulations, pandas.core.array_algos.masked_accumulations, pandas.core.array_algos.masked_reductions, pandas.core.array_algos.putmask, pandas.core.array_algos.quantile, pandas.core.array_algos.replace, pandas.core.array_algos.take, pandas.core.array_algos.transforms, pandas.core.arraylike, pandas.core.arrays, pandas.core.arrays._arrow_string_mixins, pandas.core.arrays._mixins, pandas.core.arrays._ranges, pandas.core.arrays._utils, pandas.core.arrays.arrow, pandas.core.arrays.arrow.accessors, pandas.core.arrays.arrow.array, pandas.core.arrays.base, pandas.core.arrays.boolean, pandas.core.arrays.categorical, pandas.core.arrays.datetimelike, pandas.core.arrays.datetimes, pandas.core.arrays.floating, pandas.core.arrays.integer, pandas.core.arrays.interval, pandas.core.arrays.masked, pandas.core.arrays.numeric, pandas.core.arrays.numpy_, pandas.core.arrays.period, pandas.core.arrays.sparse, pandas.core.arrays.sparse.accessor, pandas.core.arrays.sparse.array, pandas.core.arrays.string_, pandas.core.arrays.string_arrow, pandas.core.arrays.timedeltas, pandas.core.base, pandas.core.common, pandas.core.computation, pandas.core.computation.align, pandas.core.computation.api, pandas.core.computation.check, pandas.core.computation.common, pandas.core.computation.engines, pandas.core.computation.eval, pandas.core.computation.expr, pandas.core.computation.expressions, pandas.core.computation.ops, pandas.core.computation.parsing, pandas.core.computation.pytables, pandas.core.computation.scope, pandas.core.config_init, pandas.core.construction, pandas.core.dtypes, pandas.core.dtypes.api, pandas.core.dtypes.astype, pandas.core.dtypes.base, pandas.core.dtypes.cast, pandas.core.dtypes.common, pandas.core.dtypes.concat, pandas.core.dtypes.dtypes, pandas.core.dtypes.generic, pandas.core.dtypes.inference, pandas.core.dtypes.missing, pandas.core.flags, pandas.core.frame, pandas.core.generic, pandas.core.groupby, pandas.core.groupby.base, pandas.core.groupby.categorical, pandas.core.groupby.generic, pandas.core.groupby.groupby, pandas.core.groupby.grouper, pandas.core.groupby.indexing, pandas.core.groupby.numba_, pandas.core.groupby.ops, pandas.core.indexers, pandas.core.indexers.objects, pandas.core.indexers.utils, pandas.core.indexes, pandas.core.indexes.accessors, pandas.core.indexes.api, pandas.core.indexes.base, pandas.core.indexes.category, pandas.core.indexes.datetimelike, pandas.core.indexes.datetimes, pandas.core.indexes.extension, pandas.core.indexes.frozen, pandas.core.indexes.interval, pandas.core.indexes.multi, pandas.core.indexes.period, pandas.core.indexes.range, pandas.core.indexes.timedeltas, pandas.core.indexing, pandas.core.interchange, pandas.core.interchange.dataframe_protocol, pandas.core.interchange.from_dataframe, pandas.core.interchange.utils, pandas.core.internals, pandas.core.internals.api, pandas.core.internals.array_manager, pandas.core.internals.base, pandas.core.internals.blocks, pandas.core.internals.concat, pandas.core.internals.construction, pandas.core.internals.managers, pandas.core.internals.ops, pandas.core.methods, pandas.core.methods.describe, pandas.core.methods.selectn, pandas.core.missing, pandas.core.nanops, pandas.core.ops, pandas.core.ops.array_ops, pandas.core.ops.common, pandas.core.ops.dispatch, pandas.core.ops.docstrings, pandas.core.ops.invalid, pandas.core.ops.mask_ops, pandas.core.ops.missing, pandas.core.resample, pandas.core.reshape, pandas.core.reshape.api, pandas.core.reshape.concat, pandas.core.reshape.encoding, pandas.core.reshape.melt, pandas.core.reshape.merge, pandas.core.reshape.pivot, pandas.core.reshape.tile, pandas.core.reshape.util, pandas.core.roperator, pandas.core.sample, pandas.core.series, pandas.core.shared_docs, pandas.core.sorting, pandas.core.strings, pandas.core.strings.accessor, pandas.core.strings.base, pandas.core.strings.object_array, pandas.core.tools, pandas.core.tools.datetimes, pandas.core.tools.numeric, pandas.core.tools.timedeltas, pandas.core.tools.times, pandas.core.util, pandas.core.util.hashing, pandas.core.util.numba_, pandas.core.window, pandas.core.window.common, pandas.core.window.doc, pandas.core.window.ewm, pandas.core.window.expanding, pandas.core.window.numba_, pandas.core.window.online, pandas.core.window.rolling, pandas.errors, pandas.io, pandas.io._util, pandas.io.api, pandas.io.clipboards, pandas.io.common, pandas.io.excel, pandas.io.excel._base, pandas.io.excel._calamine, pandas.io.excel._odfreader, pandas.io.excel._odswriter, pandas.io.excel._openpyxl, pandas.io.excel._pyxlsb, pandas.io.excel._util, pandas.io.excel._xlrd, pandas.io.excel._xlsxwriter, pandas.io.feather_format, pandas.io.formats, pandas.io.formats.console, pandas.io.formats.format, pandas.io.formats.info, pandas.io.formats.printing, pandas.io.gbq, pandas.io.html, pandas.io.json, pandas.io.json._json, pandas.io.json._normalize, pandas.io.json._table_schema, pandas.io.orc, pandas.io.parquet, pandas.io.parsers, pandas.io.parsers.arrow_parser_wrapper, pandas.io.parsers.base_parser, pandas.io.parsers.c_parser_wrapper, pandas.io.parsers.python_parser, pandas.io.parsers.readers, pandas.io.pickle, pandas.io.pytables, pandas.io.sas, pandas.io.sas.sasreader, pandas.io.spss, pandas.io.sql, pandas.io.stata, pandas.io.xml, pandas.plotting, pandas.plotting._core, pandas.plotting._misc, pandas.testing, pandas.tseries, pandas.tseries.api, pandas.tseries.frequencies, pandas.tseries.offsets, pandas.util, pandas.util._decorators, pandas.util._exceptions, pandas.util._print_versions, pandas.util._tester, pandas.util._validators, pandas.util.version,
+  : pandas, pandas._config, pandas._config.config, pandas._config.dates, pandas._config.display, pandas._config.localization, pandas._libs, pandas._libs._cyutility, pandas._libs.algos, pandas._libs.arrays, pandas._libs.groupby, pandas._libs.hashing, pandas._libs.hashtable, pandas._libs.index, pandas._libs.indexing, pandas._libs.internals, pandas._libs.interval, pandas._libs.join, pandas._libs.json, pandas._libs.lib, pandas._libs.missing, pandas._libs.ops, pandas._libs.ops_dispatch, pandas._libs.pandas_datetime, pandas._libs.pandas_parser, pandas._libs.parsers, pandas._libs.properties, pandas._libs.reshape, pandas._libs.sparse, pandas._libs.testing, pandas._libs.tslib, pandas._libs.tslibs, pandas._libs.tslibs.base, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.conversion, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.fields, pandas._libs.tslibs.nattype, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.offsets, pandas._libs.tslibs.parsing, pandas._libs.tslibs.period, pandas._libs.tslibs.strptime, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.timestamps, pandas._libs.tslibs.timezones, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.vectorized, pandas._libs.window, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.writers, pandas._testing, pandas._testing._io, pandas._testing._warnings, pandas._testing.asserters, pandas._testing.compat, pandas._testing.contexts, pandas._typing, pandas._version_meson, pandas.api, pandas.api.executors, pandas.api.extensions, pandas.api.indexers, pandas.api.interchange, pandas.api.types, pandas.api.typing, pandas.arrays, pandas.compat, pandas.compat._constants, pandas.compat._optional, pandas.compat.numpy, pandas.compat.numpy.function, pandas.compat.pickle_compat, pandas.compat.pyarrow, pandas.core, pandas.core._numba, pandas.core._numba.executor, pandas.core.accessor, pandas.core.algorithms, pandas.core.api, pandas.core.apply, pandas.core.array_algos, pandas.core.array_algos.datetimelike_accumulations, pandas.core.array_algos.masked_accumulations, pandas.core.array_algos.masked_reductions, pandas.core.array_algos.putmask, pandas.core.array_algos.quantile, pandas.core.array_algos.replace, pandas.core.array_algos.take, pandas.core.array_algos.transforms, pandas.core.arraylike, pandas.core.arrays, pandas.core.arrays._arrow_string_mixins, pandas.core.arrays._mixins, pandas.core.arrays._ranges, pandas.core.arrays._utils, pandas.core.arrays.arrow, pandas.core.arrays.arrow.accessors, pandas.core.arrays.arrow.array, pandas.core.arrays.base, pandas.core.arrays.boolean, pandas.core.arrays.categorical, pandas.core.arrays.datetimelike, pandas.core.arrays.datetimes, pandas.core.arrays.floating, pandas.core.arrays.integer, pandas.core.arrays.interval, pandas.core.arrays.masked, pandas.core.arrays.numeric, pandas.core.arrays.numpy_, pandas.core.arrays.period, pandas.core.arrays.sparse, pandas.core.arrays.sparse.accessor, pandas.core.arrays.sparse.array, pandas.core.arrays.string_, pandas.core.arrays.string_arrow, pandas.core.arrays.timedeltas, pandas.core.base, pandas.core.col, pandas.core.common, pandas.core.computation, pandas.core.computation.align, pandas.core.computation.api, pandas.core.computation.check, pandas.core.computation.common, pandas.core.computation.engines, pandas.core.computation.eval, pandas.core.computation.expr, pandas.core.computation.expressions, pandas.core.computation.ops, pandas.core.computation.parsing, pandas.core.computation.pytables, pandas.core.computation.scope, pandas.core.config_init, pandas.core.construction, pandas.core.dtypes, pandas.core.dtypes.api, pandas.core.dtypes.astype, pandas.core.dtypes.base, pandas.core.dtypes.cast, pandas.core.dtypes.common, pandas.core.dtypes.concat, pandas.core.dtypes.dtypes, pandas.core.dtypes.generic, pandas.core.dtypes.inference, pandas.core.dtypes.missing, pandas.core.flags, pandas.core.frame, pandas.core.generic, pandas.core.groupby, pandas.core.groupby.base, pandas.core.groupby.categorical, pandas.core.groupby.generic, pandas.core.groupby.groupby, pandas.core.groupby.grouper, pandas.core.groupby.indexing, pandas.core.groupby.numba_, pandas.core.groupby.ops, pandas.core.indexers, pandas.core.indexers.objects, pandas.core.indexers.utils, pandas.core.indexes, pandas.core.indexes.accessors, pandas.core.indexes.api, pandas.core.indexes.base, pandas.core.indexes.category, pandas.core.indexes.datetimelike, pandas.core.indexes.datetimes, pandas.core.indexes.extension, pandas.core.indexes.frozen, pandas.core.indexes.interval, pandas.core.indexes.multi, pandas.core.indexes.period, pandas.core.indexes.range, pandas.core.indexes.timedeltas, pandas.core.indexing, pandas.core.interchange, pandas.core.interchange.dataframe_protocol, pandas.core.interchange.from_dataframe, pandas.core.interchange.utils, pandas.core.internals, pandas.core.internals.api, pandas.core.internals.blocks, pandas.core.internals.concat, pandas.core.internals.construction, pandas.core.internals.managers, pandas.core.internals.ops, pandas.core.methods, pandas.core.methods.describe, pandas.core.methods.selectn, pandas.core.missing, pandas.core.nanops, pandas.core.ops, pandas.core.ops.array_ops, pandas.core.ops.common, pandas.core.ops.dispatch, pandas.core.ops.docstrings, pandas.core.ops.invalid, pandas.core.ops.mask_ops, pandas.core.ops.missing, pandas.core.resample, pandas.core.reshape, pandas.core.reshape.api, pandas.core.reshape.concat, pandas.core.reshape.encoding, pandas.core.reshape.melt, pandas.core.reshape.merge, pandas.core.reshape.pivot, pandas.core.reshape.tile, pandas.core.roperator, pandas.core.sample, pandas.core.series, pandas.core.shared_docs, pandas.core.sorting, pandas.core.strings, pandas.core.strings.accessor, pandas.core.strings.object_array, pandas.core.tools, pandas.core.tools.datetimes, pandas.core.tools.numeric, pandas.core.tools.timedeltas, pandas.core.tools.times, pandas.core.util, pandas.core.util.hashing, pandas.core.util.numba_, pandas.core.window, pandas.core.window.common, pandas.core.window.ewm, pandas.core.window.expanding, pandas.core.window.numba_, pandas.core.window.online, pandas.core.window.rolling, pandas.errors, pandas.errors.cow, pandas.io, pandas.io._util, pandas.io.api, pandas.io.clipboards, pandas.io.common, pandas.io.excel, pandas.io.excel._base, pandas.io.excel._calamine, pandas.io.excel._odfreader, pandas.io.excel._odswriter, pandas.io.excel._openpyxl, pandas.io.excel._pyxlsb, pandas.io.excel._util, pandas.io.excel._xlrd, pandas.io.excel._xlsxwriter, pandas.io.feather_format, pandas.io.formats, pandas.io.formats.console, pandas.io.formats.format, pandas.io.formats.info, pandas.io.formats.printing, pandas.io.html, pandas.io.iceberg, pandas.io.json, pandas.io.json._json, pandas.io.json._normalize, pandas.io.json._table_schema, pandas.io.orc, pandas.io.parquet, pandas.io.parsers, pandas.io.parsers.arrow_parser_wrapper, pandas.io.parsers.base_parser, pandas.io.parsers.c_parser_wrapper, pandas.io.parsers.python_parser, pandas.io.parsers.readers, pandas.io.pickle, pandas.io.pytables, pandas.io.sas, pandas.io.sas.sasreader, pandas.io.spss, pandas.io.sql, pandas.io.stata, pandas.io.xml, pandas.plotting, pandas.plotting._core, pandas.plotting._misc, pandas.testing, pandas.tseries, pandas.tseries.api, pandas.tseries.frequencies, pandas.tseries.offsets, pandas.util, pandas.util._decorators, pandas.util._exceptions, pandas.util._print_versions, pandas.util._tester, pandas.util._validators, pandas.util.version,
 
 * Download CSV data from =kaggle.com= into a ~DataFrame~
 
@@ -217,7 +216,7 @@ Other things you can do:
   The ~Iris~ dataset is a classic for introductory machine learning and
   data science. You can download it directly from a URL - I have
   saved the long address in a tinyurl:
-  #+begin_src python :results none :exports both :session *Python* :python python3
+  #+begin_src python :results none :exports both :session *Python*
     data_url = 'https://tinyurl.com/iris-data-csv' # raw csv data
   #+end_src
 
@@ -238,7 +237,7 @@ Other things you can do:
   the web, you always want to handle potential exceptions - e.g. data
   not available or corrupted, because of link or network errors.
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     try:
         df = pd.read_csv(data_url)
         print("Dataset downloaded and loaded successfully!")
@@ -246,7 +245,7 @@ Other things you can do:
         print(f"Error loading dataset: {e}")
         print("Please check your internet connection or the URL.")
   #+end_src
-
+  
   #+RESULTS:
   : Dataset downloaded and loaded successfully!
 
@@ -257,14 +256,14 @@ Other things you can do:
 - ~Exception~ is a class of several different exceptions, errors and
   warnings that can occur, [[https://docs.python.org/3/library/exceptions.html][see here]] for the full list.
 
-** Load the data into a file first
+* Load the data into a file first
 
 - You can also load the data into a file first; occasionally, this is
   something you want to do (especially for small datasets).
 
 - In Python, you open a file socket (aka descriptor) and write to
   it. Since the data are on the web, you need to load ~urllib~:
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     import urllib.request
 
     data_url = 'https://tinyurl.com/iris-data-csv' # raw csv data    
@@ -278,7 +277,7 @@ Other things you can do:
   #+end_src
 
   #+RESULTS:
-  : -rw-rw-r-- 1 aletheia aletheia 3858 Aug 28 07:11 iris.csv
+  : -rw-r--r--@ 1 mbirkenkrahe  staff  3858 Sep  3 14:22 iris.csv
   : 0
   : sepal_length,sepal_width,petal_length,petal_width,species
   : 5.1,3.5,1.4,0.2,setosa
@@ -286,7 +285,7 @@ Other things you can do:
 
 - If you want to see and handle errors explicitly, you need to
   separate the writing from the retrieving using *context management:
-  #+begin_src python :results output :exports both :session *Python* :python python3 
+  #+begin_src python :results output :exports both :session *Python*
     import urllib.request
 
     with urllib.request.urlopen(data_url) as response: # context: open URL
@@ -298,16 +297,16 @@ Other things you can do:
   #+end_src
 
   #+RESULTS:
-  : -rw-rw-r-- 1 aletheia aletheia 3858 Aug 28 07:21 data.csv
+  : -rw-r--r--@ 1 mbirkenkrahe  staff  3858 Sep  3 14:22 data.csv
   : 0
 
-* IN PROGRESS Explore the data
+* Explore the data
 
 - This is where the fun begins: You now get to look at the data with
   the eye of a detective. We already saw what happened when we try to
   print the entire ~DataFrame~:
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(df)
   #+end_src
 
@@ -332,7 +331,7 @@ Other things you can do:
 - We are protected against overflow. You can also specify if you want
   to look at the top or bottom N rows only:
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(df.head(3))
     print(df.tail(3))
   #+end_src
@@ -356,99 +355,33 @@ Other things you can do:
   is actually loaded and available as a local variable in
   ~locals()~. This is Python's equivalent for ~ls()~.
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
-    print(locals())
+  #+begin_src python :results output :exports both :session *Python*
+    [print(l) for l in locals() if not l.startswith('_')]
   #+end_src
 
   #+RESULTS:
   #+begin_example
-  {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, 'tty': <module 'tty' from '/usr/lib/python3.10/tty.py'>, '__PYTHON_EL_eval': <function __PYTHON_EL_eval at 0x7ba5e44f1a20>, '__PYTHON_EL_eval_file': <function __PYTHON_EL_eval_file at 0x7ba5e44f1bd0>, 'readline': <module 'readline' from '/usr/lib/python3.10/lib-dynload/readline.cpython-310-x86_64-linux-gnu.so'>, '__org_babel_python_format_value': <function __org_babel_python_format_value at 0x7ba5e44f1c60>, '__PYTHON_EL_native_completion_setup': <function __PYTHON_EL_native_completion_setup at 0x7ba5e44f1cf0>, 'f': <_io.TextIOWrapper name='/tmp/babel-87N08k/python-pVcNtw' mode='r' encoding='UTF-8'>, 'knn': <class 'sklearn.neighbors._classification.KNeighborsClassifier'>, 'np': <module 'numpy' from '/home/aletheia/.local/lib/python3.10/site-packages/numpy/__init__.py'>, 'plt': <module 'matplotlib.pyplot' from '/home/aletheia/.local/lib/python3.10/site-packages/matplotlib/pyplot.py'>, 'l': [[1, 2], [3, 4]], 'X': array([[2, 3],
-         [2, 5],
-         [3, 4],
-         [4, 4],
-         [5, 6],
-         [6, 5]]), 'y': array([0, 0, 0, 1, 1, 1]), 'x_new': array([[4, 5]]), 'foo': array([4, 5]), 'bar': array([[4, 5]]), 'matplotlib': <module 'matplotlib' from '/home/aletheia/.local/lib/python3.10/site-packages/matplotlib/__init__.py'>, 'pd': <module 'pandas' from '/home/aletheia/.local/lib/python3.10/site-packages/pandas/__init__.py'>, 'sys': <module 'sys' (built-in)>, 'data_url': 'https://tinyurl.com/iris-data-csv', 'df':      sepal_length  sepal_width  petal_length  petal_width    species
-  0             5.1          3.5           1.4          0.2     setosa
-  1             4.9          3.0           1.4          0.2     setosa
-  2             4.7          3.2           1.3          0.2     setosa
-  3             4.6          3.1           1.5          0.2     setosa
-  4             5.0          3.6           1.4          0.2     setosa
-  ..            ...          ...           ...          ...        ...
-  145           6.7          3.0           5.2          2.3  virginica
-  146           6.3          2.5           5.0          1.9  virginica
-  147           6.5          3.0           5.2          2.0  virginica
-  148           6.2          3.4           5.4          2.3  virginica
-  149           5.9          3.0           5.1          1.8  virginica
-
-  [150 rows x 5 columns], 's': 'virginica', 'sub':      sepal_length  sepal_width  petal_length  petal_width    species
-  100           6.3          3.3           6.0          2.5  virginica
-  101           5.8          2.7           5.1          1.9  virginica
-  102           7.1          3.0           5.9          2.1  virginica
-  103           6.3          2.9           5.6          1.8  virginica
-  104           6.5          3.0           5.8          2.2  virginica
-  105           7.6          3.0           6.6          2.1  virginica
-  106           4.9          2.5           4.5          1.7  virginica
-  107           7.3          2.9           6.3          1.8  virginica
-  108           6.7          2.5           5.8          1.8  virginica
-  109           7.2          3.6           6.1          2.5  virginica
-  110           6.5          3.2           5.1          2.0  virginica
-  111           6.4          2.7           5.3          1.9  virginica
-  112           6.8          3.0           5.5          2.1  virginica
-  113           5.7          2.5           5.0          2.0  virginica
-  114           5.8          2.8           5.1          2.4  virginica
-  115           6.4          3.2           5.3          2.3  virginica
-  116           6.5          3.0           5.5          1.8  virginica
-  117           7.7          3.8           6.7          2.2  virginica
-  118           7.7          2.6           6.9          2.3  virginica
-  119           6.0          2.2           5.0          1.5  virginica
-  120           6.9          3.2           5.7          2.3  virginica
-  121           5.6          2.8           4.9          2.0  virginica
-  122           7.7          2.8           6.7          2.0  virginica
-  123           6.3          2.7           4.9          1.8  virginica
-  124           6.7          3.3           5.7          2.1  virginica
-  125           7.2          3.2           6.0          1.8  virginica
-  126           6.2          2.8           4.8          1.8  virginica
-  127           6.1          3.0           4.9          1.8  virginica
-  128           6.4          2.8           5.6          2.1  virginica
-  129           7.2          3.0           5.8          1.6  virginica
-  130           7.4          2.8           6.1          1.9  virginica
-  131           7.9          3.8           6.4          2.0  virginica
-  132           6.4          2.8           5.6          2.2  virginica
-  133           6.3          2.8           5.1          1.5  virginica
-  134           6.1          2.6           5.6          1.4  virginica
-  135           7.7          3.0           6.1          2.3  virginica
-  136           6.3          3.4           5.6          2.4  virginica
-  137           6.4          3.1           5.5          1.8  virginica
-  138           6.0          3.0           4.8          1.8  virginica
-  139           6.9          3.1           5.4          2.1  virginica
-  140           6.7          3.1           5.6          2.4  virginica
-  141           6.9          3.1           5.1          2.3  virginica
-  142           5.8          2.7           5.1          1.9  virginica
-  143           6.8          3.2           5.9          2.3  virginica
-  144           6.7          3.3           5.7          2.5  virginica
-  145           6.7          3.0           5.2          2.3  virginica
-  146           6.3          2.5           5.0          1.9  virginica
-  147           6.5          3.0           5.2          2.0  virginica
-  148           6.2          3.4           5.4          2.3  virginica
-  149           5.9          3.0           5.1          1.8  virginica, 'mask': 0       True
-  1       True
-  2       True
-  3       True
-  4       True
-         ...  
-  145    False
-  146    False
-  147    False
-  148    False
-  149    False
-  Name: species, Length: 150, dtype: bool, 'sns': <module 'seaborn' from '/home/aletheia/.local/lib/python3.10/site-packages/seaborn/__init__.py'>, 'os': <module 'os' from '/usr/lib/python3.10/os.py'>}
+  termios
+  attr
+  readline
+  f
+  time
+  x
+  pd
+  sys
+  m
+  data_url
+  df
+  urllib
+  os
+  response
   #+end_example
 
 ** Confirm ~df~ is loaded
 
 - The final command performs the check:
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     if 'df' in locals():
         print(df.head())
     else:
@@ -471,13 +404,13 @@ Other things you can do:
 
 - Another useful function is ~pandas.DataFrame.info~ - that's the
   equivalent of ~str~ in R.
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(df.info())
   #+end_src
 
   #+RESULTS:
   #+begin_example
-  <class 'pandas.core.frame.DataFrame'>
+  <class 'pandas.DataFrame'>
   RangeIndex: 150 entries, 0 to 149
   Data columns (total 5 columns):
    #   Column        Non-Null Count  Dtype  
@@ -486,16 +419,16 @@ Other things you can do:
    1   sepal_width   150 non-null    float64
    2   petal_length  150 non-null    float64
    3   petal_width   150 non-null    float64
-   4   species       150 non-null    object 
-  dtypes: float64(4), object(1)
-  memory usage: 6.0+ KB
+   4   species       150 non-null    str    
+  dtypes: float64(4), str(1)
+  memory usage: 6.0 KB
   None
   #+end_example
 
 - Here is a [[https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html][tutorial introduction]] to ~pandas~ data structures.
 
 - Lastly, let's get a glimpse of the statistical properties of the data:
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(df.describe())
   #+end_src
 
@@ -509,6 +442,8 @@ Other things you can do:
   : 50%        5.800000     3.000000      4.350000     1.300000
   : 75%        6.400000     3.300000      5.100000     1.800000
   : max        7.900000     4.400000      6.900000     2.500000
+
+- To visualize these, one would use a boxplot.
 
 * Plotting with Python
 
@@ -524,7 +459,7 @@ Other things you can do:
 - To *practice* what you learnt earlier, check that =plt= is indeed loaded
   into the Python session namespace.
 
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     import matplotlib.pyplot as plt
     print('matplotlib' in sys.modules)
   #+end_src
@@ -581,13 +516,13 @@ Other things you can do:
 
 - Now you know! Now the columns of the ~DataFrame~ make sense. Print the
   ~info()~ again:
-  #+begin_src python :results output :exports both :session *Python* :python python3
+  #+begin_src python :results output :exports both :session *Python*
     print(df.info())
   #+end_src
 
   #+RESULTS:
   #+begin_example
-  <class 'pandas.core.frame.DataFrame'>
+  <class 'pandas.DataFrame'>
   RangeIndex: 150 entries, 0 to 149
   Data columns (total 5 columns):
    #   Column        Non-Null Count  Dtype  
@@ -596,9 +531,9 @@ Other things you can do:
    1   sepal_width   150 non-null    float64
    2   petal_length  150 non-null    float64
    3   petal_width   150 non-null    float64
-   4   species       150 non-null    object 
-  dtypes: float64(4), object(1)
-  memory usage: 6.0+ KB
+   4   species       150 non-null    str    
+  dtypes: float64(4), str(1)
+  memory usage: 6.0 KB
   None
   #+end_example
 
@@ -634,7 +569,7 @@ Other things you can do:
 - First, we create a simple plot that shows the relationship of two
   features for all =species=, =sepal_length= and =sepal_width=.
 
-    #+begin_src python :file ../img/iris.png :results file graphics output :exports both :session *Python* :python python3
+    #+begin_src python :file ../img/iris.png :results file graphics output :exports both :session *Python*
       plt.scatter(x=df['sepal_length'],
                   y=df['sepal_width'])
       plt.savefig("../img/iris.png")
@@ -655,7 +590,7 @@ Other things you can do:
   commands, we cannot just add these to an existing plot but we must
   clean the graphics and create a new plot.
 
-  #+begin_src python :file ../img/iris2.png :results file graphics output :exports both :session *Python* :python python3
+  #+begin_src python :file ../img/iris2.png :results file graphics output :exports both :session *Python*
     plt.clf() # cleans the slate
     plt.scatter(df['sepal_length'],df['sepal_width'])
     plt.title("Sepal Width vs. Sepal Length (Iris Dataset)")
@@ -674,7 +609,7 @@ Other things you can do:
 - Since Python functions can be "chained" (the equivalent of R's
   pipelining), you can write this much shorter with a ~pandas~ wrapper:
 
-  #+begin_src python :file iris2a.png :results file graphics output :exports both :session *Python* :python python3
+  #+begin_src python :file iris2a.png :results file graphics output :exports both :session *Python*
     df.plot.scatter(x='sepal_length',y='sepal_width')
     plt.savefig("../img/iris2.png")
   #+end_src
@@ -688,7 +623,7 @@ Other things you can do:
   species information during the plotting. Python will then
   automatically assign different colors:
 
-  #+begin_src python :file ../img/iris3.png :results file graphics output :exports both :session *Python* :python python3
+  #+begin_src python :file ../img/iris3.png :results file graphics output :exports both :session *Python*
     for s in df['species'].unique():  # iterate over the 3 unique species names
         sub = df[df['species']==s]    # filter df to rows where species matches s
         plt.scatter(x=sub['sepal_length'],
@@ -702,17 +637,19 @@ Other things you can do:
 - Let's see how this works in detail:
 
   1. =df['species'].unique()= returns a list of the three unique species names:
-     #+begin_src python :results output :exports both :session *Python* :python python3 
+     #+begin_src python :results output :exports both :session *Python*
        print(df['species'].unique())
      #+end_src
 
      #+RESULTS:
-     : ['setosa' 'versicolor' 'virginica']
+     : <StringArray>
+     : ['setosa', 'versicolor', 'virginica']
+     : Length: 3, dtype: str
 
   2. =df['species']==s= produces a series of Booleans: ~True~ for the
      current value of =species=, ~False~ otherwise.
 
-     #+begin_src python :results output :exports both :session *Python* :python python3 
+     #+begin_src python :results output :exports both :session *Python*
        s = 'setosa'
        print(df['species']==s)
      #+end_src
@@ -736,13 +673,12 @@ Other things you can do:
   3. =df[...]= uses the Boolean series (or logical flag vector) as a
      filter and keeps only rows where the value is ~True~: a total of 50
      rows x 5 columns for each =species=:
-     #+begin_src python :results output :exports both :session *Python* :python python3 
+     #+begin_src python :results output :exports both :session *Python*
        sub = df[df['species']==s]
        print(sub.shape)
      #+end_src
 
      #+RESULTS:
-     : (50, 5)
 
   4. =plt.scatter(x=sub[...], y=sub[...])= then plots each group. The
      ~label~ parameter assigns a different color to each group automatically.
@@ -750,7 +686,7 @@ Other things you can do:
 - The grouping by masking row values using a Boolean index vector (or
   Series in Python) is worth showing again because it's a common trick:
 
-  #+begin_src python :results output :exports both :session *Python* :python python3 
+  #+begin_src python :results output :exports both :session *Python*
     s = 'setosa'             
     mask = df['species']==s  # Step 1: Boolean series (flag vector)
     sub = df[mask]           # Step 2: Filter rows using mask
@@ -805,7 +741,7 @@ Other things you can do:
 - As a small challenge, copy the previous plot and add a title and
   axis labels as before.
   
-  #+begin_src python :file ../img/iris4.png :results file graphics output :exports both :session *Python* :python python3
+  #+begin_src python :file ../img/iris4.png :results file graphics output :exports both :session *Python*
     plt.clf()
     plt.title("Sepal Width vs. Sepal Length for three species of Iris")
     plt.xlabel("Sepal Length [cm]")        
@@ -815,7 +751,7 @@ Other things you can do:
         plt.scatter(x=sub['sepal_length'],
                     y=sub['sepal_width'],
                     label=s)
-    plt.savefig("../img/Iris4")
+    plt.savefig("../img/iris4")
   #+end_src
 
   #+RESULTS:
@@ -836,17 +772,16 @@ Other things you can do:
 
   - First, we load the library, and check if the loading worked by
     asking if the alias =sns= is available in the current namespace:
-    #+begin_src python :results output :exports both :session *Python* :python python3
+    #+begin_src python :results output :exports both :session *Python*
       import seaborn as sns
       print('sns' in locals())
     #+end_src
 
     #+RESULTS:
-    : True
 
   - Now we create a fancy plot with grouping by =species= in one line of
     code:
-    #+begin_src python :file ../img/iris5.png :results file graphics output :exports both :session *Python* :python python3
+    #+begin_src python :file ../img/iris5.png :results file graphics output :exports both :session *Python*
       sns.scatterplot(data=df,
                       x='sepal_length',
                       y='sepal_width',
@@ -862,7 +797,7 @@ Other things you can do:
     previous code and add title, labels, and, for greater readability,
     a grid:
 
-    #+begin_src python :file ../img/iris6.png :results file graphics output :exports both :session *Python* :python python3
+    #+begin_src python :file ../img/iris6.png :results file graphics output :exports both :session *Python*
       # base plot
       sns.scatterplot(data=df,
                       x='sepal_length',
@@ -881,6 +816,39 @@ Other things you can do:
 
     #+RESULTS:
     [[file:../img/iris6.png]]
+
+
+* Timer test
+
+#+begin_src python :results output :session *Python*
+  import time
+  _t = time.perf_counter()
+  for x in range(1_000_000):
+      x * x
+  print("python:", round(time.perf_counter() - _t, 4), "s")
+#+end_src
+
+#+RESULTS:
+: python: 0.0457 s
+
+
+Wall test code: Test with =M-:=
+#+begin_src elisp
+  (let ((s (current-time)))
+  (org-babel-execute-src-block)
+  (message "wall: %.3f s" (float-time (time-subtract (current-time) s))))
+#+end_src
+
+#+begin_src python :results output :session *Python* :noweb no
+  import time
+  _t = time.perf_counter()
+  for x in range(1_000_000):
+      x * x
+  print("python:", round(time.perf_counter() - _t, 4), "s")
+#+end_src
+
+#+RESULTS:
+: python: 0.2264 s
 
 * Summary
 
@@ -950,3 +918,4 @@ Let me know if you have any problems!
 [fn:1]IPython is an enhanced interactive Python shell that replaces
 the standard Python REPL with features designed for scientific
 computing - including integration with Jupyter Notebooks (like Colab).
+
