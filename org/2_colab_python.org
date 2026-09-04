@@ -817,39 +817,6 @@ Other things you can do:
     #+RESULTS:
     [[file:../img/iris6.png]]
 
-
-* Timer test
-
-#+begin_src python :results output :session *Python*
-  import time
-  _t = time.perf_counter()
-  for x in range(1_000_000):
-      x * x
-  print("python:", round(time.perf_counter() - _t, 4), "s")
-#+end_src
-
-#+RESULTS:
-: python: 0.0457 s
-
-
-Wall test code: Test with =M-:=
-#+begin_src elisp
-  (let ((s (current-time)))
-  (org-babel-execute-src-block)
-  (message "wall: %.3f s" (float-time (time-subtract (current-time) s))))
-#+end_src
-
-#+begin_src python :results output :session *Python* :noweb no
-  import time
-  _t = time.perf_counter()
-  for x in range(1_000_000):
-      x * x
-  print("python:", round(time.perf_counter() - _t, 4), "s")
-#+end_src
-
-#+RESULTS:
-: python: 0.2264 s
-
 * Summary
 
 |    | Command / Concept               | Definition                              |
