@@ -342,6 +342,10 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
 ** Project ideas?
 
 - Anything?
+  
+- Will open the Sprint 1 assignment ("Project proposal") this week
+
+- Deadline: Friday, 9/25
 
 ** Machine Learning Fundamentals:
 

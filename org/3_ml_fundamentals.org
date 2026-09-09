@@ -91,7 +91,6 @@ it overlaps with neighbouring fields (see diagram):
 #+attr_html: :width 600px :float nil:
 [[../img/ml_diagram.png]]
 
-
 * Machine learning applications and techniques
 
 - Can you think of useful applications for predictive machine learning?
@@ -136,7 +135,7 @@ it overlaps with neighbouring fields (see diagram):
   #+end_quote
 
 
-* Simple Example: Spam filter
+* NEXT Simple Example: Spam filter
 
 A spam filter using traditional programming:
 #+begin_quote
@@ -196,7 +195,6 @@ What's the bottleneck of machine learning?
 - Example: features like email ID numbers or timestamps unrelated to
   spam are included, adding noise and confusing the model.
 #+end_quote
-
 
 * Types of Machine Learning
 #+attr_html: :width 600px :float nil:
@@ -476,7 +474,6 @@ revisit earlier steps.
 
 - Overfitting: model learns noise instead of pattern
 - Underfitting: model is too simple to capture structure
-
 
 * PRACTICE Fitting a linear model to data (Simple)
 
