@@ -134,8 +134,7 @@ it overlaps with neighbouring fields (see diagram):
   |-----------------------------------+---------------------------------|
   #+end_quote
 
-
-* NEXT Simple Example: Spam filter
+* Simple Example: Spam filter
 
 A spam filter using traditional programming:
 #+begin_quote
@@ -354,7 +353,7 @@ Géron uses a rather difficult example. You can find it with code in a
 Instead, we will use two simpler examples - a decision tree and a
 linear regression (trendline fit)
 
-* PRACTICE Extended Example: How can you diagnose illness? (Simple)
+* IN PROGRESS Extended Example: How can you diagnose illness? (Simple)
 
 Consider diagnosing an illness based on symptoms.
 
