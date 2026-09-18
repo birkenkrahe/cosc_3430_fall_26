@@ -1,0 +1,248 @@
+#+TITLE:In Class: Cosine Similarity in 2D (Preview)
+#+AUTHOR:Marcus Birkenkrahe
+#+SUBTITLE:COSC 3430 Artificial Intelligence | Fall 26 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+#+PROPERTY: header-args:python :session *Python* :results output :exports both :noweb yes
+
+* Objective
+
+Your next assignment is a demonstration of instance-based machine
+learning. That assignment uses 4 features, which can't be drawn --
+this uses only 2, so the "angle between vectors" idea can actually be
+*seen* before they meet it in 4D. Not a walkthrough of the assignment
+itself; none of this data or code overlaps with it.
+
+* What we want to do: recommend movies
+
+Our feature space is two-dimensional. Our features are:
+1) action
+2) comedy
+
+We encode what the user is looking for as a *query* vector -- how much
+action and how much comedy they want. We encode every movie in our
+small catalog the same way. *Cosine similarity* then measures the angle
+between the query vector and each movie's vector: the smaller the
+angle (the closer the cosine value is to 1), the closer that movie's
+genre mix is to what was asked for. We rank the catalog by that angle
+and recommend the closest match(es) first.
+
+* Two features, three movies, one query
+
+Genres as a 2D vector: =[action, comedy]=. A movie that's pure action
+is =[1, 0]=; pure comedy is =[0, 1]=; a movie that's both is =[1, 1]=.
+
+#+begin_src python
+  import numpy as np
+
+  movies = {
+      "Explosive Comedy": np.array([1, 1]),
+      "Pure Action":      np.array([1, 0]),
+      "Pure Comedy":      np.array([0, 1]),
+  }
+  query = np.array([1, 0])  # "I want an action movie"
+  print("Query:", query)
+#+end_src
+
+#+RESULTS:
+: Query: [1 0]
+
+The =query= gets compared against each of the three movie vectors to
+check how close it is to each of them.
+
+* Draw them as arrows
+
+Each vector is an arrow from the origin. The *angle* between two
+arrows is exactly what cosine similarity measures.
+
+#+begin_src python :file ../img/cosine_vectors.png :results file graphics output :exports both
+  import matplotlib.pyplot as plt
+
+  fig, ax = plt.subplots(figsize=(5, 5))
+  colors = {"Explosive Comedy": "tab:orange", "Pure Action": "tab:green", "Pure Comedy": "tab:red"}
+  ax.annotate("", xy=query, xytext=(0, 0),
+              arrowprops=dict(arrowstyle="->", color="black", lw=4, alpha=0.4))
+  ax.text(0.05, -0.18, "Query: action movie", fontsize=9, fontweight="bold")
+  for title, vec in movies.items():
+      ax.annotate("", xy=vec, xytext=(0, 0),
+                  arrowprops=dict(arrowstyle="->", color=colors[title], lw=2))
+  offsets = {"Explosive Comedy": (0.05, 0.02), "Pure Action": (-0.55, 0.06), "Pure Comedy": (0.05, 0.0)}
+  for title, vec in movies.items():
+      dx, dy = offsets[title]
+      ax.text(vec[0] + dx, vec[1] + dy, title, fontsize=9, color=colors[title])
+  ax.set_xlim(-0.3, 1.6)
+  ax.set_ylim(-0.3, 1.6)
+  ax.set_xlabel("action")
+  ax.set_ylabel("comedy")
+  ax.set_aspect("equal")
+  plt.tight_layout()
+  plt.savefig("../img/cosine_vectors.png")
+#+end_src
+
+#+RESULTS:
+[[file:../img/cosine_vectors.png]]
+
+Here is an interactive animation:
+[[https://birkenkrahe.github.io/ml_demos/cosine-similarity.html][birkenkrahe.github.io/ml_demos/cosine-similarity.html]]
+
+You can move the end of the vector around the system.
+
+* Put a number on the angle
+
+The cosine similarity of two vectors measures the angle between them
+and not their length. For q = query vector, and m = movie vector:
+
+$$ \cos(\theta) = \frac{q \cdot m}{\|q\| \, \|m\|} $$
+
+#+begin_src python
+  def cosine_similarity(q, m):
+      return (q @ m) / (np.linalg.norm(q) * np.linalg.norm(m))
+
+  for title, vec in movies.items():
+      sim = cosine_similarity(query, vec)
+      angle_deg = np.degrees(np.arccos(np.clip(sim, -1, 1)))
+      print(f"{title:<18} similarity = {sim:.3f}   angle = {angle_deg:.1f} deg")
+#+end_src
+
+#+RESULTS:
+: Explosive Comedy   similarity = 0.707   angle = 45.0 deg
+: Pure Action        similarity = 1.000   angle = 0.0 deg
+: Pure Comedy        similarity = 0.000   angle = 90.0 deg
+
+~@~ is NumPy's matrix multiplication operator. For 1D vectors, it
+reduces to the dot product (~np.dot(q,m)~). [fn:1]
+
+What does the result mean?
+#+begin_quote
+=Pure Action= is the closest match, =Explosive Comedy= is a partial match,
+and =Pure Comedy= is unrelated.
+#+end_quote
+
+These three "movies" are placeholder labels, not an actual catalog --
+they're chosen deliberately to sit at clean angles (0, 45, 90 deg)
+from the query so the geometry is easy to read off. This would only be
+a real movie recommender if =movies= held many actual titles, each with
+its own genre vector (possibly weighted, e.g. =[0.8, 0.2]= for "mostly
+action, a little comedy" rather than a plain 0/1 flag), ranked by the
+same similarity score.
+
+* A second, mixed query
+
+A pure-genre query like =[1, 0]= always matches whichever pure movie is
+identical to it -- not a very convincing demo of *recommending*
+anything. A mixed query makes the ranking more interesting: someone who
+mostly wants action but is fine with some comedy.
+
+#+begin_src python :results output :exports both
+  query2 = np.array([2, 1])  # "mostly action, a little comedy is fine"
+  print("Query 2:", query2)
+
+  for title, vec in movies.items():
+      sim = cosine_similarity(query2, vec)
+      angle_deg = np.degrees(np.arccos(np.clip(sim, -1, 1)))
+      print(f"{title:<18} similarity = {sim:.3f}   angle = {angle_deg:.1f} deg")
+#+end_src
+
+#+RESULTS:
+: Query 2: [2 1]
+: Explosive Comedy   similarity = 0.949   angle = 18.4 deg
+: Pure Action        similarity = 0.894   angle = 26.6 deg
+: Pure Comedy        similarity = 0.447   angle = 63.4 deg
+
+This time *Explosive Comedy* wins, not *Pure Action* -- even though the
+query isn't pure comedy either. Since the query itself is a mix (twice
+as much action as comedy), the movie whose own mix is closest in
+*direction* comes out on top, not the movie that happens to share one
+of the query's nonzero genres.
+
+* Plot the second query
+
+#+begin_src python :file ../img/cosine_vectors_query2.png :results file graphics output :exports both
+  import matplotlib.pyplot as plt
+  
+  fig, ax = plt.subplots(figsize=(5, 5))
+  ax.annotate("", xy=query2, xytext=(0, 0),
+              arrowprops=dict(arrowstyle="->", color="black", lw=4, alpha=0.4, linestyle="--"))
+  ax.text(0.05, -0.28, "Query 2: mostly action, some comedy ok",
+          fontsize=9, fontweight="bold")
+  for title, vec in movies.items():
+      ax.annotate("", xy=vec, xytext=(0, 0),
+                  arrowprops=dict(arrowstyle="->", color=colors[title], lw=2))
+  for title, vec in movies.items():
+      dx, dy = offsets[title]
+      ax.text(vec[0] + dx, vec[1] + dy, title, fontsize=9, color=colors[title])
+  ax.set_xlim(-0.3, 2.3)
+  ax.set_ylim(-0.4, 1.6)
+  ax.set_xlabel("action")
+  ax.set_ylabel("comedy")
+  ax.set_aspect("equal")
+  ax.set_title("Closest match: Explosive Comedy (18.4 deg)")
+  plt.tight_layout()
+  plt.savefig("../img/cosine_vectors_query2.png")
+#+end_src
+
+#+RESULTS:
+[[file:../img/cosine_vectors_query2.png]]
+
+The dashed arrow (query 2) sits between *Pure Action* and *Explosive
+Comedy*, but noticeably closer to *Explosive Comedy* -- which is why it
+wins the ranking even though it shares no genre exactly with the query.
+
+* Questions and Answers
+
+- =movies= here only holds three placeholder titles at clean angles.
+  What would you actually need to change to turn this into a real
+  movie recommender?
+  #+begin_quote
+  Two things: the catalog and the vectors. =movies= would need many real
+  titles instead of three, and each one's genre vector would need to
+  come from real, often continuous data -- how much of each genre a
+  movie actually is, e.g. =[0.8, 0.2]= for "mostly action, a little
+  comedy" -- rather than a hand-picked 0/1 flag. The rest of the
+  pipeline stays exactly the same: encode the query the same way,
+  compute =cosine_similarity(query, vec)= for every movie in the
+  catalog, and return the movies with the highest similarity (smallest
+  angle) as the recommendations.
+  #+end_quote
+
+- Pure Comedy is perpendicular to the query -- similarity 0.0. What
+  would it mean for two movies to have *negative* similarity here, and
+  could that happen with these particular features (all 0 or 1)?
+  #+begin_quote
+  Negative similarity would mean the two vectors point in opposite
+  directions -- an angle greater than 90 deg. With binary =0/1=
+  features, no vector can have a "negative" amount of a genre, so the
+  dot product =q . m= is always a sum of non-negative terms and can
+  never go below 0. Negative similarity only shows up once features
+  can take negative values -- centered/normalized data, or real
+  embeddings from a language model -- not with plain binary genre tags
+  like these.
+  #+end_quote
+
+- Next week's assignment does the exact same computation, just with
+  four features instead of two, and can't be drawn as an arrow picture
+  anymore. What do you think stays the same, and what do you lose by
+  going from 2D to 4D?
+  #+begin_quote
+  The formula, the math, and the interpretation stay identical --
+  cosine similarity is defined the same way in any number of
+  dimensions, and "closer to 1 means more similar direction" still
+  holds exactly. What's lost is the ability to *see* it: a 2D angle can
+  be checked by eye on paper, but nobody can visualize a 4D angle
+  directly -- you have to trust the arithmetic instead. This is the
+  general situation in ML: most real feature spaces have far more than
+  2 or 3 dimensions, so geometric intuition has to be taken on faith
+  even though the math keeps working exactly the same way.
+  #+end_quote
+
+* Footnotes
+
+[fn:1] =np.clip(sim, -1, 1)= clamps =sim= to the range [-1, 1]: values
+below -1 are pushed up to -1, values above 1 are pushed down to 1,
+anything already in range is untouched. It's a safety guard for
+=np.arccos=, which is only defined on [-1, 1] and errors (or returns
+=NaN=) outside it. Cosine similarity is mathematically always in
+[-1, 1], but floating-point rounding in the division can overshoot
+that range by a tiny amount (e.g. =1.0000000002= for two identical
+vectors) -- clipping guarantees =arccos= always gets a legal input,
+without changing the result at the printed precision.

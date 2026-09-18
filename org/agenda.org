@@ -382,13 +382,203 @@ Topics:
 - Project ideas (especially for finance but the method transfers)
 - Posted the first sprint assignment (project proposal)
 
-* W4S1: Machine Learning Fundamentals III (Decision trees)
+* DONE W4S1: Machine Learning Fundamentals III (Decision trees)
 
 - [X] Why ML?
 - [X] What is it?
 - [X] Simple example: spam filter
 - [X] Types of ML
 - [X] Simple example: diagnose illness (home assignment)
-- [ ] ML workflow
+- [X] ML workflow
 - [ ] Simple example: linear regression (practice assignment)
+
+* DONE W4S2: Simple linear regression example
+
+- [X] Review: ML Workflow
+- [X] Fitting a linear model to data
+- [X] Making predictions
+- [X] Visualizing the model
+- [X] Practice fitting a linear model to data (with Gemini)
+
+** Review: ML workflow
+
+1. Remember any of the steps of the ML workflow - or all of them?
+   #+begin_quote
+   1) Define the problem
+   2) Collect data
+   3) Prepare data
+   4) Choose a model
+   5) Train the model (includes splitting train/test data),
+   6) Evaluate the model
+   7) Use the model for prediction (production).
+   #+end_quote
+
+2. The workflow is described as *iterative*. Give a concrete example
+   of when you'd have to go back to an earlier step.
+   #+begin_quote
+   Any example where evaluation reveals a problem: e.g. the model
+   underfits (step 6), so you go back to step 4 and choose a more
+   complex model, or back to step 3 to engineer better features; or
+   the model overfits, so you go back to step 2 to collect more data,
+   or step 5 to constrain training (e.g. a shallower decision tree).
+   #+end_quote
+
+3. What's the difference between *overfitting* and *underfitting*, and
+   at which workflow step would you actually catch either one
+   happening?
+   #+begin_quote
+   Overfitting: the model learns noise instead of the underlying
+   pattern -- it does great on training data but poorly on new, unseen
+   data.
+
+   Underfitting: the model is too simple to capture the real structure
+   -- it does poorly even on the training data.
+
+   Both are caught at step 6, Evaluate the model, specifically by
+   checking performance on the held-out *test* data rather than the
+   training data: a perfect training-set score doesn't rule out either
+   problem (it can't reveal overfitting at all, since that's exactly
+   the data the model memorized).
+   #+end_quote
+
+4. In the diagnosing-illness exercise, the patient data and rules were
+   already given to you. Which workflow step did that exercise actually
+   make you practice, and which steps did it skip entirely?
+   #+begin_quote
+   It practiced steps 4-7: choosing a model (a decision tree),
+   training it (building the tree from the patient table),
+   evaluating/using it (testing on Patients 11-13, then 14-17). Steps
+   1-3 -- define the problem, collect data, prepare data -- were
+   skipped, since the problem was already framed and the patient table
+   was handed to you ready to use.
+   #+end_quote
+
+
+* W4S3: Loan approval with kNN - cosine similarity
+
+- [ ] Review: Linear regression simple example
+- [ ] Projects update (deadline Sept 25)
+- [ ] Cosine similarity measure (demo/code along)
+- [ ] Summary: ML Fundamentals
+
+** Review: Simple linear regression example
+
+1. Before fitting the model, we reshaped the =hours= array from shape
+   =(5,)= to =(5, 1)= with =.reshape(-1, 1)=. Why is this necessary?
+   #+begin_quote
+   scikit-learn's ~LinearRegression~ (and most ML models) expect the
+   input feature matrix =X= in 2D form: rows are samples, columns are
+   features. A plain 1D array of 5 values doesn't specify whether
+   that's 5 samples of 1 feature or 1 sample of 5 features, so
+   ~reshape(-1, 1)~ makes it explicit: 5 rows, 1 column.
+
+   Why these two arguments? The second argument, =1=, fixes the number
+   of columns to 1 (one feature). The first argument, =-1=, tells
+   NumPy "figure out this dimension yourself" from the array's total
+   size and the other dimension(s) given -- here, 5 elements / 1
+   column = 5 rows. Using =-1= means you don't have to hardcode the
+   sample count, which matters once the dataset's size can change.
+   #+end_quote
+
+2. Once we have a ~LinearRegression~ instance, how do we actually train
+   it on the hours/score data, and how do we read the two learned
+   parameters back out afterward?
+   #+begin_quote
+   We call =model.fit(hours, score)= -- =hours= is =X= (input), =score= is =y=
+   (output). After fitting, the slope is =model.coef_[0]= (here 7.5) and
+   the intercept is =model.intercept_= (here 41.5). Together they define
+   =prediction = intercept + slope * x=
+   #+end_quote
+   
+3. What exactly does =.fit()= do -- what quantity is it minimizing?
+   #+begin_quote
+   It solves an optimization problem: it finds $\beta_0$ and $\beta_1$ that
+   minimize the sum of squared residuals (the least-squares error)
+   between the actual =y= values and the model's predictions:
+   #+end_quote
+   #+attr_html: :width 250px :float nil: 
+   [[../img/residual.png]]
+
+4. The dataset we used had 5 data points and only 2 unknown
+   parameters. What does this mean mathematically and practically?
+   #+begin_quote
+   Each data point is a constraint (an equation the line should
+   satisfy), so we have 5 equations but only 2 unknowns ($\beta_0$, $\beta_1$)
+   -- more constraints than free parameters. This is called an
+   *overdetermined system*: in general no line can satisfy all 5
+   exactly.
+
+   Why not? A line has only 2 degrees of freedom -- fixing $\beta_0$ and
+   $\beta_1$ from any 2 of the points already determines the line
+   completely, leaving no freedom to also pass through the
+   other 3. Unless all 5 points happen to be exactly collinear (which
+   real, noisy data almost never is), the remaining points will fall
+   off that line. Practically, that's fine -- we don't look for an
+   exact fit, we pick the line that minimizes the total squared error
+   across all points (least squares), accepting a small residual at
+   each one.
+   #+end_quote
+   #+attr_html: :width 150px :float nil:
+   [[../img/overdetermined.png]]
+   
+5. How do we use the trained model to predict a score for someone who
+   studies 6 hours? Why can't we just pass in a plain number like =6=?
+   #+begin_quote
+   We call =model.predict([[6]])= -- not =model.predict(6)= or
+   =model.predict([6])=. ~predict~ expects input in the same shape as the
+   training data: a 2D array of shape =(n_samples, n_features)=.  =[[6]]=
+   is one sample with one feature, shape =(1, 1)=; a plain =6= or =[6]=
+   would not match, which scikit-learn rejects. The result is also
+   always a sequence, even for one input: =array([86.5])=, i.e. a
+   predicted score of 86.5. You can check with ~np.shape()~.
+   #+end_quote
+
+
+** Projects: Don't forget the deadline for the proposal (Sept 25)
+
+- Any ideas so far?
+
+
+** Cosine similarity (demo and assignment)
+
+- You're going to work on instance-based ML in your assignment
+
+- The assignment has 4D, but we demonstrate the concept in 2D
+
+- Open in Colab to code along: [[https://tinyurl.com/cosine-similarity][tinyurl.com/cosine-similarity]]
+
+- For interactive demo, check out [[https://birkenkrahe.github.io/ml_demos][birkenkrahe.github.io/ml_demos]]
+
+
+** Summary: Week 4 -- Machine Learning Fundamentals
+
+- *Decision trees*: rules built from labeled examples (illness
+  diagnosis); a single tree depends on whatever data/features you
+  happened to use, so a *random forest* combines many trees for a
+  sturdier answer.
+
+- *The ML workflow*: define the problem, collect data, prepare data,
+  choose a model, train, evaluate, predict -- and it's *iterative*: a
+  bad evaluation sends you back to an earlier step.
+
+- *Overfitting vs. underfitting*: an overfit model chases noise in the
+  training data and fails on new data; an underfit model is too simple
+  to capture the pattern at all -- both are caught at the evaluation
+  step.
+
+- *Linear regression*: fitting a straight line by minimizing the sum
+  of squared residuals (least squares). With more data points than
+  parameters, the system is generally *overdetermined* -- no line hits
+  every point exactly, so we accept the best overall fit instead.
+
+- *Cosine similarity*: comparing two feature vectors by the *angle*
+  between them rather than their size -- the idea behind the
+  *k-Nearest-Neighbor* method we start next.
+
+Across all of it: a model is a function learned from data that makes
+predictions on new data -- trees, lines, and angles this week are just
+different ways of building that function.
+
+
+** NEXT k-Nearest-Neighbor (kNN) machine learning 
 

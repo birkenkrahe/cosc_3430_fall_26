@@ -161,7 +161,7 @@ When a new spam pattern appears:
 How is the machine learning approach better?
 #+begin_quote
 - The ML model re-training can be automated when new data appear
-- The program is much shorter, more accurate, and easier to maintain
+- The program is much shorter, (more accurate,) and easier to maintain
 - The ML approach scales to Big Data easily (many emails, much spam)
 - Models can be used for data mining to improve understanding
 - ML can be applied in fluctuating environments with big data
@@ -353,7 +353,7 @@ Géron uses a rather difficult example. You can find it with code in a
 Instead, we will use two simpler examples - a decision tree and a
 linear regression (trendline fit)
 
-* IN PROGRESS Extended Example: How can you diagnose illness? (Simple)
+* Extended Example: How can you diagnose illness? (Simple)
 
 Consider diagnosing an illness based on symptoms.
 
@@ -442,7 +442,7 @@ diagnosis ≈ f(symptoms)
   #+caption: Test data for disease diagnosis model (source: Roiger, 2021)
   [[../img/1_testing.png]]
 
-** PRACTICE Testing and improving a classification model (home assignment)
+* PRACTICE Testing and improving a classification model
 
 This practice exercise consists of three parts:
 1. Test the model on new patients using the diagnostic table
@@ -459,15 +459,15 @@ A typical workflow consists of the following steps:
 2. Collect data
 3. Prepare data
 4. Choose a model
-5. Train the model
+5. Train the model (includes splitting train/test data)
 6. Evaluate the model
-7. Use the model for prediction
+7. Use the model for prediction (production)
 
 This process is iterative. At any stage, it may be necessary to
 revisit earlier steps.
 
 ** Common Issues
-#+attr_html: :width 400px :float nil:
+#+attr_html: :width 700px :float nil:
 #+caption: Overfitting the training data
 [[../img/overfitting.png]]
 
@@ -477,7 +477,7 @@ revisit earlier steps.
 * PRACTICE Fitting a linear model to data (Simple)
 
 Open the colab notebook and code along:
-[[https://tinyurl.com/linear-regression-practice][tinyurl.com/linear-regression-practice]]
+[[https://tinyurl.com/3430-linear-regression][tinyurl.com/3430-linear-regression]]
 
 - Data visualization without modeling
   #+begin_src python :file ../img/hours_score.png :results file graphics output :exports both :session *Python*
@@ -494,6 +494,21 @@ Open the colab notebook and code along:
 
   #+RESULTS:
   [[file:../img/hours_score.png]]
+
+- The ~reshape~ function reshapes an ~ndarray~ without changing data:
+  #+begin_src python :results output :exports both :session *Python*
+    import numpy as np
+
+    foo = np.array([1,2,3,4])
+    print(foo)
+    print(foo.shape)
+    print(foo.reshape(-1,1).shape)
+  #+end_src
+
+  #+RESULTS:
+  : [1 2 3 4]
+  : (4,)
+  : (4, 1)
 
 - The following example fits a linear model to data.
   #+begin_src python :results output :exports both :session *Python*
@@ -611,6 +626,15 @@ Open the colab notebook and code along:
 
 The line represents the learned relationship between input X (=hours=)
 and output Y (=score=).
+
+* New! Interactive visualization of the model
+
+In a browser, open
+[[https://birkenkrahe.github.io/ml_demos/linear-regression.html][birkenkrahe.github.io/ml_demos/linear-regression.html]]
+
+You can drag the red point or the slider to pick a new data point.
+
+You can watch the model read the prediction straight off the line.
 
 * PRACTICE Fitting a linear model
 
