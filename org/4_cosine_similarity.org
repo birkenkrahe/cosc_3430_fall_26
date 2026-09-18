@@ -209,14 +209,20 @@ wins the ranking even though it shares no genre exactly with the query.
   would it mean for two movies to have *negative* similarity here, and
   could that happen with these particular features (all 0 or 1)?
   #+begin_quote
-  Negative similarity would mean the two vectors point in opposite
-  directions -- an angle greater than 90 deg. With binary =0/1=
-  features, no vector can have a "negative" amount of a genre, so the
-  dot product =q . m= is always a sum of non-negative terms and can
-  never go below 0. Negative similarity only shows up once features
-  can take negative values -- centered/normalized data, or real
-  embeddings from a language model -- not with plain binary genre tags
-  like these.
+  With 0/1 flags, no -- the dot product =q . m= is a sum of
+  non-negative terms, so it can't go below 0. The floor is 0, reached
+  when two movies share no genre at all -- exactly the =Pure Comedy=
+  case here.
+
+  You could manufacture negative values by assigning a new genre to
+  another quadrant -- e.g. "documentary" at =[-1, 1]= -- and the
+  arithmetic goes through fine, since cosine similarity doesn't care
+  what label you attach to a coordinate. But that overloads the axis:
+  the same coordinate now means "amount of action" for one movie and
+  "documentary flag" for another, so a vector like =[-0.5, 0.9]= has no
+  principled reading anymore. It also buys nothing, since the first
+  quadrant alone already holds infinitely many directions for genre
+  mixtures. Mathematically legal, semantically broken -- don't do it.
   #+end_quote
 
 - Next week's assignment does the exact same computation, just with

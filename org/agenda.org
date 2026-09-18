@@ -454,17 +454,55 @@ Topics:
    #+end_quote
 
 
-* W4S3: Loan approval with kNN - cosine similarity
+* W4S3: Instance-based machine learning (cosine similarity)
 
-- [ ] Review: Linear regression simple example
+Four weeks in, here's the tally:
+
+|-----------------------------------+-----|
+| Class sessions so far             |  10 |
+| Pages of material covered         | ~41 |
+| Lines of Python code you've seen  | 415 |
+| Lines of it you ran live in class | 345 |
+| Class attendance index            | 93% |
+|-----------------------------------+-----|
+
+- [X] Review: Linear regression simple example
 - [ ] Projects update (deadline Sept 25)
 - [ ] Cosine similarity measure (demo/code along)
 - [ ] Summary: ML Fundamentals
 
+** How to read, how to study, how to learn programming
+
+I'm going to make a video on this, I think, because it's important:
+
+1) You don't learn by *grazing* (like a cow eat grass)
+
+2) You don't learn by *gorging* (like a shark)
+
+3) You don't learn by *gallivanting* (like a tourist)
+
+4) You only learn by *grappling* with the material (like a wrestler)
+
+5) How does one immerse oneself deeply (in CS)?
+   #+begin_quote
+   - Read the same passage (or code) again and again until it makes
+     sense to you (or until you understand why it does not make sense)
+   - Practice in small daily doses rather than cramming once a week --
+   - Write code every day, even for ten minutes, the way you'd practice an instrument.
+   - Struggle with a problem for a while before looking  up (or asking AI for) the answer: the friction is where the   learning happens, not the solution itself.
+   - Produce, don't just consume -- reading someone else's code or
+     watching a video feels like progress but doesn't build the same
+     muscle as typing it yourself, breaking it, and fixing it.
+   - Explain what you wrote to someone else, or out loud to yourself,
+     or to the AI: if you can't explain it, you haven't actually
+     learned it yet, no matter how cleanly it compiles.
+   #+end_quote
+
+
 ** Review: Simple linear regression example
 
 1. Before fitting the model, we reshaped the =hours= array from shape
-   =(5,)= to =(5, 1)= with =.reshape(-1, 1)=. Why is this necessary?
+   =(5,)= to =(5, 1)= with =np.reshape(-1, 1)=. Why is this necessary?
    #+begin_quote
    scikit-learn's ~LinearRegression~ (and most ML models) expect the
    input feature matrix =X= in 2D form: rows are samples, columns are
@@ -538,6 +576,10 @@ Topics:
 
 - Any ideas so far?
 
+  + Research reinforcement learning
+  + Route optimization with dynamic constraints
+  + Image classification (bird species)
+
 
 ** Cosine similarity (demo and assignment)
 
@@ -548,7 +590,6 @@ Topics:
 - Open in Colab to code along: [[https://tinyurl.com/cosine-similarity][tinyurl.com/cosine-similarity]]
 
 - For interactive demo, check out [[https://birkenkrahe.github.io/ml_demos][birkenkrahe.github.io/ml_demos]]
-
 
 ** Summary: Week 4 -- Machine Learning Fundamentals
 
