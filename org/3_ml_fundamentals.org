@@ -772,6 +772,99 @@ Instead of asking “What value?”, we will ask “Which class?”
 We will also see how changing model parameters affects decisions,
 introducing the idea of model complexity.
 
+* Glossary
+
+** Basic concepts
+
+| Term             | Definition                                                 |
+|------------------+------------------------------------------------------------|
+| machine learning | Learning a function from data, not from written rules      |
+| Big Data         | Data of high volume, velocity, variety, veracity, value    |
+| feature          | A measurable input quantity, e.g. email sender (attribute) |
+| target           | The output we want to predict, e.g. spam or ham            |
+| label            | The known correct target value of a data instance          |
+| instance         | One data example: the feature values of one case           |
+| model            | A function mapping inputs (X) to outputs (y)               |
+| parameter        | A value the model learns from data, e.g. a slope           |
+| loss function    | A measure of prediction error, e.g. cross entropy          |
+| training         | Learning the model's parameters from data                  |
+| inference        | Using the trained model to predict new data                |
+| generalization   | Predicting well on examples never seen before              |
+| ground truth     | The known correct answer, used as a reference              |
+| prediction       | The model's estimate for new input; not exact              |
+
+** Types of learning
+
+| Term                     | Definition                                              |
+|--------------------------+---------------------------------------------------------|
+| supervised learning      | Learns from labeled data: inputs and correct outputs    |
+| unsupervised learning    | Learns from unlabeled data; discovers structure         |
+| semi-supervised learning | A little labeled data, much unlabeled data              |
+| self-supervised learning | Creates its own labels from unlabeled data              |
+| reinforcement learning   | Learns by interaction to maximize long-term reward      |
+| policy                   | The learned rule for choosing an action (reinforcement) |
+| reward                   | The value the learner tries to maximize over time       |
+| batch learning           | Trains on the full data set at once                     |
+| online learning          | Updates the model step by step as data arrives          |
+| out-of-core learning     | Trains on data too big for memory, part by part         |
+| learning rate            | How fast the model adapts to changing data              |
+| instance-based learning  | Compares new cases to stored examples by similarity     |
+| model-based learning     | Builds a model from examples, then predicts with it     |
+| similarity measure       | A way to compare a new instance with known ones         |
+
+** Tasks and techniques
+
+| Term                     | Definition                                             |
+|--------------------------+--------------------------------------------------------|
+| classification           | Predicting a category (label), e.g. spam or ham        |
+| regression               | Predicting a number, e.g. a house price                |
+| clustering               | Grouping instances by similar features                 |
+| dimensionality reduction | Reducing the number of features to simplify a problem  |
+| anomaly detection        | Finding unusual instances, e.g. fraud                  |
+| decision tree            | A tree of attribute tests that classifies instances    |
+| production rule          | IF condition THEN conclusion; a tree turned into rules |
+| pseudocode               | An algorithm in plain language, without syntax rules   |
+| linear regression        | Fitting a straight line to data                        |
+
+** Data problems and model quality
+
+| Term                    | Definition                                                 |
+|-------------------------+------------------------------------------------------------|
+| noise                   | Random errors or mislabeled data                           |
+| non-representative data | Training data unlike the data met in use                   |
+| imbalanced data         | Some classes far more common than others                   |
+| overfitting             | The model learns noise instead of the pattern              |
+| underfitting            | The model is too simple to capture the structure           |
+| train/test split        | Data set aside to test the trained model                   |
+| workflow                | Define, collect, prepare, choose, train, evaluate, predict |
+
+** Linear model
+
+| Term                  | Definition                                                   |
+|-----------------------+--------------------------------------------------------------|
+| slope                 | Change in the prediction per unit of input, $\beta_1$        |
+| intercept             | The prediction when the input is 0, $\beta_0$                |
+| residual              | Actual minus predicted value, $y - \hat{y}$                  |
+| least squares         | Choosing the line with the smallest sum of squared residuals |
+| overdetermined system | More equations (data points) than unknowns                   |
+| constraint            | A condition each data point puts on the parameters           |
+
+** Code
+
+| Term             | Definition                                   |
+|------------------+----------------------------------------------|
+| ~numpy~            | Python library for numerical arrays          |
+| ~ndarray~          | The numpy array type                         |
+| ~shape~            | An array's dimensions, e.g. (5, 1)           |
+| ~reshape~          | Changes an array's shape, not its data       |
+| ~scikit-learn~     | Python machine learning library              |
+| ~LinearRegression~ | scikit-learn class for a linear model        |
+| ~.fit(X, y)~       | Trains the model: X = inputs, y = outputs    |
+| ~.predict(X)~      | Returns the model's predictions for inputs X |
+| ~coef_~            | The learned slope(s) of a fitted model       |
+| ~intercept_~       | The learned intercept of a fitted model      |
+| ~matplotlib~       | Python plotting library (scatter, plot)      |
+
 * Sources
 
 Most images: A. Géron, Hands-On Machine Learning with Scikit-Learn and
