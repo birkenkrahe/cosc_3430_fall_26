@@ -1,4 +1,4 @@
-#+TITLE: Agenda - Artificial Intelligence
+g#+TITLE: Agenda - Artificial Intelligence
 #+AUTHOR: Marcus Birkenkrahe
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
@@ -392,7 +392,7 @@ Topics:
 - [X] ML workflow
 - [ ] Simple example: linear regression (practice assignment)
 
-* DONE W4S2: Simple linear regression example
+* DONE W4S2: Example: Simple linear regression
 
 - [X] Review: ML Workflow
 - [X] Fitting a linear model to data
@@ -453,8 +453,7 @@ Topics:
    was handed to you ready to use.
    #+end_quote
 
-
-* W4S3: Instance-based machine learning (cosine similarity)
+* DONE W4S3: Example: Instance-based machine learning (cosine similarity)
 
 Four weeks in, here's the tally:
 
@@ -497,7 +496,6 @@ I'm going to make a video on this, I think, because it's important:
      or to the AI: if you can't explain it, you haven't actually
      learned it yet, no matter how cleanly it compiles.
    #+end_quote
-
 
 ** Review: Simple linear regression example
 
@@ -571,7 +569,6 @@ I'm going to make a video on this, I think, because it's important:
    predicted score of 86.5. You can check with ~np.shape()~.
    #+end_quote
 
-
 ** Projects: Don't forget the deadline for the proposal (Sept 25)
 
 - Any ideas so far?
@@ -579,7 +576,6 @@ I'm going to make a video on this, I think, because it's important:
   + Research reinforcement learning
   + Route optimization with dynamic constraints
   + Image classification (bird species)
-
 
 ** Cosine similarity (demo and assignment)
 
@@ -620,6 +616,22 @@ Across all of it: a model is a function learned from data that makes
 predictions on new data -- trees, lines, and angles this week are just
 different ways of building that function.
 
-
 ** NEXT k-Nearest-Neighbor (kNN) machine learning 
+* W5S1: Example: k Nearest Neighbors
+
+** kNN code along: Loan approval in 2D
+
+- kNN is a "lazy learner": ~knn.fit()~ only stores features and labels
+  in memory. All the work is done by ~knn.predict()~ when distances are
+  computed. It's slow at prediction but instant to train.
+
+- For a loan approval process, we want to classify new applicants
+  using their income and their credit score as predictors.
+
+- Open the template [[https://tinyurl.com/knn-loan-ipynb][tinyurl.com/knn-loan-ipynb]], make a copy and code
+  along with me.
+
+- You can find the completed solution on Colab here:
+  [[https://tinyurl.com/knn-loan-ipynb-solution][tinyurl.com/knn-loan-solution-ipynb]].
+
 
