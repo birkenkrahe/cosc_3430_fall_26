@@ -619,6 +619,9 @@ different ways of building that function.
 ** NEXT k-Nearest-Neighbor (kNN) machine learning 
 * W5S1: Example: k Nearest Neighbors
 
+- [ ] Added the lecture scripts (as GitHub links) to Canvas
+- [ ] A few of you are not in the Google Space (you're missing out)
+
 ** kNN code along: Loan approval in 2D
 
 - kNN is a "lazy learner": ~knn.fit()~ only stores features and labels
@@ -631,7 +634,9 @@ different ways of building that function.
 - Open the template [[https://tinyurl.com/knn-loan-ipynb][tinyurl.com/knn-loan-ipynb]], make a copy and code
   along with me.
 
-- You can find the completed solution on Colab here:
+*** Complete solution
+
+- You can later find the completed solution on Colab here:
   [[https://tinyurl.com/knn-loan-ipynb-solution][tinyurl.com/knn-loan-solution-ipynb]].
 
 
