@@ -62,8 +62,9 @@ Will the loan be approved?
 4. Plot the training data
 5. Fit and predict ~model1~ for ~k=1~
 6. Fit and predict ~model3~ for ~k=3~
-7. Compare the predictions
-8. Visualize decision regions
+7. Find the nearest neighbors by hand
+8. Compare the predictions
+9. Visualize decision regions
 
 * 1. Import required libraries
 
@@ -220,7 +221,7 @@ want:
 #+end_src
 
 #+RESULTS:
-[[file:loan2d_points.png]]
+[[file:../img/loan2d_points.png]]
 
 This visualizes already which neighborhood the new customer is in -
 the distance to the approved loans is visibly smaller than to the
@@ -281,7 +282,91 @@ you'd have a 3:3 tie. ~scikit-learn~ breaks that tie deterministically
 using the first index with the maximum count (~np.bincount + argmax~),
 and since 0 comes before 1, it wins the tie.
 
-* 7. Compare the predictions
+* NEXT 7. Find the nearest neighbors by hand
+
+~knn.predict()~ hides the actual work. Here is what it does for our new
+customer (~x_new~ = =[4, 5]=) in four steps: measure the distance to every
+training point, sort, take the =k= closest, and let them vote.
+
+1) *Differences.* Subtract =x_new= from every row of =X=. NumPy
+   "broadcasts" the single row of shape (1,2) across all six rows of
+   shape (6,2):
+   #+begin_src python :results output :exports both :session *Python* :python python3
+     print(X - x_new)
+   #+end_src
+
+   #+RESULTS:
+   : [[-2 -2]
+   :  [-2  0]
+   :  [-1 -1]
+   :  [ 0 -1]
+   :  [ 1  1]
+   :  [ 2  0]]
+
+   Each row is (income difference, credit score difference) between
+   one training customer and the new customer.
+
+2) *Squared distances.* Square each difference and add up the two
+   features of each row. ~axis=1~ means "sum across the columns", so
+   you get one number per customer instead of one number in total:
+   #+begin_src python :results output :exports both :session *Python* :python python3
+     print(((X - x_new)**2).sum(axis=1))
+   #+end_src
+
+   #+RESULTS:
+   : [8 4 2 1 2 4]
+
+3) *Euclidean distances.* Take the square root (Pythagoras:
+   $d = \sqrt{\Delta_{income}^2 + \Delta_{score}^2}$):
+   #+begin_src python :results output :exports both :session *Python* :python python3
+     d = np.sqrt(((X - x_new)**2).sum(axis=1))
+     print(d.round(2))
+   #+end_src
+
+   #+RESULTS:
+   : [2.83 2.   1.41 1.   1.41 2.  ]
+
+   Customer 3 (=[4,4]=) is the closest at distance 1.0, customers 2
+   (=[3,4]=) and 4 (=[5,6]=) follow at 1.41.
+
+4) *Sort and vote.* ~np.argsort(d)~ does not return the distances
+   sorted, but the *row numbers* in the order of increasing distance.
+   The first =k= of them are the nearest neighbors; their labels
+   =y[idx]= are the votes:
+   #+begin_src python :results output :exports both :session *Python* :python python3
+     print(np.argsort(d))         # all rows, nearest first
+     idx = np.argsort(d)[:3]      # k = 3 nearest neighbors
+     print(idx)
+     print(y[idx])                # their labels = the votes
+     print(np.bincount(y[idx]).argmax())  # majority vote
+   #+end_src
+
+   #+RESULTS:
+   : [3 2 4 1 5 0]
+   : [3 2 4]
+   : [1 0 1]
+   : 1
+
+   Two of the three neighbors voted "approved", so the prediction is
+   =1= - the same as ~model3.predict(x_new)~. For ~k=1~, only row 3
+   votes (=y[3] = 1=), which explains the ~model1~ result, too.
+
+Check: scikit-learn can return the neighbors it found itself. ~kneighbors~
+gives the distances and the row numbers:
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  dist, ind = model3.kneighbors(x_new)
+  print(dist.round(2))
+  print(ind)
+#+end_src
+
+#+RESULTS:
+: [[1.   1.41 1.41]]
+: [[3 2 4]]
+
+These are our three distances and our three row numbers.
+
+* 8. Compare the predictions
 
 #+begin_quote
 Do the predictions differ? Why or why not?
@@ -294,7 +379,76 @@ neighbor and the majority of the three nearest neighbors vote for
 approval.
 #+end_quote
 
-* 8. Visualize decision regions
+The two models agree on ~x_new~. Do they also agree on the six
+customers we already know? Predict the labels of the training data
+with each model and compare them with the true labels ~y~:
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  print("true: ", y)
+  print("k = 1:", model1.predict(X))
+  print("k = 3:", model3.predict(X))
+#+end_src
+
+#+RESULTS:
+: true:  [0 0 0 1 1 1]
+: k = 1: [0 0 0 1 1 1]
+: k = 3: [0 0 0 0 1 1]
+
+~k=1~ gets all six right. ~k=3~ gets customer 4 (=[4,4]=, approved)
+wrong: its three nearest neighbors are itself (approved) and two denied
+customers (=[3,4]= and =[2,5]=), so the vote is 1:2 for "denied".
+
+To turn this into a single number, count the correct predictions. The
+fraction of correct predictions is the *accuracy*. Comparing arrays with
+~==~ gives ~True~ or ~False~ per customer, and ~.mean()~ of a boolean
+array is the fraction of ~True~ values:
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  print(model3.predict(X) == y)            # True where the model is right
+  print((model3.predict(X) == y).mean())   # fraction correct = accuracy
+#+end_src
+
+#+RESULTS:
+: [ True  True  True False  True  True]
+: 0.8333333333333334
+
+The model has a method that does exactly this: ~model.score(X, y)~
+predicts the labels of ~X~, compares them with the true labels ~y~ and
+returns the accuracy:
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  print(f"k = 1: accuracy = {model1.score(X, y):.2f}")
+  print(f"k = 3: accuracy = {model3.score(X, y):.2f}")
+#+end_src
+
+#+RESULTS:
+: k = 1: accuracy = 1.00
+: k = 3: accuracy = 0.83
+
+So 5 of 6 correct (0.83) for ~k=3~ and 6 of 6 (1.00) for ~k=1~. ~score~
+also works on new data with known labels. Suppose we learn later that
+the new customer ~x_new~ was in fact approved (label 1):
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  print(model1.score(x_new, [1]))
+  print(model3.score(x_new, [1]))
+#+end_src
+
+#+RESULTS:
+: 1.0
+: 1.0
+
+- Is ~k=1~ the better model because its accuracy is 1.00?
+  #+begin_quote
+  No. This accuracy was measured on the *training data*, and ~k=1~
+  cannot fail there: every training point is its own nearest neighbor
+  (distance 0), so it always votes for its own label. Training accuracy
+  rewards memorizing the data. What counts is how the model does on
+  customers it has *not* seen - that is what the practice will explore
+  with 80 applications, and what a test set measures.
+  #+end_quote
+
+* 9. Visualize decision regions
 
 To understand how the model generalizes beyond the training points, we
 can visualize the decision regions — the areas of the 2D feature space
@@ -338,7 +492,7 @@ We do this in three steps:
 #+end_src
 
 #+RESULTS:
-[[file:loan2d_regions.png]]
+[[file:../img/loan2d_regions.png]]
 
 *Code explanation:*
 
@@ -351,6 +505,13 @@ We do this in three steps:
 - ~model.predict(grid)~: Predict class (0 or 1) for every point in the grid.
 - ~reshape(xx.shape)~: Convert predictions back into grid shape for plotting.
 - ~plt.contourf(xx, yy, Z, alpha=0.3)~: Draw filled regions showing predicted class across the plane.
+
+* PRACTICE More Loan Approval 
+
+- Open the starter notebook and complete it:
+  https://tinyurl.com/knn-practice
+
+* Homework
 
 * Follow-up Questions
 
@@ -378,7 +539,7 @@ We do this in three steps:
    deterministically by picking the smaller class label (0).
    #+end_quote
 
-* Possible extension
+* Possible extension (Bonus)
 
 Use the same dataset and do the following:
 

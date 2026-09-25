@@ -1,4 +1,4 @@
-g#+TITLE: Agenda - Artificial Intelligence
+#+TITLE: Agenda - Artificial Intelligence
 #+AUTHOR: Marcus Birkenkrahe
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
@@ -137,17 +137,17 @@ quiz. Sometimes it give additional details last forgotten.
    have labels (row-index and column-name). It supports operations
    like: filtering rows, sorting, grouping, aggregating, joining,
    handling missing values, and reshaping the data. In Python, it is
-   implemented in the ~pandas~ 
+   implemented in the ~pandas~
    #+end_quote
    Example:
-   #+begin_src python :results output :exports both :session *Python* :python python3 
+   #+begin_src python :results output :exports both :session *Python* :python python3
      import pandas as pd  # import pandas library
 
      df = pd.DataFrame({  # define DataFrame
          "name": ["Alice", "Bob", "Carol"],   # define a `name` column
          "age": [30, 25, 35],                 # define a `age` column
          "city": ["NYC", "LA", "Chicago"]     # define a `city` column
-         })
+     })
 
      print(df[df["age"] > 27]) # filter rows where `age` is greater than 27
    #+end_src
@@ -163,7 +163,7 @@ quiz. Sometimes it give additional details last forgotten.
    all in a single line instead of writing a ~for~ loop with ~.append~.
    #+end_quote
    Example:
-   #+begin_src python :results output :exports both :session *Python* :python python3 
+   #+begin_src python :results output :exports both :session *Python* :python python3
      # squares from 0 to 9 as list comprehension
      squares = [x**2 for x in range(10)]
      print(squares)
@@ -179,7 +179,7 @@ quiz. Sometimes it give additional details last forgotten.
    #+RESULTS:
    : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
    : [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-   
+
 ** Colab + Python part 2
 
 - We continue with our [p]review of Colab notebooks and Python.
@@ -229,15 +229,15 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
    must walk from the head, node by node.
    #+end_quote
 3) How can you extract the =age= column from a dataframe =df=?
-   #+begin_src python :results output :exports both :session *Python* 
+   #+begin_src python :results output :exports both :session *Python*
      import pandas as pd
 
      df = pd.DataFrame({
          "age" : [30,25,27]
-         })
+     })
      print(df)
      print(df["age"]) # the footer is the metadata of the Series
-     print(df["age"].to_string(index=False))     
+     print(df["age"].to_string(index=False))
    #+end_src
 
    #+RESULTS:
@@ -256,9 +256,9 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
    #+end_example
 
 4) How do I filter only the fields with age smaller or equal to 27?
-   #+begin_src python :results output :exports both :session *Python* :python python3 
+   #+begin_src python :results output :exports both :session *Python* :python python3
      print(df["age"] <= 27)  # boolean flag vector
-     print(df[df["age"] <= 27])  # boolean flag vector     
+     print(df[df["age"] <= 27])  # boolean flag vector
    #+end_src
 
    #+RESULTS:
@@ -284,9 +284,9 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
 
    #+begin_src python :results output :exports both :session *Python* :python python3
      x = 0
-     try:                     
+     try:
          print(1/x)
-     except ZeroDivisionError as e:  # e is an alias 
+     except ZeroDivisionError as e:  # e is an alias
          print(f"{e}")
    #+end_src
 
@@ -313,7 +313,7 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
 - Look at the AI explainer video (linked in Canvas).
 - Think about a project you might like to do.
 - Assignment: Complete the Palmer Penguins assignment.
-  
+
 * DONE W3S1: Machine Learning Fundamentals I (Overview)
 
 ** Housekeeping
@@ -335,14 +335,14 @@ Highlighting some bonus content for this class ([[https://chat.google.com/room/A
 
 - You need to submit correct code-along files so that I can value your
   participation, and as a record of your own progress in the class.
-  
+
 - You should try Linux, especially if you're Windozed: see my new
   [[https://claude.ai/code/artifact/a4345a76-77d9-46d1-acf8-f01d12b6acdf][tutorial for absolute beginners]].
 
 ** Project ideas?
 
 - Anything?
-  
+
 - Will open the Sprint 1 assignment ("Project proposal") this week
 
 - Deadline: Friday, 9/25
@@ -525,14 +525,14 @@ I'm going to make a video on this, I think, because it's important:
    the intercept is =model.intercept_= (here 41.5). Together they define
    =prediction = intercept + slope * x=
    #+end_quote
-   
+
 3. What exactly does =.fit()= do -- what quantity is it minimizing?
    #+begin_quote
    It solves an optimization problem: it finds $\beta_0$ and $\beta_1$ that
    minimize the sum of squared residuals (the least-squares error)
    between the actual =y= values and the model's predictions:
    #+end_quote
-   #+attr_html: :width 250px :float nil: 
+   #+attr_html: :width 250px :float nil:
    [[../img/residual.png]]
 
 4. The dataset we used had 5 data points and only 2 unknown
@@ -556,7 +556,7 @@ I'm going to make a video on this, I think, because it's important:
    #+end_quote
    #+attr_html: :width 150px :float nil:
    [[../img/overdetermined.png]]
-   
+
 5. How do we use the trained model to predict a score for someone who
    studies 6 hours? Why can't we just pass in a plain number like =6=?
    #+begin_quote
@@ -616,11 +616,20 @@ Across all of it: a model is a function learned from data that makes
 predictions on new data -- trees, lines, and angles this week are just
 different ways of building that function.
 
-** NEXT k-Nearest-Neighbor (kNN) machine learning 
-* W5S1: Example: k Nearest Neighbors
+** NEXT k-Nearest-Neighbor (kNN) machine learning
+* DONE W5S1: Example: k Nearest Neighbors
 
-- [ ] Added the lecture scripts (as GitHub links) to Canvas
-- [ ] A few of you are not in the Google Space (you're missing out)
+- [X] Added the lecture scripts (as GitHub links) to Canvas
+- [X] A few of you are not in the Google Space (you're missing out)
+
+** Review: last week?
+
+- Decition trees
+- Cosine similarity
+- Instance-based machine learning
+- Machine learning workflow
+- Simple linear regression
+- Overfitting/underfitting
 
 ** kNN code along: Loan approval in 2D
 
@@ -639,4 +648,125 @@ different ways of building that function.
 - You can later find the completed solution on Colab here:
   [[https://tinyurl.com/knn-loan-ipynb-solution][tinyurl.com/knn-loan-solution-ipynb]].
 
+* DONE W5S2: The Thinking Machine (MIT, 1961)
+* W5S3: kNN continued - decision boundaries and kNN practice
 
+** Projects
+
+- Put your name, project, and link into the projects list.
+
+** Midterm exam
+
+- Let me know if you'd rather do a short oral exam than a 50-min
+  written exam, and we can arrange a test time on October 8th or 9th.
+
+** Review (from Monday)
+#+attr_html: :width 400px :float nil:
+[[../img/loan2d_points.png]]
+
+1. What does ~knn.fit()~ actually do, and where is the work done? Why
+   is kNN called a "lazy learner"?
+   #+begin_quote
+   ~fit()~ only stores the training features and labels - no
+   parameters are learned. All the work (computing distances to the
+   training points and voting) happens in ~predict()~. Training is
+   instant, prediction is slow.
+   #+end_quote
+
+2. What are the shapes of =X=, =y= and =x_new= in the loan example, and
+   what error do you get if you pass =np.array([4,5])= to ~predict()~?
+   #+begin_quote
+   #+begin_example
+   X.shape      # (6, 2)  6 customers, 2 features
+   y.shape      # (6,)    one label per customer
+   x_new.shape  # (1, 2)  one new customer, 2 features
+   #+end_example
+   ~np.array([4,5])~ has shape =(2,)=: ~predict()~ raises a
+   ~ValueError: Expected 2D array, got 1D array instead~. Fix:
+   ~np.array([[4,5]])~ or you can use ~.reshape(-1,1)~
+   #+end_quote
+
+3. What does this code print, and what does each part select?
+   ~print(X[y==0, 0])~
+   #+begin_quote
+   Prints =[2 2 3]=. ~y==0~ is a Boolean mask (True for denied loans),
+   ~X[y==0, ...]~ keeps only those rows, and the column index =0=
+   picks the income column - the x-axis values of the denied loans.
+   #+end_quote
+
+4. ~model1.predict(x_new)~ prints =[1]=, not =1=. Why, and how do you
+   get the bare number?
+   #+begin_quote
+   ~predict()~ always returns a 1D array (one entry per row of the
+   input), even for a single row. Select the first element:
+   ~model1.predict(x_new)[0]~ gives =1=.
+   #+end_quote
+
+5. Can you explain the code and guess the output? Take out a piece of
+   paper and write down your answer. Be specific.
+   #+begin_src python :results output :exports both :session *Python*
+     import numpy as np
+     X = np.array([[2, 3],[2, 5],[3, 4],[4, 4],[5, 6],[6, 5]]) 
+     y = np.array([0, 0, 0, 1, 1, 1])
+     x_new = np.array([[4, 5]])
+     print(X,'\n',y,'\n',x_new)
+     print(X.shape, y.shape, x_new.shape)
+     d = np.sqrt(((X - x_new)**2).sum(axis=1))
+     print(d)
+     idx = np.argsort(d)[:3]                    
+     print(idx)
+     print(y[idx])  # what's this output?                            
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   [[2 3]
+    [2 5]
+    [3 4]
+    [4 4]
+    [5 6]
+    [6 5]] 
+    [0 0 0 1 1 1] 
+    [[4 5]]
+   (6, 2) (6,) (1, 2)
+   [2.82842712 2.         1.41421356 1.         1.41421356 2.        ]
+   [3 2 4]
+   [1 0 1]
+   #+end_example
+
+   #+begin_quote
+   1) Define training feature matrix as a 2D (6,2) numpy array from a
+      list of points (each of which is a list). Each point corresponds
+      to a pair of [income,credit score] values (people, actually).
+   2) Define the labelled target vector as a 1D (6,) numpy array from a
+      list of values corresponding to loan approval decisions (0: not
+      approved, 1: approved).
+   3) Define the test data as a (1,2) numpy array corresponding to a
+      point in the plane (an income,credit score pair for a loan
+      applicant).
+   4) Print the values of X, y, x_new, each on a new line.
+   5) Print the shape of X,y,x_new on one line.
+   6) Compute the Euclidean distance (in feature space) between each
+      point in X and the point x_new: square root of the sum of all
+      squared differences between the income and score values. Using
+      ~np.sqrt~ and ~np.sum~ alongside ~axis=1~
+
+      [[../img/distance.png]]
+      
+      Use the square root function from NumPy ~np.sqrt~ and chain it
+      with ~np.sum~ along the columns (one result per row).
+   7) Print =d=, a one-dimensional NumPy array with six elements ordered
+      like the points were ordered in X.
+   8) Sort the array =d= and take the first three elements: these are
+      the indices corresponding to the points with the shortest
+      distances - the k=3 nearest neighbors, and print them.
+   9) Use the indices as a flag/index vector to extract the elements
+      of the target feature - the votes of the three nearest
+      neighbors.
+   10) Distances 1.0, 1.41, 1.41: neighbors =[4,4]= (approved), =[3,4]=
+       (denied) and =[5,6]= (approved) vote 1:0:1, so the majority (2:1)
+       is approve. With ~k=6~ the vote is 3:3 and scikit-learn returns =0=
+       (tie goes to the smaller label).
+   #+end_quote
+
+   
