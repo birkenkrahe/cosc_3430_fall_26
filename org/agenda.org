@@ -649,7 +649,7 @@ different ways of building that function.
   [[https://tinyurl.com/knn-loan-ipynb-solution][tinyurl.com/knn-loan-solution-ipynb]].
 
 * DONE W5S2: The Thinking Machine (MIT, 1961)
-* W5S3: kNN continued - decision boundaries and kNN practice
+* DONE W5S3: kNN continued - decision boundaries and kNN practice
 
 ** Projects
 
@@ -683,7 +683,7 @@ different ways of building that function.
    #+end_example
    ~np.array([4,5])~ has shape =(2,)=: ~predict()~ raises a
    ~ValueError: Expected 2D array, got 1D array instead~. Fix:
-   ~np.array([[4,5]])~ or you can use ~.reshape(-1,1)~
+   ~np.array([[4,5]])~ or you can use ~.reshape(1,-1)~
    #+end_quote
 
 3. What does this code print, and what does each part select?
@@ -769,4 +769,46 @@ different ways of building that function.
        (tie goes to the smaller label).
    #+end_quote
 
-   
+
+* W5S1: Reviews (movie, projects), 
+
+** Review: Projects
+** Review: The Thinking Machine
+
+1. *What is "thinking" here?* How does the film define machine
+   intelligence — and do you buy it?
+   #+begin_quote
+   *Behaviorist:* If outputs look intelligent, that counts. Sidesteps
+   consciousness and meaning entirely.
+   #+end_quote
+2. *What aged well, what didn't?* Pick one prediction that held up and
+   one that flopped. What explains the difference?
+   #+begin_quote
+   - Aged well: *Machines dominating narrow tasks.*
+   - Flopped: *Implied timeline to AI - no theory for learning.*
+   #+end_quote
+3. *What's missing?* What does the film seem unaware of that you'd
+   consider essential to AI today?
+   #+begin_quote
+   *Learning from data.* The whole film assumes intelligence =
+   programmed rules except in game contexts (Samuel). The statistical
+   revolution that actually built modern AI is not on their radar
+   (*except on Claude Shannon's)*.
+   #+end_quote
+
+** The Machine Learning Pipeline: a big project
+
+Split up over several code-along lectures:
+1) Look at the big picture
+2) Get the data
+3) Explore and visualize the data
+4) Create the test data
+5) Prepare data for learning
+6) Select a model and train
+7) Fine tune a model
+8) Present your solution
+9) Launch production system
+10) Monitor and maintain production system
+
+See also: [[https://github.com/ageron/handson-mlp/blob/main/ml-project-checklist.md][Géron's project checklist]].
+
