@@ -770,9 +770,12 @@ different ways of building that function.
    #+end_quote
 
 
-* W5S1: Reviews (movie, projects), 
+* W5S1: Reviews (movie, projects), ML pipeline project
 
 ** Review: Projects
+
+- Briefly speak to your project (1 team member)
+
 ** Review: The Thinking Machine
 
 1. *What is "thinking" here?* How does the film define machine
