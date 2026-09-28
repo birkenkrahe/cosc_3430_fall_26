@@ -770,11 +770,14 @@ different ways of building that function.
    #+end_quote
 
 
-* W5S1: Reviews (movie, projects), ML pipeline project
+* W5S1: Sprint review / movie review / Midterm LEQs
 
 ** Review: Projects
 
 - Briefly speak to your project (1 team member)
+- I'll give some groups feedback afterwards
+- You'll get more detailed feedback within 2 weeks
+- Next sprint review (literature review) is on Oct 23rd
 
 *** Mushroom Edibility Random Forest
 
@@ -821,6 +824,7 @@ different ways of building that function.
      Hugging Face transformer library in a Colab notebook). Bigger
      stretch: train a tiny character-level model on Tiny Shakespeare
      (Karpathy source) and compare what it predicts with GPT-2
+
 
 ** Review: The Thinking Machine
 
