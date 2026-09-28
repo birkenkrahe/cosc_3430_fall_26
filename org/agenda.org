@@ -776,6 +776,52 @@ different ways of building that function.
 
 - Briefly speak to your project (1 team member)
 
+*** Mushroom Edibility Random Forest
+
+- Kaggle dataset is ML easy (known to be almost perfect
+  separable). Consider switching to the UCI Secondary Mushroom dataset
+  (8 times larger, mix of features)
+- Accuracy is the wrong metric for a high-stakes (life-or-death)
+  problem: should say "edible" only when it's very confident.
+- There is no single right number for the number of trees.
+- Data pre-processing: ~OneHotEncoder~ probably - will learn this in the
+  next week or so. Lots of missing values. Build a pipeline.
+- You did not disclose AI use (if any).
+
+*** Bird Call to Image Generator
+
+- Ambitious. The out of distribution question (what does the model do
+  with a car horn, is a strong research question.
+- The audio-to-image GAN is two things joined together: a classifier
+  (spectrogram -> species), and a class-conditional generator (species
+  -> image). The classifier is your MVP
+- Training a GAN from a few hundred bird photos will give you blobs at
+  best. GAN debugging alone could take weeks.
+- Define image generation accuracy (it's undefined right now)
+- Questions:
+  1. Data leakage (see lecture soon)
+  2. Take from same source, apply same pipeline to all of it. Add
+     noise to the test clips and measure how accuracy degrades.
+  3. Start with 5 acoustically distinct species, go higher if it works
+     well. 100 is out of scope.
+  4. For training set, 30-50 recordings per species cut into 3-5 secs
+     windows -> thousands of spectograms (enough for a small CNN).
+- Thanks for disclosing your AI use!
+
+*** How LLMs predict text
+
+- Narrow the question - yours fills a book. Pick one guiding question
+  and let everything in the presentation serve it.
+- Example: "How does the context in a prompt change the probabilities
+  of the next token, and how do those probabilities become text?"
+- Leads to: Tokenization -> Prediction -> Decoding
+- Questions:
+  1) Next-token prediction - everything builds on that.
+  2) Public tools are fine. Stretch goal: load GPT-2 small through the
+     Hugging Face transformer library in a Colab notebook). Bigger
+     stretch: train a tiny character-level model on Tiny Shakespeare
+     (Karpathy source) and compare what it predicts with GPT-2
+
 ** Review: The Thinking Machine
 
 1. *What is "thinking" here?* How does the film define machine
