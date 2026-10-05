@@ -1,4 +1,4 @@
-#+TITLE: Agenda - Artificial Intelligence
+#+TITLE: Agenda - Artificial Intelligence 
 #+AUTHOR: Marcus Birkenkrahe
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
@@ -769,8 +769,7 @@ different ways of building that function.
        (tie goes to the smaller label).
    #+end_quote
 
-
-* W5S1: Sprint review / movie review / Midterm LEQs
+* DONE W6S1: Sprint review / movie review / Midterm LEQs
 
 ** Review: Projects
 
@@ -825,7 +824,6 @@ different ways of building that function.
      stretch: train a tiny character-level model on Tiny Shakespeare
      (Karpathy source) and compare what it predicts with GPT-2
 
-
 ** Review: The Thinking Machine
 
 1. *What is "thinking" here?* How does the film define machine
@@ -849,19 +847,207 @@ different ways of building that function.
    (*except on Claude Shannon's)*.
    #+end_quote
 
-** The Machine Learning Pipeline: a big project
+* DONE W6S2: The ML Pipeline I - big picture / getting the data
+
+** The Machine Learning Pipeline: a big project (big picture)
 
 Split up over several code-along lectures:
-1) Look at the big picture
-2) Get the data
-3) Explore and visualize the data
-4) Create the test data
-5) Prepare data for learning
-6) Select a model and train
-7) Fine tune a model
-8) Present your solution
-9) Launch production system
-10) Monitor and maintain production system
+1) [X] Look at the big picture
+2) [ ] Get the data
+3) [ ] Explore and visualize the data
+4) [ ] Create the test data
+5) [ ] Prepare data for learning
+6) [ ] Select a model and train
+7) [ ] Fine tune a model
+8) [ ] Present your solution
+9) [ ] Launch production system
+10) [ ] Monitor and maintain production system
 
 See also: [[https://github.com/ageron/handson-mlp/blob/main/ml-project-checklist.md][Géron's project checklist]].
 
+Artifacts:
+- [[https://claude.ai/artifact/3p8buURpSQgpVudnxvbNyv][Slide deck (Claude slides)]]
+- [[https://colab.research.google.com/drive/1tnsxAGsQ_dfcXK0LqsRF1oEz-CNjwRBU?usp=sharing][Code-along completed - RMSE (Colab)]]
+
+* DONE W6S3: The ML Pipeline II - getting and exploring the data
+
+- [ ] Quick review of the last session
+- [ ] Quizzes reopened -> midterm exams
+- [ ] ML pipeline continued
+
+** Quizzes reopened -> midterm exams
+
+- I have reopened all the quizzes
+- The midterm exam will consist of 30-35 questions
+- There will be a few more question types
+- There will be [pseudo]code questions
+  
+** ML Pipeline - the big picture
+
+What (if anything) do you remember from the last session?
+
+- California housing data
+- Our target: median house price
+- Data are are grouped (districts)
+- Likely model: supervised linear regression in batch mode
+- RMSE as a metric to evaluate accuracy
+- Potential customers: real estate
+
+[[https://claude.ai/artifact/3p8buURpSQgpVudnxvbNyv][Quick overview of part 1: slide deck.]]
+
+** The Machine Learning Pipeline: getting and exploring the data
+
+Split up over several code-along lectures:
+1) [X] Look at the big picture
+2) [X] Get the data
+3) [X] Explore and visualize the data
+4) [ ] Create the test data
+5) [ ] Prepare data for learning
+6) [ ] Select a model and train
+7) [ ] Fine tune a model
+8) [ ] Present your solution
+9) [ ] Launch production system
+10) [ ] Monitor and maintain production system
+
+See also: [[https://github.com/ageron/handson-mlp/blob/main/ml-project-checklist.md][Géron's project checklist]].
+
+Artifacts:
+- [[https://claude.ai/artifact/DdyXNa37zyUWC1HNwnpzCz][Slide deck (Claude slides)]]
+- [[https://colab.research.google.com/drive/1jdKT3bHplokZhz5-ia222qw_G-ai-QU2][Colab code along completed]] ([[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/org/6_pipeline_2_get_data_code.org][GitHub version]])
+
+* W7S1: The ML Pipeline III - creating a test set
+#+attr_html: :width 400px :float nil:
+[[../img/datacenters.jpg]]
+
+- [ ] LEQ feedback (1')
+- [ ] AI News (1')
+- [ ] Review: content (1')
+- [ ] Review: code (1')
+- [ ] Finish getting the data: pair plot (15')
+- [ ] Creating a test set (30')
+
+** LEQ feedback
+
+Excellent feedback - thank you!
+
+Small stats but important points for improvement
+
+1. Optional materials seem overwhelming at times (1)
+2. Class gets too difficult at times (1)
+3. Class only covers the basics and should go deeper (1)
+4. More guidance on the main project (1)
+5. More short group activities (1)
+6. Shorter opening mini-review (1)
+7. Give students more room to speak (1)
+8. Show more of the whiteboard in the video (1)
+9. Textbook too dense and hard to read on the side (1)
+
+** News
+
+- [[https://chat.google.com/room/AAQAkkjACa4/r5PJh0raIL0/r5PJh0raIL0?cls=10][First space datacenter in orbit]] (SpaceX + Google)
+- New interactive companion for kNN ([[https://birkenkrahe.github.io/ml_demos/][loads slowly]])
+
+** Review (Content)
+
+1. Before you even download a dataset, what should you check -- besides
+   "can I get it"?
+   #+begin_quote
+   Format (is it CSV, with or without a header, one file or several?),
+   size (will it fit on your machine, or do you need remote
+   storage/shell access?), and legal/license status (are you allowed
+   to download and use it at all - not just look at it?).
+   #+end_quote
+
+2. ~info()~ reported =total_bedrooms= as having 20,433 non-null values
+   out of 20,640. What does non-null mean?
+   #+begin_quote
+   Non-null counts entries that are not missing (not =NaN=) - so
+   20,433 non-null means 20,433 rows have an actual value and 207 are
+   missing. It's easy to misread "non-null" as "complete" unless you
+   compare that count against the total row count (20,640).
+   #+end_quote
+
+3. Is a missing feature automatically worth fixing (imputing) rather
+   than dropping?
+   #+begin_quote
+   No - relevance matters more than completeness. =total_bedrooms= is
+   only weakly related to price (two houses of equal value can have
+   very different bedroom counts), so losing it costs little. A highly
+   relevant feature with the same 207 missing values would be worth
+   imputing (e.g. with the median) rather than dropping.
+   #+end_quote
+
+4. =ocean_proximity= is the one non-numeric (~object~) column. What can
+   we say about this feature?
+   #+begin_quote
+   It's the only categorical feature, so we use ~value_counts()~ to see
+   its five distinct levels (=<1H OCEAN=, =INLAND=, =NEAR OCEAN=, =NEAR
+   BAY=, =ISLAND=) rather than treating it like a continuous
+   number. In this dataset it's also likely one of the strongest
+   predictors of price, because in California proximity to the coast
+   is tightly linked to value - a relationship that's specific to this
+   geography, not a general property of categorical features.
+   #+end_quote
+
+5. ~describe()~ showed =median_house_value= with a mean of $206,856 but a
+   standard deviation of $115,396 - nearly 56% of the mean. What does
+   that gap tell you?
+   #+begin_quote
+   A standard deviation that large relative to the mean signals a
+   wide, skewed spread rather than a tight cluster around a typical
+   value - a lot of districts sit far from the average in one
+   direction, which is exactly what you'd expect from a right-skewed
+   distribution with a long tail of expensive outliers.
+   #+end_quote
+
+6. The box plot's top outliers all cluster at exactly $500,001. What's
+   going on, and why would a data provider do this deliberately?
+   #+begin_quote
+   This is capping (also called clipping or winsorizing): every
+   district actually worth more than $500,000 was recorded *as*
+   $500,001 instead of its true value. It's not an error - the Census
+   Bureau did this to protect the privacy of owners of unusually
+   expensive properties, who'd otherwise be identifiable from an exact
+   high value.
+   #+end_quote
+
+** Review (Code)
+
+- Whats the code to fetch the data in CSV format from the Web?
+  #+begin_example python
+  import pandas as pd                  # DataFrame library
+  df = pd.read_csv("https://...csv")   # Store CSV file in DataFrame
+  #+end_example
+- Which commands give an overview over values, structure, stats?
+  #+begin_example python
+  df.head()       # top rows
+  df.info()       # structure, data types, NaNs
+  df.describe()   # stats information
+  #+end_example
+- Do know how to extract from a DataFrame df:
+  1) the first 3 rows of columns 2 to 4
+  2) the first 5 values of column 3 to a vector
+  3) the statistical properties of all rows of columns 2 to last
+  4) the value counts of a categorical variable
+  #+begin_example python
+  df.iloc[:,2:5].head(3)         # first 3 rows of columns 2 to 4
+  df.iloc[:,3].head(5).to_numpy  # first 5 values of col 3 to 1D array
+  df.describe().iloc[:,2:]       # all rows of columns 2 to last
+  df["A"].value_counts()         # value counts for all categories
+  #+end_example
+
+** Checkout question (test set creation)
+
+We just locked the test set away and agreed not to look at it again
+until final evaluation. What's the one thing you'd have to be careful
+*not* to do, next session, while exploring and visualizing the
+training data?
+#+begin_quote
+Don't let anything you learn from exploring =strat_train_set= leak
+into decisions made using =strat_test_set= (or the full dataset) -
+e.g. don't compute a scaling factor or drop outliers using the full
+data and then apply it to both sets. Whatever you learn from the
+training set stays confined to how you treat the training set.
+#+end_quote
+
+  

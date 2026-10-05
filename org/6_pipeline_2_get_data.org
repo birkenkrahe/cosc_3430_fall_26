@@ -1,0 +1,430 @@
+#+TITLE: End-to-End Machine Learning Project (2): Get the Data
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 3430 (AI) Fall 2026 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:1 num:1 ^:nil
+#+PROPERTY: header-args:python :session *Python* :results output :exports both :noweb yes
+
+* Slide deck
+
+[[https://claude.ai/artifact/DdyXNa37zyUWC1HNwnpzCz][Claude slides link]]
+
+* [Slides 1–2] Slides and roadmap
+
+Deck: "End-to-End ML Project, Part 2" (18 slides). A =[Slide N]= in a
+headline means that slide is up while you cover that part.
+Code-alongs: slides 4, 5, 10 and 13. Continues
+=6_pipeline_1_big_picture_student.org= (step 1 of 10); today is step 2
+and a first look at step 3.
+
+* [Slides 3–17] Get the data
+
+- What do you need to consider before getting the data?
+- Fetch the data in their native format or reformat first
+- Store data in a pandas data frame
+
+* [Slide 3] Checklist: what do you need to consider?
+
+Automate as much as possible so you can easily get fresh data.
+
+1. List the data you need and how much you need.
+2. Find and document where you can get that data.
+3. Check how much space it will take.
+4. Check legal obligations, and get the authorization if necessary.
+5. Get access authorizations.
+6. Create a workspace (with enough storage space).
+7. Get the data.
+8. Convert the data to a format you can easily manipulate (without
+   changing the data itself).
+9. Ensure sensitive information is deleted or protected (e.g.,
+   anonymized).
+10. Check the size and type of data (time series, sample,
+    geographical, etc.).
+11. Sample a test set, put it aside, and never look at it (no data
+    snooping!).
+
+* [Slide 4] Code-along: fetch the data
+
+- In the book, the data are contained in a compressed tarball
+  container, which cannot be read so we need to unpack it first:
+
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    import tarfile
+
+    with tarfile.open("../data/housing.tgz") as tar:
+          tar.extractall(path="../data")
+  #+end_src
+
+- Let's see it:
+  #+begin_src bash :results output :exports both
+    ls -l ../data/housing
+  #+end_src
+
+  #+RESULTS:
+
+- URL: [[https://tinyurl.com/housing-csv][tinyurl.com/housing-csv]]
+
+- Store the data in a ~pandas~ ~DataFrame~ and take a quick look:
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    import pandas as pd
+    housing_full = pd.read_csv("https://tinyurl.com/housing-csv")
+  #+end_src
+
+- print the data frame:
+  #+begin_example
+  housing_full # do this only in a notebook
+  #+end_example
+
+* [Slides 5–12] Get a quick overview
+
+- Get header and structure information with ~head~ and ~info~
+- Interpret structural information
+- Get statistical information and plot it
+- Interpret the data distribution
+
+* [Slide 5] Code-along: head() and info()
+
+- Look at the top five rows:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.head())
+  #+end_src
+
+  #+RESULTS:
+  :    longitude  latitude  ...  median_house_value  ocean_proximity
+  : 0    -122.23     37.88  ...            452600.0         NEAR BAY
+  : 1    -122.22     37.86  ...            358500.0         NEAR BAY
+  : 2    -122.24     37.85  ...            352100.0         NEAR BAY
+  : 3    -122.25     37.85  ...            341300.0         NEAR BAY
+  : 4    -122.25     37.85  ...            342200.0         NEAR BAY
+  :
+  : [5 rows x 10 columns]
+
+- What if we don't want to see the geographical data? We need to use
+  the ~.iloc~ method to extract rows and columns from the data frame.
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.iloc[:,2:].head(3))
+  #+end_src
+
+  #+RESULTS:
+  :    housing_median_age  total_rooms  ...  median_house_value  ocean_proximity
+  : 0                41.0        880.0  ...            452600.0         NEAR BAY
+  : 1                21.0       7099.0  ...            358500.0         NEAR BAY
+  : 2                52.0       1467.0  ...            352100.0         NEAR BAY
+  :
+  : [3 rows x 8 columns]
+
+- What if you just want the values? There is a method ~.values~ but it
+  is preferred, since you always need to work with them, to use ~.to_numpy()~:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.iloc[:,2:].head(3).to_numpy())
+  #+end_src
+
+  #+RESULTS:
+  : [[41.0 880.0 129.0 322.0 126.0 8.3252 452600.0 'NEAR BAY']
+  :  [21.0 7099.0 1106.0 2401.0 1138.0 8.3014 358500.0 'NEAR BAY']
+  :  [52.0 1467.0 190.0 496.0 177.0 7.2574 352100.0 'NEAR BAY']]
+
+- There is one district per row. Get info on the data structure:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.info())
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  <class 'pandas.core.frame.DataFrame'>
+  RangeIndex: 20640 entries, 0 to 20639
+  Data columns (total 10 columns):
+   #   Column              Non-Null Count  Dtype
+  ---  ------              --------------  -----
+   0   longitude           20640 non-null  float64
+   1   latitude            20640 non-null  float64
+   2   housing_median_age  20640 non-null  float64
+   3   total_rooms         20640 non-null  float64
+   4   total_bedrooms      20433 non-null  float64
+   5   population          20640 non-null  float64
+   6   households          20640 non-null  float64
+   7   median_income       20640 non-null  float64
+   8   median_house_value  20640 non-null  float64
+   9   ocean_proximity     20640 non-null  object
+  dtypes: float64(9), object(1)
+  memory usage: 1.6+ MB
+  None
+  #+end_example
+
+* [Slides 6–7] What do you see in info()?
+
+#+begin_quote
+1. 10 features, nine numeric, one object
+2. 20640 rows
+3. =total_bedrooms= has 207 missing values
+4. =ocean_proximity= could be any Python object but must be text (CSV)
+#+end_quote
+
+- Check the ~object~ feature:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full["ocean_proximity"].value_counts())
+  #+end_src
+
+  #+RESULTS:
+  : ocean_proximity
+  : <1H OCEAN     9136
+  : INLAND        6551
+  : NEAR OCEAN    2658
+  : NEAR BAY      2290
+  : ISLAND           5
+  : Name: count, dtype: int64
+
+- =<1H OCEAN= is "less than one hour from ocean", the others are clear.
+
+* [Slides 8–9] What do we learn from describe()?
+
+- The last quick exploration to do is to look at statistical
+  properties. We're going to do this numerically and visually:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.describe())
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+            longitude      latitude  ...  median_income  median_house_value
+  count  20640.000000  20640.000000  ...   20640.000000        20640.000000
+  mean    -119.569704     35.631861  ...       3.870671       206855.816909
+  std        2.003532      2.135952  ...       1.899822       115395.615874
+  min     -124.350000     32.540000  ...       0.499900        14999.000000
+  25%     -121.800000     33.930000  ...       2.563400       119600.000000
+  50%     -118.490000     34.260000  ...       3.534800       179700.000000
+  75%     -118.010000     37.710000  ...       4.743250       264725.000000
+  max     -114.310000     41.950000  ...      15.000100       500001.000000
+
+  [8 rows x 9 columns]
+  #+end_example
+
+- Also useful to take out the geographical data (no statistical value):
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    print(housing_full.describe().iloc[:,2:])
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+         housing_median_age   total_rooms  ...  median_income  median_house_value
+  count        20640.000000  20640.000000  ...   20640.000000        20640.000000
+  mean            28.639486   2635.763081  ...       3.870671       206855.816909
+  std             12.585558   2181.615252  ...       1.899822       115395.615874
+  min              1.000000      2.000000  ...       0.499900        14999.000000
+  25%             18.000000   1447.750000  ...       2.563400       119600.000000
+  50%             29.000000   2127.000000  ...       3.534800       179700.000000
+  75%             37.000000   3148.000000  ...       4.743250       264725.000000
+  max             52.000000  39320.000000  ...      15.000100       500001.000000
+
+  [8 rows x 7 columns]
+  #+end_example
+
+- If the columns are truncated:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    pd.set_option("display.max_columns", None)
+    pd.set_option("display.width", None)
+    print(housing_full.describe().iloc[:,2:])
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+         housing_median_age   total_rooms  total_bedrooms    population    households  \
+  count        20640.000000  20640.000000    20433.000000  20640.000000  20640.000000
+  mean            28.639486   2635.763081      537.870553   1425.476744    499.539680
+  std             12.585558   2181.615252      421.385070   1132.462122    382.329753
+  min              1.000000      2.000000        1.000000      3.000000      1.000000
+  25%             18.000000   1447.750000      296.000000    787.000000    280.000000
+  50%             29.000000   2127.000000      435.000000   1166.000000    409.000000
+  75%             37.000000   3148.000000      647.000000   1725.000000    605.000000
+  max             52.000000  39320.000000     6445.000000  35682.000000   6082.000000
+
+         median_income  median_house_value
+  count   20640.000000        20640.000000
+  mean        3.870671       206855.816909
+  std         1.899822       115395.615874
+  min         0.499900        14999.000000
+  25%         2.563400       119600.000000
+  50%         3.534800       179700.000000
+  75%         4.743250       264725.000000
+  max        15.000100       500001.000000
+  #+end_example
+
+- What do we learn (for =median_house_value=)?
+  #+begin_quote
+  1. Missing values (~NaN~) are ignored.
+  2. ~std~ measures *spread* around the ~mean~ (*centrality*): here
+     $115,396 against a mean of $206,856 - a wide spread.
+  3. ~mean~ ($206,856) is well above the median (50th percentile,
+     $179,700): a long right tail pulls the mean up (right skew).
+  4. IQR (Inter-Quartile Range) = 75th - 25th percentile = 264,725 -
+     119,600 = *145,125*: the range of the middle half of the districts.
+  5. The ~max~ of 500,001 is suspicious - keep an eye on it.
+  #+end_quote
+
+* [Slide 10] Code-along: box plot
+
+- You can make the IQR visible with a boxplot (length of the box):
+  #+begin_src python :file ../img/housing_boxplot.png :results file graphics output :exports both :session *Python* :python python3
+    import matplotlib.pyplot as plt
+    housing_full.boxplot(column="median_house_value", figsize=(4,6)) # portrait
+    plt.title("Median House Value by District")
+    plt.ylabel("USD")
+    plt.savefig("../img/housing_boxplot.png")
+  #+end_src
+
+  #+RESULTS:
+  [[file:../img/housing_boxplot.png]]
+
+* [Slides 11–12] What do you notice about this distribution?
+
+#+begin_quote
+The top of the distribution is capped at $500,001: many districts
+pile up at exactly that value (they show as a cluster of outlier
+points above the whisker). You can also see this in the
+histograms. Capped values are a strong pattern and you don't want the
+model to learn that.
+#+end_quote
+
+- What is capping/clipping/winsorizing?
+  #+begin_quote
+  This is not *truncating* (removing the values) but clipping the values
+  to a chosen threshold - so e.g. a house value of $1,000,000 still
+  appears in the data but its value is recorded as $500,001 (the cap).
+  #+end_quote
+- Why is this done?
+  #+begin_quote
+  Most likely to protect survey respondent privacy/anonymity for very
+  high-value properties, since these outliers can otherwise easily be
+  identified.
+  #+end_quote
+
+* [Slides 13–17] Make a quick plot
+
+- Reminder of histograms
+- Interpret the histogram
+
+* [Slide 13] Code-along: histograms
+
+- You can plot a histogram for every numerical attribute. A histogram
+  shows the frequency (value counts) for a given (continuous
+  numerical) feature.
+
+- The ~hist()~ method produces histograms for the whole dataset:
+  #+begin_src python :file ../img/housing_histplot.png :results file graphics output :exports both :session *Python* :python python3
+    plt.clf()
+    housing_full.hist(bins=50,figsize=(12,8)) # landscape - figsize is in inches
+    plt.savefig("../img/housing_histplot.png")
+  #+end_src
+
+  #+RESULTS:
+  [[file:../img/housing_histplot.png]]
+
+* [Slides 14–15] What do you see? Share all your observations.
+
+#+begin_quote
+1. =median_house_value= and =housing_median_age= appear *capped* at the
+   top (values above the cap are recorded as the cap value: 500,001
+   and 52).
+2. =median_income= is not in USD: it is in tens of thousands of
+   dollars (3 means about $30,000), and it is *clipped* at 0.5 (about
+   $5,000) and 15 (about $150,000).
+3. =total_rooms=, =total_bedrooms=, =population=, =households= are
+   strongly *right-skewed* (=median_income= and =median_house_value=
+   moderately): a few very large values pull the ~mean~ above the
+   ~median~.
+4. The features are on wildly different *scales*. Scaling matters
+   before training.
+5. =latitude= and =longitude= are bi-modal (two spikes): the two big
+   metro areas, the San Francisco Bay Area (about 37.8°N, 122.3°W)
+   and Los Angeles (about 34°N, 118°W) - compare the California map.
+6. =median_income= is the most important predictor of the house price
+   (according to domain experts): that's why we will use it for
+   *stratified sampling* - cutting the data into strata (groups) - when
+   we create the test set.
+#+end_quote
+
+* [Slides 16–17] Follow-up: linear regression features
+
+Which features would you feed a linear regression model, and which
+would you transform first? And why?
+
+#+begin_quote
+1. Transform (log transformation is standard): =total_rooms=,
+   =total_bedrooms=, =population=, =households= - heavily right-skewed.
+2. Use, with care: =median_income= (mildly skewed, clipped at both
+   ends) and =housing_median_age= (capped at 52).
+3. Not linear in price: =latitude=, =longitude= - two metro peaks; better
+   used as engineered features (e.g. clusters or distance to the coast).
+4. Problematic no matter what: =median_house_value= because of the
+   capping, which disrupts the target variable (prices above $500,001
+   will not be predicted). Géron's options: collect proper labels for
+   the capped districts, or remove them from training and test sets.
+
+*Why?* Linear regression assumes a linear relationship between each
+feature and the target. Skewed features compress variation at the
+high end - the model has a harder time detecting the
+relationship. Log transform spreads the values more evenly.
+#+end_quote
+
+- The needs for transformation are addressed later when we talk about
+  preparing the data for training.
+
+* [Slide 18] Wrap-up
+
+- Supervised, batch, multiple univariate regression, scored with RMSE.
+- 20,640 districts, 10 columns, 207 missing bedroom counts.
+- Capped target, skewed features, very different scales.
+- Next: set aside a test set before we look any closer.
+
+* Summary
+
+- *Before downloading*: check format, size, legal/licensing, and plan
+  to set aside a test set before you explore.
+- *Loading*: =pd.read_csv()= reads a CSV straight from a URL into a
+  DataFrame.
+- *First look*: ~head()~ (rows), ~info()~ (structure, dtypes, missing
+  values, memory), ~describe()~ (summary statistics).
+- *Missing data*: =total_bedrooms= had 207 missing values out of
+  20,640 - visible only by comparing the non-null count to the row
+  total.
+- *The one categorical column*: =ocean_proximity= - inspect its
+  distinct values with ~value_counts()~.
+- *Spread and skew*: a large std relative to the mean, and mean >
+  median, both signal a right-skewed distribution - visible in a
+  boxplot and in histograms.
+- *Capping*: =median_house_value= is capped at $500,001, likely to
+  protect the privacy of owners of very expensive properties.
+- *Next*: create a test set, before exploring the data any further.
+
+* Glossary
+
+| Term                  | Definition                                           |
+|-----------------------+------------------------------------------------------|
+| bimodal               | a distribution with two peaks, e.g.                  |
+|                       | latitude/longitude (Bay Area, LA).                   |
+| boxplot               | shows the IQR as a box, the median as a line inside  |
+|                       | it, and outliers beyond the whiskers.                |
+| capping               | also clipping or winsorizing - replacing values      |
+|                       | above (or below) a threshold with that threshold,    |
+|                       | instead of removing them.                            |
+| DataFrame             | pandas' two-dimensional labeled table; each column   |
+|                       | can hold a different dtype.                          |
+| describe()            | prints summary statistics (count, mean, std, min,    |
+|                       | quartiles, max) per numeric column.                  |
+| head()                | prints the first rows of a DataFrame (default 5).    |
+| histogram             | a bar chart of value counts over equal-width bins of |
+|                       | one numeric feature.                                 |
+| info()                | prints row/column counts, dtypes, non-null counts    |
+|                       | and memory usage.                                    |
+| IQR                   | Interquartile Range - the 75th percentile minus the  |
+|                       | 25th; the width of the box in a boxplot.             |
+| memory usage          | how much RAM a DataFrame occupies; info() reports it |
+|                       | in MB.                                               |
+| non-null              | not missing; a non-null count below the row total    |
+|                       | means some values are NaN.                           |
+| object (dtype)        | pandas' generic type for anything that isn't a       |
+|                       | number, usually text read from a file.               |
+| right-skewed          | a distribution with a long tail toward high values,  |
+|                       | pulling the mean above the median.                   |
+| value_counts()        | counts how many rows hold each distinct value of a   |
+|                       | column; use on categorical data.                     |

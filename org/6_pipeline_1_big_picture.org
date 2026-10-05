@@ -1,0 +1,271 @@
+#+TITLE: End-to-End Machine Learning Project (1): The Big Picture
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 3430 (AI) Fall 2026 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:1 num:1 ^:nil
+#+PROPERTY: header-args:python :session *Python* :results output :exports both :noweb yes
+
+* Slide deck
+
+[[https://claude.ai/artifact/3p8buURpSQgpVudnxvbNyv][Claude slides link]]
+
+* [Slide 1] Slides
+
+Deck: "End-to-End ML Project, Part 1" (15 slides). A =[Slide N]= in a
+headline means that slide is up while you cover that part. Code-along:
+slide 12. Continued in =6_pipeline_2_get_data_student.org=.
+
+* [Slide 2] Objectives
+
+Split up over several code-along lectures:
+1) Look at the big picture
+2) Get the data
+3) Explore and visualize the data
+4) Create the test data
+5) Prepare data for learning
+6) Select a model and train
+7) Fine tune a model
+8) Present your solution
+9) Launch production system
+10) Monitor and maintain production system
+
+See also: [[https://github.com/ageron/handson-mlp/blob/main/ml-project-checklist.md][Géron's project checklist]].
+
+* [Slide 3] Source
+
+Source: Géron's Hands-on Machine Learning with scikit-learn and
+PyTorch, Ch 2. The text is very densely written and has a lot of side
+alleys and tangents. It still covers ca. 60 pages of content.
+
+You can open his notebook (mostly code) in Colab and go through it
+yourself: [[https://colab.research.google.com/github/ageron/handson-mlp/blob/main/02_end_to_end_machine_learning_project.ipynb][tinyurl.com/geron-2-ipynb]]
+
+* [Slides 4–6] Target data
+** [Slides 4–5] Why start with data?
+
+#+begin_quote
+Machine learning is learning from data to create rules baked into a
+machine model so that the model can make predictions on new
+data. Therefore, data, not models or a coding language, or an
+infrastructure, takes the center role.
+#+end_quote
+
+** [Slide 6] What data are we using and why?
+
+#+begin_quote
+1. *Origin*: 1990 California Housing Prices dataset from the US Census
+   Bureau ([[https://www.kaggle.com/datasets/harrywang/housing?select=housing.csv][see Kaggle]]).
+2. *Metrics:* Population, median income, median housing price etc. by
+   district (or block group).
+3. *Why:* Data are realistic (though outdated) and verifiable[fn:1]
+#+end_quote
+#+attr_html: :width 400px :float nil:
+#+caption: Source: Géron, see Colab for source
+[[../img/california.png]]
+
+Two dense, expensive clusters stand out along the coast: the San
+Francisco Bay Area and Los Angeles/San Diego. They come back in the
+latitude/longitude histograms (part 2).
+
+* [Slides 7–14] Frame the problem and look at the big picture
+
+** [Slide 7] Checklist
+
+1. Define the objective in business terms.
+2. How will your solution be used?
+3. What are the current solutions/workarounds (if any)?
+4. How should you frame this problem (supervised/unsupervised, online/offline, etc.)
+5. How should performance be measured?
+6. Is the performance measure aligned with the business objective?
+7. What would be the minimum performance needed to reach the business objective?
+8. What are comparable problems? Can you reuse experience or tools?
+9. Is human expertise available?
+10. How would you solve the problem manually?
+11. List the assumptions you or others have made so far.
+12. Verify assumptions if possible.
+
+** [Slide 8] Is there a business need for machine learning?
+
+- Model output = prediction of a district's median housing price
+
+- Goal = decide whether it's worth investing in a given area
+
+- Output will be fed to another machine learning system as part of a
+  *data science pipeline*:
+
+  + Upstream = close to the source (data)
+  + Downstream = close to the project client (insights)
+
+- Currently, a team of experts estimates house prices based on a
+  system of complex rules - costly, time-consuming, error-prone.
+
+** [Slides 9–10] How would you frame this problem as an ML problem?
+
+- Supervised, unsupervised, reinforcement learning?
+
+- Classification, regression, or something else?
+
+- Batch learning or online learning?
+
+#+begin_quote
++ Model can be trained with labeled examples: Each
+  instance/row/observation comes with the expected output, the
+  district's median house prices -> *supervised ML*
++ Model will be asked to predict a single continuous numeric value
+  (median house price) based on a number of recorded features ->
+  *multiple* [predictors], *univariate* [predicted] regression
++ Model data are static, small (1.42 MB), not changing fast -> *batch
+  learning* (use all available data at once, offline, then launch).
+#+end_quote
+
+** [Slides 11–14] How would you measure the model's performance?
+*** [Slide 11] RMSE
+
+- We need a metric to evaluate the model's performance, also called a
+  loss or cost function.
+
+- For regression problems, we use RMSE (*Root Mean Squared Error*):
+  #+attr_html: :width 400px :float nil:
+  [[../img/rmse.png]]
+
+  Where:
+  + m ("sample") is the number of instances (rows/observations),
+    i = 1..m
+  + x^{(i)} ("features") is the i-th vector of all feature values
+    except the label (if there are 10 features, then its length is 10)
+  + h(x^{(i)}) ("hypothesis") is the model prediction for instance i
+    (a single number, not a vector)
+  + y^{(i)} ("target") is the actual label for instance i
+  + *X* is a matrix with all feature values (except labels) of all
+    instances: One row per instance, the i-th row is equal to the
+    transpose of x^{(i)}, x^{(i)T}
+
+*** [Slide 12] Code-along: RMSE by hand and with scikit-learn
+
+- Open Colab to: https://tinyurl.com/rmse-demo-ipynb
+
+- RMSE code example:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    import numpy as np  # import library for data frames
+    import pandas as pd  # import library for numerical functions
+
+    # Five districts: feature vectors x^(i) (one row each = the matrix X)
+    X = pd.DataFrame({
+        "longitude":         [-122.23, -118.41, -117.05, -121.32, -119.78],
+        "latitude":          [  37.88,   34.02,   32.91,   38.44,   36.21],
+        "housing_median_age":[  41,      25,      35,      18,      30  ],
+        "total_rooms":       [  880,    7099,    1274,    1627,    2519  ],
+        "population":        [  322,    2401,     570,     595,    1049  ],
+        "median_income":     [  8.30,    3.21,    4.58,    2.94,    5.12  ],
+    })
+    # print the sample data frame (puts it in a string - no truncation)
+    print(pd.DataFrame(X).to_string(index=False))
+
+    # what median house value labels might be
+    actual    = np.array([156_400, 230_000, 185_000, 310_000,  97_500])  # labels y^(i)
+    # what a model's predictions might be
+    predicted = np.array([148_000, 241_000, 179_500, 325_000, 112_000])  # h(x^(i))
+    # compute root mean square error on the data and print it
+    rmse = np.sqrt(np.mean((predicted - actual) ** 2))
+    print(f"\nRMSE: ${rmse:,.0f}")
+  #+end_src
+
+  #+RESULTS:
+  :  longitude  latitude  housing_median_age  total_rooms  population  median_income
+  :    -122.23     37.88                  41          880         322           8.30
+  :    -118.41     34.02                  25         7099        2401           3.21
+  :    -117.05     32.91                  35         1274         570           4.58
+  :    -121.32     38.44                  18         1627         595           2.94
+  :    -119.78     36.21                  30         2519        1049           5.12
+  :
+  : RMSE: $11,464
+
+- Shorter in scikit-learn (from v1.4):
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    from sklearn.metrics import root_mean_squared_error # import ml library function
+    rmse2 = root_mean_squared_error(actual, predicted) # compute RMSE and print it
+    print(f"RMSE: ${rmse2:,.0f}")
+  #+end_src
+
+  #+RESULTS:
+  : RMSE: $11,464
+
+*** [Slides 13–14] Why use RMSE? What is common to all performance measures?
+
+- Why use RMSE?
+  #+begin_quote
+  The code example shows it: RMSE is in the same units as the target
+  variable, which makes it more easily interpretable.
+  #+end_quote
+
+- What is common to all performance measures?
+  #+begin_quote
+  All performance measures are functions of the feature matrix *X* and
+  the model (hypothesis h): they aggregate the difference between
+  predictions h(x^{(i)}) and actual labels y^{(i)} into a single
+  scalar. The choice between them (RMSE, MAE, etc.) depends on how you
+  want to weight errors — RMSE penalizes outliers more heavily
+  (quadratic), MAE treats all errors equally (linear absolute value).
+  #+end_quote
+
+* [Slide 15] Wrap-up
+
+- Predict a district's median house price to guide investment.
+- Supervised, batch, multiple univariate regression, scored with RMSE
+  (in dollars).
+- Next: get the data and take a first look (=6_pipeline_2_get_data_student.org=).
+
+* Summary
+
+- *The pipeline*: ten steps, from framing the problem to monitoring a
+  deployed model; this course walks through it with the California
+  housing dataset.
+- *The data*: 1990 California housing prices, by district - realistic
+  (though outdated) and independently verifiable.
+- *Framing*: supervised learning (labeled training examples), multiple
+  predictors but one continuous target (univariate regression), batch
+  learning (the dataset is small and static).
+- *Performance measure*: RMSE (Root Mean Squared Error) - same units as
+  the target, so interpretable directly in dollars; penalizes large
+  errors more heavily than MAE does.
+- *Next*: get the data and take a first look.
+
+* Glossary
+
+| Term                  | Definition                                           |
+|-----------------------+------------------------------------------------------|
+| batch learning        | train on the whole static dataset at once, then      |
+|                       | launch (vs. online learning, which updates           |
+|                       | continuously).                                       |
+| district              | a group of nearby households in the census data      |
+|                       | (like a neighborhood or block group).                |
+| feature               | one input column (predictor) used to predict the     |
+|                       | label, e.g. median_income.                           |
+| feature matrix (X)    | all feature values for all instances - one row per   |
+|                       | instance, one column per feature.                    |
+| hypothesis (h)        | the model's prediction function; h(x) is its         |
+|                       | predicted value for input x.                         |
+| label                 | the target value to predict, e.g.                    |
+|                       | median_house_value.                                  |
+| loss (cost) function  | a function that scores how far predictions are from  |
+|                       | the actual labels, e.g. RMSE or MAE.                 |
+| MAE                   | Mean Absolute Error - average of the absolute        |
+|                       | prediction errors; weighs every error equally        |
+|                       | (linear).                                            |
+| online learning       | update the model continuously as new data arrive     |
+|                       | (vs. batch learning, which trains once).             |
+| pipeline              | the sequence of steps from framing the problem to    |
+|                       | monitoring a deployed model.                         |
+| regression            | predicting one continuous numeric target             |
+|                       | (univariate) from several predictors (multiple).     |
+| RMSE                  | Root Mean Squared Error - square root of the mean    |
+|                       | squared error; same units as the target, penalizes   |
+|                       | large errors more than MAE.                          |
+| supervised learning   | training with labeled examples, each input paired    |
+|                       | with its correct target output.                      |
+
+* Footnotes
+
+[fn:1] The original dataset appeared in R. Kelley Pace and Ronald
+Barry, “Sparse Spatial Autoregressions”, Statistics & Probability
+Letters 33, no. 3 (1997): 291–297.
