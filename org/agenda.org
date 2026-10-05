@@ -946,6 +946,7 @@ Small stats but important points for improvement
 
 - [[https://chat.google.com/room/AAQAkkjACa4/r5PJh0raIL0/r5PJh0raIL0?cls=10][First space datacenter in orbit]] (SpaceX + Google)
 - New interactive companion for kNN ([[https://birkenkrahe.github.io/ml_demos/][loads slowly]])
+- GitHub has (temporarily) stopped rendering .org files
 
 ** Review (Content)
 
