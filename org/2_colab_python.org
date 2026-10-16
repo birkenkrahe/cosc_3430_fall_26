@@ -1,6 +1,6 @@
 #+TITLE:Getting Started with Colab (and Python)
 #+AUTHOR:Marcus Birkenkrahe
-#+SUBTITLE:CS 540 - Principles of AI - Catholic Polytechnic U, summer 2026
+#+SUBTITLE: COSC 3430 (AI) Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent
 #+OPTIONS: toc:nil num:nil ^:nil
 #+STARTUP: overview hideblocks indent entitiespretty:

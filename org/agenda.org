@@ -776,7 +776,7 @@ different ways of building that function.
 - Briefly speak to your project (1 team member)
 - I'll give some groups feedback afterwards
 - You'll get more detailed feedback within 2 weeks
-- Next sprint review (literature review) is on Oct 23rd
+- Next sprint review (literature review) is on Monday, Nov 2
 
 *** Mushroom Edibility Random Forest
 

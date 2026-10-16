@@ -1,0 +1,491 @@
+#+TITLE:End-to-end machine learning project (3): create a test set
+#+AUTHOR:Marcus Birkenkrahe
+#+SUBTITLE: COSC 3430 (AI) Fall 2026 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty:
+#+OPTIONS: toc:nil num:nil ^:nil:
+#+PROPERTY: header-args:python :session *Python* :results output :exports both :noweb yes
+* Slide deck
+
+[[https://claude.ai/artifact/XPuVyNs9eeXn52hKmGQaUH][Claude slides link]]
+
+* Setup
+
+Get the data:
+#+begin_src python :results output :exports both :session *Python* :python python3
+  import pandas as pd
+  housing_full = pd.read_csv("https://tinyurl.com/housing-csv")
+  print(housing_full.info())
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 20640 entries, 0 to 20639
+Data columns (total 10 columns):
+ #   Column              Non-Null Count  Dtype
+---  ------              --------------  -----
+ 0   longitude           20640 non-null  float64
+ 1   latitude            20640 non-null  float64
+ 2   housing_median_age  20640 non-null  float64
+ 3   total_rooms         20640 non-null  float64
+ 4   total_bedrooms      20433 non-null  float64
+ 5   population          20640 non-null  float64
+ 6   households          20640 non-null  float64
+ 7   median_income       20640 non-null  float64
+ 8   median_house_value  20640 non-null  float64
+ 9   ocean_proximity     20640 non-null  object
+dtypes: float64(9), object(1)
+memory usage: 1.6+ MB
+None
+#+end_example
+
+* [Slide 1] Slides
+
+Deck: "End-to-End ML Project, Part 3" (16 slides). A =[Slide N]= in a
+headline means that slide is up while you cover that part. Code-alongs:
+slides 5, 10, 13 and 15. Continues =6_pipeline_2_get_data.org= (step 2,
+plus a first visual check). Today: step 4 - create the test
+set. We split it off *before* the deeper explore-and-visualize pass
+(step 3), because that pass must run on the training set only.
+
+* [Slide 2] Roadmap
+
+Split up over several code-along lectures:
+1) Look at the big picture
+2) Get the data
+3) Explore and visualize the data
+4) *Create the test data*
+5) Prepare data for learning
+6) Select a model and train
+7) Fine tune a model
+8) Present your solution
+9) Launch production system
+10) Monitor and maintain production system
+
+Today: step 4, before we come back to step 3 on the training set only.
+
+* [Slides 3–9] Why a test set, and why plain random sampling isn't enough
+
+- Why evaluate on unseen data at all?
+- What goes wrong with the obvious approach (plain random sampling)?
+- Why is this dataset, specifically, a hard case for it?
+
+** [Slide 3] Ask: Why set the test set aside before exploring?
+
+- We need to evaluate the model on data it has never seen. Why not look
+  at everything first and then split?
+
+** [Slide 4] Answer: biased data means a fake performance measure
+
+#+begin_quote
+We need to evaluate the model on data it has never seen to avoid
+different forms of *bias*, which would mean that the data set does not
+represent the population - and then the performance measure is fake:
+the model looks as if it generalizes well but actually it does not.
+
+The test set must be set aside *before* any exploration (*no data
+snooping*): looking at the test set biases your intuitions and model
+choices.
+#+end_quote
+
+** [Slide 5] → Editor: split the data at random
+
+- The simplest approach: pick 20% of instances at random:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    from sklearn.model_selection import train_test_split
+
+    train_set, test_set = train_test_split(
+        housing_full, test_size=0.2)
+    print(len(train_set), len(test_set))
+  #+end_src
+
+  #+RESULTS:
+  : 16512 4128
+
+- Show a group of rows of the training set (two features only):
+  #+begin_src python :results output :exports both :session *Python*
+    print(train_set.iloc[:,7:9].head(5))
+  #+end_src
+
+  #+RESULTS:
+  :        median_income  median_house_value
+  : 15281         5.1909            201400.0
+  : 9062          3.9219            433300.0
+  : 17175         3.1607            119300.0
+  : 2746          2.6493             67500.0
+  : 13553         3.8472            197600.0
+
+** [Slide 6] Ask: two problems with random sampling (pair)
+
+- Pair activity! Discuss for a couple of minutes with a partner, then
+  come up with answers to both questions.
+
+- *Question 1 - sampling bias*: housing prices depend heavily on a
+  district's median income. If you pick 20% of districts purely at
+  random, is there any guarantee this test set's income mix looks
+  like the full dataset's? What if you only had 200 districts instead
+  of 20,640?
+
+- *Question 2 - the reshuffling trap*: you add 500 new houses next
+  month and rerun this exact code. Does the test set still contain
+  the same houses as before - and does that matter?
+
+- *Hint* (for Question 2): think about yourself: what if you study for
+  your exam using a set of quiz questions?
+  + test set = questions you haven't seen yet
+  + studying with old questions = re-exposing yourself to the test set
+    before the real evaluation
+  + reshuffling means that you eventually see all the questions
+  + if the course material moves on, the questions no longer represent
+    what you need to learn
+
+** [Slide 7] Answer: two problems with random sampling
+
+Ways to approach this: look at all the operations included in
+~train_test_split~:
+- randomizing / shuffling
+- splitting
+
+#+begin_quote
+*Answer 1 - sampling bias*
+
+With a small dataset, random sampling may not represent the full
+population - a handful of unlucky rows can skew the test set's income
+or location mix. DataCamp's ~train_test_split~ examples avoid this
+issue by using clean, balanced datasets; real-world data is rarely
+that cooperative. (The fix - stratified sampling - comes in slides
+10-14.)
+
+*Answer 2 - the reshuffling trap*
+
+If the script is re-run without a fixed ~random_state~, a different
+20% is selected each time. Over multiple runs the model indirectly
+sees the *whole dataset* - defeating the purpose of a test set
+entirely.
+
+Quick fix: pin ~random_state~ (we use 42 by convention), or save the
+test set to disk after the first split and never regenerate it. Its
+flaw: if the dataset is refreshed with new instances, the fixed seed
+selects a different 20% and the saved test set goes stale.
+
+Robust fix: assign each instance a *hash* of a stable identifier (e.g.
+row index or district ID) and always put the same instances in the
+test set regardless of dataset order or size - new instances get
+assigned by their own hash, old ones stay where they were. The hash
+is essentially a *unique key* per row: the same input always produces
+the same hash value, so the train/test assignment is deterministic
+and stable across dataset updates.
+#+end_quote
+
+Fix ~random_state~:
+#+begin_src python :results output :exports both :session *Python* :python python3
+  from sklearn.model_selection import train_test_split
+
+  train_set, test_set = train_test_split(
+      housing_full, test_size=0.2, random_state=42)
+  print(len(train_set), len(test_set))
+#+end_src
+
+#+RESULTS:
+
+- Show a group of rows of the training set (two features only):
+  #+begin_src python :results output :exports both :session *Python*
+    print(train_set.iloc[:,7:9].head(5))
+  #+end_src
+
+  #+RESULTS:
+
+- This solves the problem that the model will only ever seen one set
+  of training data (instead of all data, over repeated runs).
+
+** [Slide 8] Ask: Even with a stable hash, why is random sampling still risky here?
+
+- Suppose we've fixed the reshuffling problem with hashing. Is random
+  sampling now safe for the California housing data?
+
+** [Slide 9] Answer: income is correlated with price
+
+#+begin_quote
+Both the test and the training data set should be representative of
+the full dataset (a sample of the real population of CA districts).
+
+Domain experts say that income is highly correlated with the house
+value - if the test set undersamples high or low income districts
+randomly, the error estimates will be systematically off.
+
+The problem isn't randomness itself — it's that random doesn't
+guarantee balanced, especially for a small or skewed subgroup.
+
+Random sampling gets the overall size of the test set right but not
+necessarily the mix — and here the mix of incomes is exactly what the
+model's accuracy depends on most.
+#+end_quote
+
+* [Slides 10–15] Stratified sampling, step by step
+
+- Cut the key predictor, =median_income=, into categories (strata)
+- Split within each stratum, then verify the split preserved proportions
+- Drop the helper column once it has done its job
+
+** [Slide 10] → Editor: cut median_income into categories
+
+- Key insight: ~median_income~ is the most important predictor of
+  housing price. We must ensure the test set represents its
+  distribution faithfully.
+
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    import numpy as np
+
+    housing_full["income_cat"] = pd.cut(      # assign to new category column
+        housing_full["median_income"],        # pick column
+        bins=[0, 1.5, 3.0, 4.5, 6.0, np.inf], # six edges (0,1.5],...(6.0,inf]
+        labels=[1, 2, 3, 4, 5])               # name bins 1 through 5
+  #+end_src
+
+- Explanation:
+  
+  #+begin_quote
+  ~pd.cut~ turns a continuous numeric column into a categorical one by
+  sorting its values into bins:
+
+  - =housing_full["median_income"]= is the column being cut.
+  - =bins=[0, 1.5, 3.0, 4.5, 6.0, np.inf]= gives the six edges of five
+    bins: (0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0], (6.0, inf]. Each
+    bin is a half-open interval - the right edge is included, the left
+    edge is not (so 1.5 itself falls into the first bin, not the
+    second). =np.inf= as the last edge catches every income above 6, with
+    no upper limit.
+  - =labels=[1, 2, 3, 4, 5]= names the five bins 1 through 5 instead of
+    showing the interval itself (e.g. =(3.0, 4.5]=) - one label per bin,
+    in the same order as the edges.
+  - The result is assigned to a new column, =housing_full["income_cat"]=
+    - a *category* column, not a plain integer column: each value is one
+    of the five labels, and the category keeps the bins' order (1 < 2 <
+    3 < 4 < 5), which is what lets it be used for stratified sampling.
+  #+end_quote
+
+- Check out the altered structure of =housing_full=:
+  #+begin_src python :results output :exports both :session *Python* :python python3 
+    print(housing_full["income_cat"].info())
+    print(housing_full.info())    
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  <class 'pandas.core.series.Series'>
+  RangeIndex: 20640 entries, 0 to 20639
+  Series name: income_cat
+  Non-Null Count  Dtype   
+  --------------  -----   
+  20640 non-null  category
+  dtypes: category(1)
+  memory usage: 20.5 KB
+  None
+  <class 'pandas.core.frame.DataFrame'>
+  RangeIndex: 20640 entries, 0 to 20639
+  Data columns (total 11 columns):
+   #   Column              Non-Null Count  Dtype   
+  ---  ------              --------------  -----   
+   0   longitude           20640 non-null  float64 
+   1   latitude            20640 non-null  float64 
+   2   housing_median_age  20640 non-null  float64 
+   3   total_rooms         20640 non-null  float64 
+   4   total_bedrooms      20433 non-null  float64 
+   5   population          20640 non-null  float64 
+   6   households          20640 non-null  float64 
+   7   median_income       20640 non-null  float64 
+   8   median_house_value  20640 non-null  float64 
+   9   ocean_proximity     20640 non-null  object  
+   10  income_cat          20640 non-null  category
+  dtypes: category(1), float64(9), object(1)
+  memory usage: 1.6+ MB
+  None
+  #+end_example
+
+** [Slide 11] Ask: Why can't we stratify on the raw income values?
+
+- ~train_test_split~ has a ~stratify~ parameter:
+  #+begin_src python :results none :exports both :session *Python* :python python3 
+    help(train_test_split)
+  #+end_src
+
+- Excerpt:
+  #+begin_quote
+      stratify : array-like, default=None
+          If not None, data is split in a stratified fashion, using this as
+          the class labels.
+  #+end_quote
+  
+- What does stratified sampling require that makes continuous income
+  unusable directly?
+
+- How? By passing =stratify=housing_full["median_income"]= to
+  =train_test_split=. Then every distinct income value will become its
+  own group (stratum), and then take 80/20 from each group.
+
+** [Slide 12] Answer: too many, too small strata
+
+#+begin_quote
+*Hint* - Take continuous income values like 3.2741, 5.1823, 2.9004 -
+how many districts share these? None! So every district would be its
+own stratum and too small to meaningfully sample from.
+#+end_quote
+
+- Visualize the income categories to confirm the strata are
+  well-populated before splitting:
+  #+begin_src python :file ../img/housing_income_cat.png :results file graphics output :exports both :session *Python* :python python3
+    housing_full["income_cat"].value_counts().sort_index().plot(
+        kind="bar", figsize=(8, 4), rot=0)
+    plt.xlabel("Income category")
+    plt.ylabel("Number of districts")
+    plt.title("Income category distribution")
+    plt.savefig("../img/housing_income_cat.png")
+  #+end_src
+
+  #+RESULTS:
+  [[file:../img/housing_income_cat.png]]
+
+** [Slide 13] → Editor: split within each category, and verify (pair exercise)
+
+- Pair activity: work alone or together with others.
+
+- Call the new sets =strat_train_set= and =strat_test_set=.
+
+- *Hint:* for the proportions, remember what gives you the value counts
+  for categorical columns. You get the proportion by dividing by the
+  length of each set.
+
+- Split *within* each category:
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    strat_train_set, strat_test_set = train_test_split(
+        housing_full, test_size=0.2,
+        stratify=housing_full["income_cat"],
+        random_state=42)
+  #+end_src
+
+- Verify proportions match the full dataset:
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    # Full dataset proportions
+    print(housing_full["income_cat"].value_counts() / len(housing_full))
+
+    # Test set proportions
+    print(strat_test_set["income_cat"].value_counts() / len(strat_test_set))
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  income_cat
+  3    0.350581
+  2    0.318847
+  4    0.176308
+  5    0.114438
+  1    0.039826
+  Name: count, dtype: float64
+  income_cat
+  3    0.350533
+  2    0.318798
+  4    0.176357
+  5    0.114341
+  1    0.039971
+  Name: count, dtype: float64
+  #+end_example
+
+- Note that pandas' ~.value_counts()~ method sorts by count, descending.
+
+- Why are we not looking at the raw counts?  
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    # Full dataset proportions
+    print(housing_full["income_cat"].value_counts())
+
+    # Test set proportions
+    print(strat_test_set["income_cat"].value_counts())
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  income_cat
+  3    7236
+  2    6581
+  4    3639
+  5    2362
+  1     822
+  Name: count, dtype: int64
+  income_cat
+  3    1447
+  2    1316
+  4     728
+  5     472
+  1     165
+  Name: count, dtype: int64
+  #+end_example
+
+- Answer: because the datasets are different sizes. What stratified
+  sampling promises is that *the relative mix of income categories is
+  the same in both sets.* If you compare the raw counts, you'd only
+  find out that the test set is 20% of the full set (which you already
+  knew).
+
+- Mathematically:
+
+  #+begin_quote
+  Draw n rows uniformly at random from a population of N, where
+  stratum k holds a true share p_k = N_k / N. The count that lands in
+  stratum k is random - it follows a *hypergeometric* distribution - and
+  its sample proportion X_k / n is unbiased (its average, over many
+  random draws, is p_k) but has variance
+
+  Var(X_k / n) = [p_k (1 - p_k) / n] * [(N - n) / (N - 1)]
+
+  For income category 1 (p_k ~ 0.04, N = 20,640, n = 4,128) this gives
+  a standard deviation of about 0.0027 - so a single random 20% draw
+  typically lands anywhere from about 3.4% to 4.5% for that category,
+  a +/-14% swing on the true value. Rare strata are hit hardest,
+  because p_k(1-p_k)/n shrinks relative to p_k as p_k grows.
+
+  Stratified sampling with proportional allocation removes this source
+  of variance entirely: instead of drawing n rows from the whole
+  population, it draws exactly n_k = round(n * p_k) rows from each
+  stratum. The test proportion is then
+
+  n_k / n = (n * p_k) / n = p_k
+
+  exactly, up to rounding to a whole row - not a random variable with
+  a standard deviation, a fixed number. The only randomness left is
+  *which* rows are picked within a stratum, not *how many*.
+  #+end_quote
+
+** [Slide 14] Answer: proportions match, in train and test
+
+#+begin_quote
+1. *Stratified sampling* preserves the income distribution of the full
+   dataset in both train and test sets. *Random sampling* does not
+   guarantee this - especially in the tails where rare high-income
+   districts (category 1 and 5) could be over- or under-represented.
+2. The *bar chart* confirms the strata are well-populated before
+   splitting: category 3 dominates (most districts have middle
+   incomes), categories 1 and 5 are rare but not empty.
+3. The *proportion comparison* after splitting verifies that the test
+   set mirrors the full dataset's income distribution faithfully -
+   this is what "representative" means empirically.
+#+end_quote
+
+** [Slide 15] → Editor: drop the helper column
+
+- =income_cat= was only a scaffold for the split. Drop it from both sets:
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    for df in (strat_train_set, strat_test_set):
+        df.drop("income_cat", axis=1, inplace=True)
+  #+end_src
+
+* [Slide 16] Wrap-up
+
+- Test set set aside *before* any exploration: no data snooping.
+
+- Plain random sampling risks sampling bias, and reshuffles the test
+  set on every rerun unless you pin it or hash a stable id.
+
+- Stratified sampling on =median_income= keeps both sets representative
+  of the population - verified by comparing proportions.
+
+- Next: explore and visualize - on =strat_train_set= only, the test set
+  stays sealed.
