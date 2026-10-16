@@ -1,4 +1,4 @@
-#+TITLE: Agenda - Artificial Intelligence 
+#+TITLE: Agenda - Artificial Intelligence
 #+AUTHOR: Marcus Birkenkrahe
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
@@ -706,16 +706,16 @@ different ways of building that function.
    paper and write down your answer. Be specific.
    #+begin_src python :results output :exports both :session *Python*
      import numpy as np
-     X = np.array([[2, 3],[2, 5],[3, 4],[4, 4],[5, 6],[6, 5]]) 
+     X = np.array([[2, 3],[2, 5],[3, 4],[4, 4],[5, 6],[6, 5]])
      y = np.array([0, 0, 0, 1, 1, 1])
      x_new = np.array([[4, 5]])
      print(X,'\n',y,'\n',x_new)
      print(X.shape, y.shape, x_new.shape)
      d = np.sqrt(((X - x_new)**2).sum(axis=1))
      print(d)
-     idx = np.argsort(d)[:3]                    
+     idx = np.argsort(d)[:3]
      print(idx)
-     print(y[idx])  # what's this output?                            
+     print(y[idx])  # what's this output?
    #+end_src
 
    #+RESULTS:
@@ -725,8 +725,8 @@ different ways of building that function.
     [3 4]
     [4 4]
     [5 6]
-    [6 5]] 
-    [0 0 0 1 1 1] 
+    [6 5]]
+    [0 0 0 1 1 1]
     [[4 5]]
    (6, 2) (6,) (1, 2)
    [2.82842712 2.         1.41421356 1.         1.41421356 2.        ]
@@ -752,7 +752,7 @@ different ways of building that function.
       ~np.sqrt~ and ~np.sum~ alongside ~axis=1~
 
       [[../img/distance.png]]
-      
+
       Use the square root function from NumPy ~np.sqrt~ and chain it
       with ~np.sum~ along the columns (one result per row).
    7) Print =d=, a one-dimensional NumPy array with six elements ordered
@@ -881,7 +881,7 @@ Artifacts:
 - The midterm exam will consist of 30-35 questions
 - There will be a few more question types
 - There will be [pseudo]code questions
-  
+
 ** ML Pipeline - the big picture
 
 What (if anything) do you remember from the last session?
@@ -941,9 +941,9 @@ Thank you again - 10 of 11 of you responded.
 1. *Difficulty and materials* - for some the class gets complex at
    times, for others it should go deeper; optional materials can
    feel overwhelming.
-   
+
    → I'll mark clearly what is *essential* and what is *optional*
-     for those who want to go deeper.
+   for those who want to go deeper.
 
 2. *Project guidance and instructions*
 
@@ -955,7 +955,7 @@ Thank you again - 10 of 11 of you responded.
    activities, more room for your answers.
 
    → I'll keep the review brisk, try short group activities, and
-     make sure you get to finish your answers.
+   make sure you get to finish your answers.
 
 4. *Recordings* - more of the whiteboard.
 
@@ -1074,13 +1074,276 @@ data and then apply it to both sets. Whatever you learn from the
 training set stays confined to how you treat the training set.
 #+end_quote
 
-* W7S2: The ML Pipeline IV - visualizing the data
+* DONE W7S2: The ML Pipeline IV - stratifying & visualizing the data
 
-** Review
+** Midterm exam preparation
 
-What are the two things you need to look out for when splitting data
-into training and testing data?
+I've posted the *complete quizzes 1-5 with answers* to help you prepare
+for the mid-term exam. You can feed these to AI to:
+- ask for similar questions (ask AI to make them a little harder)
+- ask for small coding problems and for questions where you need to
+  find the bug
+- ask AI after, say, 10 questions, to give you a performance
+  assessment ("how did I do?" What should I focus on now?")
+
+*Important:* You cannot blindly trust the AI's answers. You have to
+check back with the course material. This makes AI-assisted drills
+kind of expensive but, in my opinion, still worth it.
+
+Notice that the exam questions will *not be exactly like* the quiz
+questions. There will be different question types, including a few
+coding questions (similar to some of our in-class review quizzes). All
+the material is, however, available on Canvas. Ask me if you have any
+questions! Also: *open (handwritten) notes only, no printouts.*
+
+** Review - creating training and testing data
+
+1) Can you name the problems with the current housing dataset?
+   #+begin_quote
+   From the histograms of all numeric features
+   (~housing_full.hist(bins=50, figsize=(12,8))~):
+
+   1. *Capped values*: ~median_house_value~ and ~housing_median_age~ are
+      capped - values above a limit were all recorded as that limit
+      (500,001 and 52), visible as a tall spike at the right edge.
+   2. *A feature not in the unit you'd expect*: ~median_income~ is in
+      tens of thousands of dollars (3 means about $30,000), and it is
+      clipped at 0.5 and 15.
+   3. *Right-skewed features*: ~total_rooms~, ~total_bedrooms~,
+      ~population~, ~households~ (and, more mildly, ~median_income~ and
+      ~median_house_value~) have a long tail - a few very large values
+      pull the mean above the median.
+   4. *Wildly different scales*: features range from single digits to
+      the tens of thousands - the model needs the data rescaled before
+      training.
+   5. *Bimodal features*: ~latitude~ and ~longitude~ each have two peaks
+      - the Bay Area and Los Angeles.
+
+   None of this is a problem with the data collection itself, but each
+   one has to be dealt with before the data can go into a model.
+   #+end_quote
+
+2) How can you find out more about ~train_test_split~?
+   #+begin_example python
+   from sklearn.model_selection import train_test_split
+   help(train_test_split)
+   #+end_example
+
+3) How can you show 5 rows of =median_income= and =median_house_value= in
+   =train_set=? (cols 7 and 8 in the DataFrame)
+   #+begin_example python
+   print(train_set.iloc[:,7:9].head(5))
+   #+end_example
+
+4) What are the three things you need to look out for when splitting
+   data into training and testing data?
+   #+begin_quote
+   1. *Sampling bias*: with a small or skewed data set, a plain random
+      20% test split may not represent the full population.
+
+   2. *The reshuffling trap*: rerunning the split with a different
+      ~random_state~ each time eventually exposes the whole data set to
+      you and your model, defeating the purpose of a test set.
+
+   3. *Data snooping*: even a statistically sound split (a stable hash,
+      stratified sampling) doesn't protect you if you look at the test
+      set before you're done exploring and choosing a model - seeing
+      it biases your own intuitions and decisions, so the test set no
+      longer measures performance on data the whole process has never
+      seen.
+   #+end_quote
+
+5) What are we going to do about it?
+   #+begin_quote
+   Three separate fixes, one per problem:
+
+   1. For the reshuffling trap: fix ~random_state~, or better, hash a
+      stable row identifier so the split survives a refreshed data set.
+
+   2. For sampling bias - specifically, that income matters most for
+      price and a plain random split may not represent it well -
+      *stratified sampling*: cut ~median_income~ into categories
+      (strata), then split within each stratum so training and test
+      sets keep the same income distribution as the full data set,
+      verified by comparing proportions before and after the split.
+
+   3. For data snooping: set the test set aside *before* any
+      exploration, and don't touch it again until the model is ready
+      to be evaluated - no peeking, no matter how sound the split
+      itself is.
+   #+end_quote
+
+** Exploring and visualizing the data: correlations
+
+Split up over several code-along lectures:
+1) [X] Look at the big picture
+2) [X] Get the data
+3) [X] Explore and visualize the data
+4) [X] Create the test data
+5) [ ] Prepare data for learning
+6) [ ] Select a model and train
+7) [ ] Fine tune a model
+8) [ ] Present your solution
+9) [ ] Launch production system
+10) [ ] Monitor and maintain production system
+
+Step 3 gets a second, deeper pass here: part 2 was a first look at the
+whole dataset (histograms); this time we work on =strat_train_set=
+only, now that the test set is sealed away (part 3) - map plots,
+correlation coefficients, and =scatter_matrix()=.
+
+File: =org/6_pipeline_correlations.org= in GitHub.
+
+* W8S1: The ML Pipeline V - correlations (cont'd) / Literature review
+
+1) [ ] Second sprint: literature review (due Oct 30)
+2) [ ] Review: exploring the training set (warm-up)
+3) [ ] Exploring and visualizing the data: correlations (cont'd)
+
+** Second sprint: literature review (due Oct 30)
+
+The assignment is on Canvas. Here is what a literature review is,
+and what I expect.
+
+- *What is a literature review?*
+  #+begin_quote
+  - You find out what others have already done on your question
+    before you build anything yourself: which approaches exist, which
+    datasets and metrics people use, what results they got.
+
+  - It's not a list of links. For each source you say what it does,
+    how it does it, and what you take from it for your project.
+
+  - The synthesis is the part that counts: what is known, which
+    approach you choose and why, and what your project adds.
+
+  - If you use AI then I need you to reconcile your hypothesis ("What
+    may be useful for me?") with the AI's response ("This is useful for
+    you!").
+  #+end_quote
+
+- *Why now?*
+  #+begin_quote
+  - Your research question gets smaller and sharper once you know
+    what's been done. Many first-sprint questions were too broad: aim
+    for a minimum viable product (MVP) first, stretch goals second.
+
+  - You learn which metric and which baseline to compare against.
+    Without a baseline, you can't say whether your model is any good.
+  #+end_quote
+
+*- Lessons from the first sprint*
 #+begin_quote
+- A link is not a reference: complete every entry (author, title,
+  year, source) and stay with one style (APA, MLA, Chicago, or
+  Harvard).
 
+- Disclose your AI use, always - even if it's "none used". Your
+  statement and your references must agree.
+
+- AI-suggested sources that nobody checked: you must have read
+  every source you cite. A source that does not exist costs points.
 #+end_quote
 
+*- What counts as a source?*
+#+begin_quote
+- At least five sources, at least two authoritative: a book, a
+  peer-reviewed article, official documentation, or the
+  documentation of your dataset or library.
+
+- Your dataset is a source too: who published it, when, where.
+
+- Blogs and videos are fine, but not as your only sources. AI
+  conversations do not count toward the five.
+#+end_quote
+
+- *Where to look*
+  #+begin_quote
+  - Google Scholar, arXiv, the dataset's own page
+    (Kaggle, UCI), the documentation of the libraries you use, and the
+    textbook (Géron).
+
+  - Use AI to find candidates and to summarize, then open and read the
+    source yourself, and verify the citation.
+  #+end_quote
+
+- *Sprint review*
+  #+begin_quote
+  - Monday, November 2, in class. Every team member presents at least
+    one of the sources and answers questions about it.
+  #+end_quote
+
+Questions? Ask me early, not at the end of the sprint!
+
+** Review: exploring the training set (warm-up)
+
+1) Which data do we explore and visualize in this session, and why
+   not the full dataset?
+   #+begin_quote
+   Only the training set, =strat_train_set=. The test set
+   (=strat_test_set=) was sealed away in part 3, and looking at it now
+   would be data snooping.
+   #+end_quote
+
+2) Why do we work on ~housing = strat_train_set.copy()~ instead of on
+   =strat_train_set= itself?
+   #+begin_quote
+   So that whatever we add or change while exploring (new columns,
+   transformations) does not alter =strat_train_set=. We can always
+   go back to the untouched training set.
+   #+end_quote
+
+3) What does this code produce, and what does each argument do?
+   #+begin_src python :eval no
+     housing.plot(kind="scatter", x="longitude", y="latitude", grid=True)
+   #+end_src
+   #+begin_quote
+   A scatterplot of all districts by location - effectively a map of
+   California. ~kind="scatter"~ draws points instead of lines,
+   ~x~ and ~y~ name the columns for the two axes, and ~grid=True~
+   adds grid lines.
+   #+end_quote
+
+4) Why didn't ~help(housing.plot)~ tell us how to fix this, and where
+   did we find the answer?
+   #+begin_quote
+   The parameter is hidden in ~**kwargs~ - keyword arguments that
+   pandas passes on to matplotlib. The pandas docstring doesn't list
+   them. ~help(plt.scatter)~ does.
+   #+end_quote
+
+5) What does ~alpha=0.2~ do, and why do dense areas now look darker?
+   #+begin_quote
+   ~alpha~ sets the transparency of every point, from 0 (invisible)
+   to 1 (opaque). Where many transparent points overlap, their colors
+   add up, so dense areas appear darker. It changes only the display,
+   not the data.
+   #+end_quote
+
+** Exploring and visualizing the data: correlations (cont'd)
+
+- Map with dot size (=population=) and color (=median_house_value=)
+- Pearson's correlation coefficient: formula and meaning
+- Toy data as a bar chart: =dogs= vs. =cats=
+- Toy example by hand - and as cosine similarity
+- Custom correlation method: histogram intersection
+- Which features correlate with =median_house_value=?
+- Close to zero: no /linear/ correlation only
+- ~scatter_matrix()~ for the most promising features
+- Zoom in: =median_income= vs. =median_house_value=
+- Price cap and data artifacts
+- Attribute combinations: =bedrooms_ratio=
+
+File: =org/6_pipeline_4_correlations.org= in GitHub.
+
+** NEXT Prepare the data
+
+- Clean the data
+- Impute values
+- Handle categorical features
+- Rescale features
+- Build transformation pipelines
+
+* W9S1: The ML Pipeline VI - prepare the data
+* W9S2: The ML Pipeline VII - transformation pipelines
+* W9S3: The ML Pipeline VIII - select and train the model
