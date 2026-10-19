@@ -1194,12 +1194,12 @@ correlation coefficients, and =scatter_matrix()=.
 
 File: =org/6_pipeline_correlations.org= in GitHub.
 
-* W8S1: The ML Pipeline V - correlations (cont'd) / Literature review
+* DONE W8S1: The ML Pipeline V - correlations (cont'd) / Literature review
 
-1) [ ] Second sprint: literature review (due Oct 30)
-2) [ ] Review: exploring the training set (warm-up)
-3) [ ] Exploring and visualizing the data: correlations (cont'd)
-
+1) [X] Second sprint: literature review (due Oct 30)
+2) [X] Review: exploring the training set (warm-up)
+3) [X] Exploring and visualizing the data: correlations (cont'd)
+   
 ** Second sprint: literature review (due Oct 30)
 
 The assignment is on Canvas. Here is what a literature review is,
@@ -1345,5 +1345,43 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
 - Build transformation pipelines
 
 * W9S1: The ML Pipeline VI - prepare the data
+
+- [ ] Home assignment: When r lies
+- [ ] Finish: feature correlations
+- [ ] Prepare the data: imputation
+
+** Home assignment: When r lies
+
+- In Canvas: [[https://augie.instructure.com/courses/15660/assignments/276337][programming assignment "When r lies"]] 
+
+- Starter notebook in Colab: [[https://birkenkrahe.github.io/go/rlies][birkenkrahe.github.io/go/rlies]] - save a copy
+  to your Drive and put your name in the header
+
+- When does Pearson's r tell the truth, and when does it mislead?
+  + *Anscombe's quartet:* same r, four very different plots - and four
+    identical ~LinearRegression~ models
+  + *Palmer penguins*: the sign of r flips once you look at each species
+    (Simpson's paradox[fn:1])
+  + *Feature or target*: r can help prediction or signal redundancy
+
+- Time: about 60-90 min. Submit notebook as an .ipynb file in Canvas.
+
+** NEXT Prepare the data
+
+- [ ] Clean the data
+- [ ] Impute values
+- [ ] Handle categorical features
+- [ ] Rescale features
+- [ ] Build transformation pipelines
+
+
 * W9S2: The ML Pipeline VII - transformation pipelines
 * W9S3: The ML Pipeline VIII - select and train the model
+
+* Footnotes
+
+[fn:1]Simpson's paradox appears when a trend that holds within groups
+reverses (or disappears) after combining the data. Example: UC
+Berkeley's 1973 admission showed an overall admission gender bias
+against women. When examined by major (department), the effect
+disappeared, and in most departments favored women.
