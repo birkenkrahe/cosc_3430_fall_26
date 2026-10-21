@@ -1344,11 +1344,18 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
 - Rescale features
 - Build transformation pipelines
 
-* W9S1: The ML Pipeline VI - prepare the data
+* DONE W9S1: The ML Pipeline VI - scatter matrix (correlations)
 
-- [ ] Home assignment: When r lies
-- [ ] Finish: feature correlations
+- [X] Finish: feature correlations
+- [X] Home assignment: When r lies
 - [ ] Prepare the data: imputation
+
+** Finish: feature correlations
+
+- The meaning of r: check out the [[https://birkenkrahe.github.io/ml_demos/pearson-correlation.html][visual interactive companion]]
+- How much do two feature distributions overlap with each other?
+- Building a scatter matrix of more strongly correlated features
+- Combining features to improve predictive power
 
 ** Home assignment: When r lies
 
@@ -1366,7 +1373,10 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
 
 - Time: about 60-90 min. Submit notebook as an .ipynb file in Canvas.
 
-** NEXT Prepare the data
+
+* W9S2: The ML Pipeline VII - Imputation / Encoding
+
+** Prepare the data
 
 - [ ] Clean the data
 - [ ] Impute values
@@ -1374,9 +1384,9 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
 - [ ] Rescale features
 - [ ] Build transformation pipelines
 
-
-* W9S2: The ML Pipeline VII - transformation pipelines
-* W9S3: The ML Pipeline VIII - select and train the model
+* W9S3: The ML Pipeline VIII - Rescaling / ~scikit-learn~
+* W9S3: The ML Pipeline IX - transformation pipelines
+* W10S1: The ML Pipeline X - select and train the model
 
 * Footnotes
 
