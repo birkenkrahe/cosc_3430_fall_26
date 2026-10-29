@@ -1,0 +1,192 @@
+#+TITLE:End-to-end ML project: pipelines and custom transformers (code)
+#+SUBTITLE: COSC 3430 AI - Fall 26 - Augustana U
+#+STARTUP: overview hideblocks indent entitiespretty
+
+* Setup
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  import pandas as pd
+  import numpy as np
+  from sklearn.model_selection import train_test_split
+  from sklearn.preprocessing import OneHotEncoder
+
+  housing_full = pd.read_csv("https://tinyurl.com/housing-csv")
+  housing_full["income_cat"] = pd.cut(
+      housing_full["median_income"],
+      bins=[0, 1.5, 3.0, 4.5, 6.0, np.inf],
+      labels=[1, 2, 3, 4, 5])
+  strat_train_set, strat_test_set = train_test_split(
+      housing_full, test_size=0.2,
+      stratify=housing_full["income_cat"],
+      random_state=42)
+  for df in (strat_train_set, strat_test_set):
+      df.drop("income_cat", axis=1, inplace=True)
+      housing = strat_train_set.drop("median_house_value", axis=1)
+      housing_labels = strat_train_set["median_house_value"].copy()
+      housing_num = housing.select_dtypes(include=[np.number])
+      print(housing.shape, housing_num.shape)
+#+end_src
+
+#+RESULTS:
+: (16512, 9) (16512, 8)
+
+* Code-along 1. A small example
+
+#+begin_src python :results output :exports both :session *Python*
+  toy = pd.DataFrame({
+      "age":[25,32,np.nan,40,28],
+      "income":[50000,64000, 58000, np.nan, 72000],
+  })
+  print(toy)
+  print(toy.describe())
+#+end_src
+
+#+RESULTS:
+#+begin_example
+    age   income
+0  25.0  50000.0
+1  32.0  64000.0
+2   NaN  58000.0
+3  40.0      NaN
+4  28.0  72000.0
+         age        income
+count   4.00      4.000000
+mean   31.25  61000.000000
+std     6.50   9309.493363
+min    25.00  50000.000000
+25%    27.25  56000.000000
+50%    30.00  61000.000000
+75%    34.00  66000.000000
+max    40.00  72000.000000
+#+end_example
+
+* Code-along 2. ~Pipeline~: impute, then scale
+
+#+begin_src python :results output :exports both :session *Python*
+  from sklearn.pipeline import Pipeline
+  from sklearn.impute import SimpleImputer
+  from sklearn.preprocessing import StandardScaler
+
+  num_pipeline=Pipeline([
+      ("impute",SimpleImputer(strategy="median")),
+      ("scale",StandardScaler()),
+  ])
+
+  toy_prepared=num_pipeline.fit_transform(toy)
+  print(toy_prepared.round(2))
+#+end_src
+
+#+RESULTS:
+: [[-1.19 -1.53]
+:  [ 0.2   0.42]
+:  [-0.2  -0.42]
+:  [ 1.78  0.  ]
+:  [-0.59  1.53]]
+
+* Code-along 3. The same steps by hand
+
+#+begin_src python :results output :exports both :session *Python*
+  # Code-along 3: the same two steps by hand
+  # step 1: impute the medians
+  imputer = SimpleImputer(strategy="median")
+  toy_imputed = imputer.fit_transform(toy)
+  # no NaN left
+  print(toy_imputed)
+
+  # step 2: standardize the imputed data
+  scaler = StandardScaler()
+  toy_scaled = scaler.fit_transform(toy_imputed)
+  # same result as the pipeline
+  print(np.round(toy_scaled, 2))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[[2.5e+01 5.0e+04]
+ [3.2e+01 6.4e+04]
+ [3.0e+01 5.8e+04]
+ [4.0e+01 6.1e+04]
+ [2.8e+01 7.2e+04]]
+[[-1.19 -1.53]
+ [ 0.2   0.42]
+ [-0.2  -0.42]
+ [ 1.78  0.  ]
+ [-0.59  1.53]]
+#+end_example
+
+* Code-along 4. A predictor as the last step
+
+#+begin_src python :results output :exports both :session *Python*
+  from sklearn.linear_model import LinearRegression
+  from sklearn.metrics import root_mean_squared_error
+
+  train = toy.dropna(subset=["income"])
+  X = train[["age"]]
+  y = train["income"]
+
+  full_pipeline = Pipeline([
+      ("impute",SimpleImputer(strategy="median")),
+      ("scale",StandardScaler()),
+      ("predict",LinearRegression())
+  ])
+
+  full_pipeline.fit(X,y)
+  predictions = full_pipeline.predict(X)
+  print(np.round(predictions,0))
+  rmse = root_mean_squared_error(y, predictions)
+  print(f"RMSE: {rmse:,.0f}")
+#+end_src
+
+#+RESULTS:
+: [55091. 67818. 60545. 60545.]
+: RMSE: 6,674
+
+* Code-along 5. ~make_pipeline~, and looking inside
+
+#+begin_src python :results output :exports both :session *Python*
+    # Code-along 5: a pipeline without step names
+    # import the helper
+    from sklearn.pipeline import make_pipeline
+
+    # the same three steps, named automatically
+    pipeline = make_pipeline(SimpleImputer(strategy="median"),
+                             StandardScaler(),
+                             LinearRegression()
+                             )
+    # Code-along 5 (cont.): look inside the pipeline
+    # whole pipeline
+    print(pipeline)
+    # just the steps
+    print(pipeline.steps)
+    # just the length
+    print(len(pipeline))
+    # element using index
+    print(pipeline[0])
+    # last element
+    print(pipeline[-1])
+#+end_src
+
+#+RESULTS:
+: Pipeline(steps=[('simpleimputer', SimpleImputer(strategy='median')),
+:                 ('standardscaler', StandardScaler()),
+:                 ('linearregression', LinearRegression())])
+: [('simpleimputer', SimpleImputer(strategy='median')), ('standardscaler', StandardScaler()), ('linearregression', LinearRegression())]
+: 3
+: SimpleImputer(strategy='median')
+: LinearRegression()
+
+* Code-along 6. A pipeline for the housing data
+
+* Code-along 7. ~ColumnTransformer~: numerical and categorical columns
+
+* Code-along 8. Let scikit-learn pick the columns
+
+* Code-along 9. A custom transformer: =ClusterSimilarity=
+
+* Code-along 10. Use it like any other transformer
+
+* Code-along 11. Reusable pieces: ~FunctionTransformer~
+
+* Code-along 12. The final ~ColumnTransformer~
+
+* Code-along 13. 24 features, ready for training
