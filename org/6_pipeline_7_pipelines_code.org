@@ -29,6 +29,7 @@
 
 #+RESULTS:
 : (16512, 9) (16512, 8)
+: (16512, 9) (16512, 8)
 
 * Code-along 1. A small example
 
@@ -144,26 +145,26 @@ max    40.00  72000.000000
 * Code-along 5. ~make_pipeline~, and looking inside
 
 #+begin_src python :results output :exports both :session *Python*
-    # Code-along 5: a pipeline without step names
-    # import the helper
-    from sklearn.pipeline import make_pipeline
+  # Code-along 5: a pipeline without step names
+  # import the helper
+  from sklearn.pipeline import make_pipeline
 
-    # the same three steps, named automatically
-    pipeline = make_pipeline(SimpleImputer(strategy="median"),
-                             StandardScaler(),
-                             LinearRegression()
-                             )
-    # Code-along 5 (cont.): look inside the pipeline
-    # whole pipeline
-    print(pipeline)
-    # just the steps
-    print(pipeline.steps)
-    # just the length
-    print(len(pipeline))
-    # element using index
-    print(pipeline[0])
-    # last element
-    print(pipeline[-1])
+  # the same three steps, named automatically
+  pipeline = make_pipeline(SimpleImputer(strategy="median"),
+                           StandardScaler(),
+                           LinearRegression()
+                           )
+  # Code-along 5 (cont.): look inside the pipeline
+  # whole pipeline
+  print(pipeline)
+  # just the steps
+  print(pipeline.steps)
+  # just the length
+  print(len(pipeline))
+  # element using index
+  print(pipeline[0])
+  # last element
+  print(pipeline[-1])
 #+end_src
 
 #+RESULTS:
@@ -177,15 +178,222 @@ max    40.00  72000.000000
 
 * Code-along 6. A pipeline for the housing data
 
+#+begin_src python :results output :exports both :session *Python*
+  num_pipeline = make_pipeline(SimpleImputer(strategy="median"),
+                               StandardScaler())
+  housing_num_prepared = num_pipeline.fit_transform(housing_num)
+  print(housing_num_prepared[:2].round(2))
+  print(type(housing_num_prepared))
+#+end_src
+
+#+RESULTS:
+: [[-1.42  1.01  1.86  0.31  1.37  0.14  1.39 -0.94]
+:  [ 0.6  -0.7   0.91 -0.31 -0.44 -0.69 -0.37  1.17]]
+: <class 'numpy.ndarray'>
+
+#+begin_src python :results output :exports both :session *Python*
+  df_housing_num_prepared = pd.DataFrame(
+      housing_num_prepared,
+      columns = num_pipeline.get_feature_names_out(),
+      index = housing_num.index)
+
+  print(df_housing_num_prepared.describe().round(2))
+#+end_src
+
+#+RESULTS:
+:        longitude  latitude  housing_median_age  total_rooms  total_bedrooms  population  households  median_income
+: count   16512.00  16512.00            16512.00     16512.00        16512.00    16512.00    16512.00       16512.00
+: mean       -0.00      0.00               -0.00        -0.00            0.00        0.00        0.00           0.00
+: std         1.00      1.00                1.00         1.00            1.00        1.00        1.00           1.00
+: min        -2.39     -1.45               -2.19        -1.21           -1.27       -1.30       -1.30          -1.78
+: 25%        -1.11     -0.80               -0.84        -0.55           -0.57       -0.58       -0.58          -0.69
+: 50%         0.53     -0.65                0.03        -0.24           -0.25       -0.24       -0.24          -0.18
+: 75%         0.78      0.98                0.67         0.24            0.25        0.27        0.27           0.46
+: max         2.54      2.96                1.86        16.79           13.45       13.59       12.69           5.88
+
 * Code-along 7. ~ColumnTransformer~: numerical and categorical columns
+
+#+begin_src python :results output :exports both :session *Python*
+  from sklearn.compose import ColumnTransformer
+
+  num_attribs = ["longitude", "latitude", "housing_median_age",
+                 "total_rooms", "total_bedrooms", "population",
+                 "households", "median_income"]
+
+  cat_attribs = ["ocean_proximity"]
+
+  cat_pipeline = make_pipeline(
+      SimpleImputer(strategy="most_frequent"),
+      OneHotEncoder(handle_unknown="ignore"))
+
+  [print(_) for _ in cat_pipeline.steps]
+#+end_src
+
+#+RESULTS:
+: ('simpleimputer', SimpleImputer(strategy='most_frequent'))
+: ('onehotencoder', OneHotEncoder(handle_unknown='ignore'))
+
+#+begin_src python :results output :exports both :session *Python*
+  preprocessing = ColumnTransformer([
+      ("num", num_pipeline, num_attribs),
+      ("cat", cat_pipeline, cat_attribs)
+  ])
+
+  print(preprocessing)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ColumnTransformer(transformers=[('num',
+                                 Pipeline(steps=[('simpleimputer',
+                                                  SimpleImputer(strategy='median')),
+                                                 ('standardscaler',
+                                                  StandardScaler())]),
+                                 ['longitude', 'latitude', 'housing_median_age',
+                                  'total_rooms', 'total_bedrooms', 'population',
+                                  'households', 'median_income']),
+                                ('cat',
+                                 Pipeline(steps=[('simpleimputer',
+                                                  SimpleImputer(strategy='most_frequent')),
+                                                 ('onehotencoder',
+                                                  OneHotEncoder(handle_unknown='ignore'))]),
+                                 ['ocean_proximity'])])
+#+end_example
+
 
 * Code-along 8. Let scikit-learn pick the columns
 
+#+begin_src python :results output :exports both :session *Python*
+  # Code-along 8: select the columns by data type
+  # import the two helpers
+  from sklearn.compose import make_column_selector, make_column_transformer
+
+  # numerical pipeline on number columns, categorical on text columns
+  preprocessing = make_column_transformer(
+      (num_pipeline, make_column_selector(dtype_include=np.number)),
+      (cat_pipeline, make_column_selector(dtype_include=object)),
+  )
+  # fit and transform the whole training set
+  housing_prepared = preprocessing.fit_transform(housing)
+  # 8 numerical + 5 one-hot columns
+  print(housing_prepared.shape)
+  # the generated feature names
+  print(preprocessing.get_feature_names_out())
+#+end_src
+
+#+RESULTS:
+: (16512, 13)
+: ['pipeline-1__longitude' 'pipeline-1__latitude'
+:  'pipeline-1__housing_median_age' 'pipeline-1__total_rooms'
+:  'pipeline-1__total_bedrooms' 'pipeline-1__population'
+:  'pipeline-1__households' 'pipeline-1__median_income'
+:  'pipeline-2__ocean_proximity_<1H OCEAN'
+:  'pipeline-2__ocean_proximity_INLAND' 'pipeline-2__ocean_proximity_ISLAND'
+:  'pipeline-2__ocean_proximity_NEAR BAY'
+:  'pipeline-2__ocean_proximity_NEAR OCEAN']
+
 * Code-along 9. A custom transformer: =ClusterSimilarity=
+
+#+begin_src python :results output :exports both :session *Python*
+  # Code-along 9: a transformer class of our own
+  # base classes for estimators and transformers
+  from sklearn.base import BaseEstimator, TransformerMixin
+  # Gaussian RBF
+  from sklearn.metrics.pairwise import rbf_kernel
+  # k-means clustering
+  from sklearn.cluster import KMeans
+
+  # inherits get_params(), set_params() and fit_transform()
+  class ClusterSimilarity(BaseEstimator, TransformerMixin):
+      # store the hyperparameters, nothing else
+      def __init__(self, n_clusters=10, gamma=1.0, random_state=None):
+          # number of clusters
+          self.n_clusters = n_clusters
+          # RBF decay
+          self.gamma = gamma
+          # seed for KMeans
+          self.random_state = random_state
+
+      # learn the cluster centers from the training data
+      def fit(self, X, y=None, sample_weight=None):
+          # a KMeans model with n_clusters clusters
+          self.kmeans_ = KMeans(self.n_clusters, random_state=self.random_state)
+          # find the clusters
+          self.kmeans_.fit(X, sample_weight=sample_weight)
+          # always return self!
+          return self
+
+      # similarity of each row to each cluster center
+      def transform(self, X):
+          # one column per cluster
+          return rbf_kernel(X, self.kmeans_.cluster_centers_, gamma=self.gamma)
+
+      # names of the output columns
+      def get_feature_names_out(self, names=None):
+          # one name per cluster
+          return [f"Cluster {i} similarity" for i in range(self.n_clusters)]
+#+end_src
 
 * Code-along 10. Use it like any other transformer
 
+  #+name: cluster-similarity-use
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    # Code-along 10: cluster similarities for latitude and longitude
+    # 10 clusters, gamma = 1
+    cluster_simil = ClusterSimilarity(n_clusters=10, gamma=1., random_state=42)
+    # fit the clusters, then compute the similarities
+    similarities = cluster_simil.fit_transform(housing[["latitude", "longitude"]])
+    # one column per cluster
+    print(similarities.shape)
+    # first three districts
+    print(similarities[:3].round(2))
+  #+end_src
+
+  #+RESULTS: cluster-similarity-use
+  : (16512, 10)
+  : [[0.46 0.   0.08 0.   0.   0.   0.   0.98 0.   0.  ]
+  :  [0.   0.96 0.   0.03 0.04 0.   0.   0.   0.11 0.35]
+  :  [0.34 0.   0.45 0.   0.   0.   0.01 0.73 0.   0.  ]]
+
 * Code-along 11. Reusable pieces: ~FunctionTransformer~
+
+  #+name: final-pieces
+  #+begin_src python :results none :exports both :session *Python* :python python3
+    # Code-along 11: the building blocks of the final transformer
+    # wraps a function as a transformer
+    from sklearn.preprocessing import FunctionTransformer
+
+    # ratio of the first to the second column
+    def column_ratio(X):
+        # keep 2D shape with [[0]] and [[1]]
+        return X[:, [0]] / X[:, [1]]
+
+    # feature name of the ratio column
+    def ratio_name(function_transformer, feature_names_in):
+        # one output column called "ratio"
+        return ["ratio"]
+
+    # impute, take the ratio, scale
+    def ratio_pipeline():
+        # a new pipeline at every call
+        return make_pipeline(
+            SimpleImputer(strategy="median"),
+            FunctionTransformer(column_ratio, feature_names_out=ratio_name),
+            StandardScaler())
+
+    # impute, take the log, scale
+    log_pipeline = make_pipeline(
+        SimpleImputer(strategy="median"),
+        FunctionTransformer(np.log, feature_names_out="one-to-one"),
+        StandardScaler())
+
+    # 10 cluster similarities
+    cluster_simil = ClusterSimilarity(n_clusters=10, gamma=1., random_state=42)
+
+    # impute and scale everything else
+    default_num_pipeline = make_pipeline(SimpleImputer(strategy="median"),
+                                         StandardScaler())
+  #+end_src
 
 * Code-along 12. The final ~ColumnTransformer~
 
