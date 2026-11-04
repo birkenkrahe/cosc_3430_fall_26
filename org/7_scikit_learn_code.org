@@ -1,0 +1,159 @@
+#+TITLE:The scikit-learn API (code)
+#+SUBTITLE: COSC 3430 AI - Fall 26 - Augustana U
+#+STARTUP: overview hideblocks indent entitiespretty
+
+* Setup
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  import pandas as pd
+  import numpy as np
+  from sklearn.model_selection import train_test_split
+
+  housing_full = pd.read_csv("https://tinyurl.com/housing-csv")
+  housing_full["income_cat"] = pd.cut(
+      housing_full["median_income"],
+      bins=[0, 1.5, 3.0, 4.5, 6.0, np.inf],
+      labels=[1, 2, 3, 4, 5])
+  strat_train_set, strat_test_set = train_test_split(
+      housing_full, test_size=0.2,
+      stratify=housing_full["income_cat"],
+      random_state=42)
+  for df in (strat_train_set, strat_test_set):
+      df.drop("income_cat", axis=1, inplace=True)
+  housing = strat_train_set.drop("median_house_value", axis=1)
+  housing_labels = strat_train_set["median_house_value"].copy()
+  housing_num = housing.select_dtypes(include=[np.number])
+  print(housing.shape, housing_num.shape)
+#+end_src
+
+#+RESULTS:
+: (16512, 9) (16512, 8)
+
+* [Slide 6] Code-along 1. An estimator: hyperparameters and learned parameters (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 1: hyperparameter vs learned parameter
+  from sklearn.impute import SimpleImputer
+
+  # hyperparameter: set in the constructor
+  imputer = SimpleImputer(strategy="median")
+  print(imputer.strategy)
+  # learned parameter: not there before fit()
+  print(hasattr(imputer, "statistics_"))
+  imputer.fit(housing_num)
+  print(hasattr(imputer, "statistics_"))
+  # the medians it learned - compare with pandas
+  print(imputer.statistics_)
+  print(housing_num.median().values)
+#+end_src
+
+#+RESULTS:
+: median
+: False
+: True
+: [-118.51     34.26     29.     2125.      434.     1167.      408.
+:     3.5385]
+: [-118.51     34.26     29.     2125.      434.     1167.      408.
+:     3.5385]
+
+* [Slide 7] Code-along 2. A transformer: fit on the training set only (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 2: fit on the training set, transform both sets
+  from sklearn.preprocessing import StandardScaler
+
+  X_train = housing_num[["median_income"]]
+  X_test = strat_test_set[["median_income"]]
+
+  scaler = StandardScaler()
+  # learn mean and standard deviation of the training set
+  scaler.fit(X_train)
+  print(scaler.mean_, scaler.scale_)
+  # apply them to both sets
+  X_train_scaled = scaler.transform(X_train)
+  X_test_scaled = scaler.transform(X_test)
+  print(X_train_scaled.mean().round(3), X_train_scaled.std().round(3))
+  print(X_test_scaled.mean().round(3), X_test_scaled.std().round(3))
+#+end_src
+
+#+RESULTS:
+: [3.87042814] [1.89187853]
+: 0.0 1.0
+: 0.001 1.021
+
+* [Slide 8] Code-along 3. A predictor: ~predict()~ and ~score()~ (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 3: a predictor - fit, predict, score
+  from sklearn.linear_model import LinearRegression
+
+  lin_reg = LinearRegression()
+  # supervised: features and labels
+  lin_reg.fit(X_train, housing_labels)
+  # learned parameters: slope and intercept
+  print(lin_reg.coef_, lin_reg.intercept_)
+  # predictions for the first three districts, and the true values
+  print(lin_reg.predict(X_train[:3]).round(-2))
+  print(housing_labels[:3].values)
+  # R^2 on the training set
+  print(round(lin_reg.score(X_train, housing_labels), 2))
+#+end_src
+
+#+RESULTS:
+: [41956.98204657] 43942.03453763187
+: [132000. 299400. 146000.]
+: [458300. 483800. 101700.]
+: 0.47
+
+* [Slide 11] Code-along 4. Inspection (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 4: look inside an estimator
+  # hyperparameters only
+  print(imputer.get_params())
+  # learned parameters: names that end with "_"
+  print([name for name in vars(imputer) if name.endswith("_")])
+#+end_src
+
+#+RESULTS:
+: {'add_indicator': False, 'copy': True, 'fill_value': None, 'keep_empty_features': False, 'missing_values': nan, 'strategy': 'median'}
+: ['feature_names_in_', 'n_features_in_', 'indicator_', 'statistics_']
+
+* [Slide 12] Code-along 5. Sensible defaults (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 5: what you get without arguments
+  from sklearn.neighbors import KNeighborsRegressor
+
+  print(KNeighborsRegressor().get_params())
+  print(SimpleImputer().get_params()["strategy"])
+#+end_src
+
+#+RESULTS:
+: {'algorithm': 'auto', 'leaf_size': 30, 'metric': 'minkowski', 'metric_params': None, 'n_jobs': None, 'n_neighbors': 5, 'p': 2, 'weights': 'uniform'}
+: mean
+
+* [Slide 13] Code-along 6. Non-proliferation of classes (demo)
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  # Code-along 6: NumPy array in, NumPy array out
+  scaled = StandardScaler().fit_transform(housing_num)
+  print(type(scaled))
+  # ask for a DataFrame instead
+  scaler_pd = StandardScaler().set_output(transform="pandas")
+  scaled_df = scaler_pd.fit_transform(housing_num)
+  print(type(scaled_df))
+  print(scaled_df[["total_rooms", "median_income"]].head(3).round(2))
+#+end_src
+
+#+RESULTS:
+: <class 'numpy.ndarray'>
+: <class 'pandas.core.frame.DataFrame'>
+:        total_rooms  median_income
+: 13096         0.31          -0.94
+: 14973        -0.31           1.17
+: 3785         -0.71          -0.76
+
+* [Slide 14] Code-along 7. Composition: a pipeline is a predictor
+
+* [Slide 16] PRACTICE A class you have not used
