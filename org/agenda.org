@@ -1396,11 +1396,10 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
   + check feature spread
   + min-max scaling
 
-* W10S1: The ML Pipeline IX - rescaling II and transformation pipelines
+* DONE W10S1: The ML Pipeline IX - rescaling II 
 
-- [ ] Review: feature scaling I
-- [ ] Feature scaling II: Standardization, and heavy tails
-- [ ] Practice: does scaling help a model? (10 min)
+- [X] Review: feature scaling I
+- [X] Feature scaling II: Standardization, and heavy tails
 
 ** Review (in-class)
 
@@ -1463,11 +1462,170 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
    deal with it next.
    #+end_quote
 
-* W10S2: The ML Pipeline X - select and train the model
+* DONE W10S2: The ML Pipeline X - transformation pipelines
+
+- [X] Practice: does scaling help a model? (10 min): starter code at
+  [[https://birkenkrahe.github.io/go/scaling-practice][birkenkrahe.github.io/go/scaling-practice]]
+- [X] Transformation pipelines (slides 4-8, 10-11): Colab starter notebook at
+  [[https://birkenkrahe.github.io/go/pipelines][birkenkrahe.github.io/go/pipelines]]
+- [ ] Pipelines for the housing data, custom transformers (slides 12-22)
 
 ** Practice: does scaling help a model?
 
-- Part 6, slide 20 - in your feature scaling notebook, section Practice.
+- kNN (k = 5) predicts the median house value from five numeric
+  features, once on the raw features, once on standardized ones. The
+  scaler is fit on the training set only.
+
+  | Model                      | RMSE     | MAE     |
+  |----------------------------+----------+---------|
+  | Always predict the mean    | $115,727 |         |
+  | kNN, raw features          | $109,134 | $84,329 |
+  | kNN, standardized features | $62,234  | $41,955 |
+
+- Scaling cuts the RMSE by 43%. Without it, =total_rooms= and
+  =population= dominate the distance, and kNN is barely better than
+  always predicting the mean.
+
+** Transformation pipelines
+
+- A ~Pipeline~ chains transformers, e.g. impute, then scale, in one
+  ~fit_transform()~ call - the same result as the steps by hand.
+- Every step but the last must be a transformer; the last step may be
+  a predictor such as ~LinearRegression~.
+- ~make_pipeline~ names the steps for you; ~pipeline[0]~,
+  ~pipeline[-1]~ and ~len(pipeline)~ look inside.
+- In a notebook, ~sklearn.set_config(display="diagram")~ shows a
+  pipeline as a clickable diagram: [[https://birkenkrahe.github.io/go/pipeline-diagram][birkenkrahe.github.io/go/pipeline-diagram]]
+
+* DONE W10S3: The ML Pipeline XI - pipelines for the housing data
+
+- [X] Review: transformation pipelines
+- [X] Warm-up: a pipeline for used-car prices (5 min)
+- [X] How small is a small error? (slide 9)
+- [X] Pipelines for the housing data: ~ColumnTransformer~
+- [X] Custom transformers 
+- [ ] The final transformer
+- Next: select a model and train it.
+
+** Review (in-class)
+
+1) What happens when you call ~fit_transform()~ on a ~Pipeline~ with
+   the steps ~SimpleImputer~ and ~StandardScaler~?
+   #+begin_quote
+   The pipeline calls ~fit_transform()~ on the imputer, passes its
+   output to the scaler and calls ~fit_transform()~ on the scaler. You
+   get the same result as with the two steps by hand, in one call.
+   #+end_quote
+
+2) Which step of a ~Pipeline~ may be a predictor, and what must all
+   the other steps be?
+   #+begin_quote
+   Only the last step may be a predictor (~fit()~ and ~predict()~).
+   Every step before it must be a transformer (~fit_transform()~),
+   because its output is the input of the next step.
+   #+end_quote
+
+3) What is the difference between ~Pipeline~ and ~make_pipeline~?
+   #+begin_quote
+   ~Pipeline~ takes a list of (name, estimator) pairs. ~make_pipeline~
+   takes the estimators only and names each step after its class, in
+   lower case (=simpleimputer=, =standardscaler=).
+   #+end_quote
+
+4) In the scaling practice, why was the scaler fit on the training set
+   only, and why ~transform()~ on the test set rather than
+   ~fit_transform()~?
+   #+begin_quote
+   The mean and standard deviation must come from the training data
+   only. ~fit_transform(X_test)~ would learn them again from the test
+   set: data leakage, and the test set would be scaled differently from
+   the data the model was trained on.
+   #+end_quote
+
+** Warm-up: a pipeline for used-car prices (5 min)
+
+- Starter notebook in Colab: [[https://birkenkrahe.github.io/go/pipeline-warmup][birkenkrahe.github.io/go/pipeline-warmup]]
+
+- Six used cars, each feature missing one value. Build a ~Pipeline~
+  that imputes the median, standardizes, and ends with
+  ~LinearRegression~. Fit it to predict =price= from =age= and
+  =miles=, then print the predictions and the RMSE.
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    import pandas as pd
+    import numpy as np
+    from sklearn.pipeline import Pipeline
+    from sklearn.impute import SimpleImputer
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.linear_model import LinearRegression
+    from sklearn.metrics import root_mean_squared_error
+
+    cars = pd.DataFrame({
+        "age":   [2, 5, np.nan, 8, 3, 6],
+        "miles": [20000, 60000, 45000, np.nan, 30000, 75000],
+        "price": [24000, 15000, 17000, 9000, 21000, 12000],
+    })
+  #+end_src
+
+*** Solution  
+- Solution notebook: [[https://birkenkrahe.github.io/go/pipeline-warmup-solution][birkenkrahe.github.io/go/pipeline-warmup-solution]]
+  #+begin_src python :results output :exports both :session *Python* :python python3
+    X = cars[["age", "miles"]]
+    y = cars["price"]
+
+    pipe = Pipeline([
+        ("impute", SimpleImputer(strategy="median")),
+        ("scale", StandardScaler()),
+        ("predict", LinearRegression()),
+    ])
+    pipe.fit(X, y)
+    predictions = pipe.predict(X)
+    print(np.round(predictions, 0))
+    print(f"RMSE: {root_mean_squared_error(y, predictions):,.0f}")
+  #+end_src
+
+  #+RESULTS:
+  : [24097. 15195. 16003.  9257. 21309. 12138.]
+  : RMSE: 451
+
+** How small is a small error?
+
+- The toy pipeline (impute, scale, ~LinearRegression~) predicted four
+  incomes from age with an RMSE of 6,674. The mean income is 61,000,
+  so the relative error is 11%. Is that small?
+
+- Compare an error with the baseline, not with the size of the target:
+  always predicting the mean income gives an RMSE of 8,062 - the
+  standard deviation of the four incomes (50,000, 64,000, 58,000,
+  72,000). The model is only 17% better than that (R^2 = 0.31).
+
+- It is the error on the training data, the most optimistic number
+  you can get: the model was evaluated on the same 4 rows it was
+  trained on. On new data, it will be worse.
+
+- Two parameters fitted to four points: the imputed age of row 2 (the
+  median, 28) equals the age of row 4, so both rows get the same
+  prediction (60,545), though their incomes are 58,000 and 72,000.
+
+- The same check on the housing data: the mean price is $206,333, and
+  always predicting it gives an RMSE of $115,727 (about one standard
+  deviation).
+
+  | Model                      | RMSE     | vs. baseline |
+  |----------------------------+----------+--------------|
+  | Always predict the mean    | $115,727 |              |
+  | kNN, raw features          | $109,134 | 6% lower     |
+  | kNN, standardized features | $62,234  | 46% lower    |
+
+- Judge an error by
+  + the baseline: predict the mean (for a regression)
+  + the spread of the target: its standard deviation
+  + the data it was measured on: training or held-out test data
+  + what the prediction is used for: 10% can be good for one
+    application and useless for another
+
+* DONE W11S1: The ML Pipeline XII - final transformer
+* DONE W11S2: The scikit-learn API
+* W11S3: The ML Pipeline XIII - selecting and running models
 
 * Footnotes
 
