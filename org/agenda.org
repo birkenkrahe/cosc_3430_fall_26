@@ -1624,8 +1624,199 @@ File: =org/6_pipeline_4_correlations.org= in GitHub.
     application and useless for another
 
 * DONE W11S1: The ML Pipeline XII - final transformer
+
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/End-to-End%20ML%20Project%2C%20Part%207.pdf][The lecture (Part 7 handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/0c2bf7822a011477ac291d4045fa3c2a][The code (Part 7 code-along, gist)]]
+
 * DONE W11S2: The scikit-learn API
-* W11S3: The ML Pipeline XIII - selecting and running models
+
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/7_scikit_learn_handout.pdf][The lecture (scikit-learn handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/ec809e7bc2784c8481d6ed9f29b6e7a6][The code (scikit-learn code-along, gist)]]
+
+* DONE W11S3: The ML Pipeline XIII - selecting and running models
+
+- Review / finish scikit-learn API
+- Selecting and running models:
+
+** Review: scikit-learn API
+
+1) In ~StandardScaler(with_mean=True)~, after ~scaler.fit(X_train)~:
+   which of ~with_mean~, ~mean_~ and ~scale_~ are hyperparameters,
+   which are learned parameters, and how can you tell from the name?
+   #+begin_quote
+   ~with_mean~ is a hyperparameter: you set it in the constructor, and
+   its name has no underscore. ~mean_~ and ~scale_~ (the standard
+   deviation) are learned parameters: ~fit()~ computes them from the
+   training set, and their names end with an underscore. They do not
+   exist before ~fit()~.
+   #+end_quote
+
+2) What does ~StandardScaler().fit_transform(housing_num)~ return,
+   and what does that mean when you want the column =total_rooms=?
+   #+begin_quote
+   A NumPy array: no column names, no index. You cannot select
+   =total_rooms= by name; you find its position with
+   ~housing_num.columns.get_loc("total_rooms")~ and select it with
+   =[:, idx]=.
+   #+end_quote
+
+3) Which step of a ~Pipeline~ may be a predictor, what must all the
+   other steps be, and why?
+   #+begin_quote
+   Only the last step may be a predictor. Every step before it must be
+   a transformer, because its output is the input of the next step:
+   only a transformer produces new data (~fit_transform()~,
+   ~transform()~), a predictor produces predictions.
+   #+end_quote
+
+4) Which of ~fit()~, ~transform()~ and ~predict()~ does
+   ~make_pipeline(StandardScaler(), KMeans())~ have, and why can you
+   chain these two classes at all?
+   #+begin_quote
+   All three. A pipeline plays the role of its last step (if its last
+   step is a transformer or predictor, it's a transformer or
+   predictor), and ~KMeans~ is estimator, transformer and
+   predictor. Every step before the last is a transformer. The chain
+   works because all classes share one interface: the pipeline calls
+   ~fit_transform()~ on the scaler and passes the output to ~KMeans~.
+   #+end_quote
+
+5) You fit a ~StandardScaler~ on =median_income= of the training set
+   and transform both sets. The training set comes out with mean 0.0
+   and standard deviation 1.0, the test set with 0.001 and 1.021. Why
+   not exactly 0 and 1, and why is that correct?
+   #+begin_quote
+   The test set was scaled with the training set's mean and standard
+   deviation, not its own. It comes out close to 0 and 1 because it is
+   statistically similar to the training set (the split was stratified
+   by income). Exactly 0 and 1 would mean that the scaler had been fit
+   on the test set: data leakage.
+   #+end_quote
+
+** Home assignment: ~RobustScaler~
+
+~RobustScaler~ (in ~sklearn.preprocessing~) is a class you have not
+used yet. Find out what it does with the scikit-learn API alone, the
+way you did it in class with ~SimpleImputer~ and ~StandardScaler~.
+
+Use the starter notebook: https://birkenkrahe.github.io/go/robust-scaler
+Run the setup cell first.
+
+1. Create a ~RobustScaler~ with no arguments and call it =robust=.
+   Which roles does it play: estimator, transformer, predictor?
+   Tip: ~hasattr(robust, "transform")~, the same for ="fit"= and
+   ="predict"=.
+2. What are its hyperparameters, and their defaults?
+   Tip: ~robust.get_params()~.
+3. Fit it on =housing_num[["population"]]=. Which parameters did it
+   learn, and what are their values?
+   Tip: ~vars(robust)~ lists all attributes - the learned ones end
+   with =_=.
+4. Can you compute the same values with pandas? What does
+   ~RobustScaler~ subtract from each value, and what does it divide
+   by?
+   Tip: compare with ~housing_num["population"].describe()~.
+5. ~describe()~ also shows the mean and the standard deviation of
+   =population=, and its maximum. Why is the mean larger than the
+   median? Why would a scaler that uses the median and the quartiles
+   be called "robust"?
+
+Answer each question in the *Answer:* text cell below your code. Fill
+in the AI use statement in the notebook's second cell: the tool, what
+you used it for (which question), and what you checked yourself - or
+write that you did not use AI.
+
+Submit the notebook on Canvas.
+
+* DONE W12S1: The ML Pipeline XIV - selecting a model, cross-validation
+
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/End-to-End%20ML%20Project%2C%20Part%208.pdf][The lecture (Part 8 handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/02c1f9444954bf072ad50b3c95b2cc9c][The code (Part 8 code-along, gist)]]
+- [[https://birkenkrahe.github.io/go/select-train][Starter notebook (Colab)]]
+
+** Review
+
+1) Why can't you know in advance which model fits your data best, and
+   how do you pick one instead?
+   #+begin_quote
+   *The no free lunch theorem:* no model is best on all possible
+   datasets, so there is no analytical shortcut to the right model.
+   You pick it by trying: train a few model families quickly (linear,
+   tree-based, ensemble), compare them on data they were not trained
+   on, shortlist the best two to five, then fine-tune their
+   hyperparameters.
+   #+end_quote
+
+2) Why do you train a linear regression first, and what does it mean
+   to use it as a baseline?
+   #+begin_quote
+   *It is cheap*: no hyperparameters to tune, it trains instantly, and
+   you can read the effect of each feature off its coefficients. Its
+   error is the reference: every more expensive model has to beat it,
+   or it is not worth its cost. If the linear regression does badly,
+   the relationships in the data are probably not linear.
+   #+end_quote
+
+3) What happens when you call ~lin_reg.fit(housing, housing_labels)~
+   on ~lin_reg = make_pipeline(preprocessing, LinearRegression())~?
+   #+begin_quote
+   The pipeline calls ~fit_transform()~ on =preprocessing= (9 columns
+   in, 24 features out), then ~fit()~ on the linear regression with
+   these 24 features and the labels. ~lin_reg.predict()~ later runs
+   the same preprocessing with ~transform()~ before it predicts.
+   #+end_quote
+
+4) The RMSE of ~lin_reg.predict(housing)~ against =housing_labels= is
+   about 69,000. What does that number tell you, and what does it not
+   tell you?
+   #+begin_quote
+   The predictions for the training districts are typically off by
+   about $69,000, in dollars. It does not say how the model does on
+   districts it has not seen, because it was measured on the data the
+   model was trained on.
+   #+end_quote
+   
+* DONE W12S3: Classification - the confusion matrix
+
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/8_confusion_matrix_handout.pdf][The lecture (confusion matrix handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/353ab87a4a73727ac76cad952b2af7e8][The code (confusion matrix code-along, gist)]]
+- [[https://birkenkrahe.github.io/go/confusion-matrix][Starter notebook (Colab)]] - [[https://birkenkrahe.github.io/go/confusion-matrix-solution][solution notebook (Colab)]]
+
+* W13S1: Deep learning and the curse of dimensionality
+
+- Why deep learning: classical models such as kNN struggle when order
+  matters, when inputs vary in length, and when there are too many
+  dimensions.
+- The curse of dimensionality: a lookup-table model for car prices
+  needs 8 bins for one input, 64 for two, and 8^N for N inputs - the
+  input space outgrows the training data.
+- Why neural networks escape the curse: they learn a small set of
+  features instead of comparing or binning raw input points.
+- What training a model means: parameters, inference, the loss
+  function, training vs. test error.
+- A linear model from scratch: compute the least-squares loss, search
+  for the parameters with the lowest loss, and see the search on the
+  loss surface.
+
+- [[https://birkenkrahe.github.io/go/dl-training][The code (Colab notebook - run it, nothing to type)]]
+- [[https://birkenkrahe.github.io/go/dl-training-demo][Interactive companion: Training a Line]]
+
+*Next:* shallow neural networks (ReLU, hidden units, the universal
+approximation theorem), then deep neural networks.
+
+*Coming up:* in J-term 2028 I plan to teach a one-month intensive
+special topics course on deep learning only - neural networks from the
+ground up. If this part of the course interests you, keep an eye out
+for it.
+
+* Project presentations (Nov 30 - Dec 4)
+
+- The presentations are in the last week of term. Several faculty
+  candidates come to campus that week and use some of our class
+  sessions for a teaching demonstration. Some teams may therefore
+  have to record their presentation and submit it online instead of
+  presenting in class. I will tell you which teams as soon as the
+  schedule is fixed.
 
 * Footnotes
 
