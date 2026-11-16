@@ -2,6 +2,9 @@
 #+SUBTITLE: COSC 3430 AI - Fall 26 - Augustana U
 #+STARTUP: overview hideblocks indent entitiespretty
 
+This code is available as a
+[[https://gist.github.com/birkenkrahe/353ab87a4a73727ac76cad952b2af7e8][public gist]].
+
 * [Slide 6] Code-along 1. Fill in the confusion matrix
 
 #+begin_src python :results output :exports both :session *Python* :python python3 
