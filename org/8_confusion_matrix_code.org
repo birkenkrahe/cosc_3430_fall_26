@@ -1,0 +1,159 @@
+#+TITLE:The confusion matrix: measuring a classifier (code)
+#+SUBTITLE: COSC 3430 AI - Fall 26 - Augustana U
+#+STARTUP: overview hideblocks indent entitiespretty
+
+* [Slide 6] Code-along 1. Fill in the confusion matrix
+
+#+begin_src python :results output :exports both :session *Python* :python python3 
+  TP = 40   # flagged AND actually sick
+  FN = 10   # sick but not flagged
+  FP = 40   # flagged but actually healthy
+  TN = 910  # healthy and correctly cleared
+
+  print(f"TP + FN = {TP + FN} (all sick: 50)")  # actual positives (P), the row sum
+  print(f"FP + TN = {FP + TN} (all healthy: 950)")  # actual negatives (N), the row sum
+  print(f"TP + FP = {TP + FP} (all flagged: 80)")  # predicted positives, the column sum
+#+end_src
+
+#+RESULTS:
+: TP + FN = 50 (all sick: 50)
+: FP + TN = 950 (all healthy: 950)
+: TP + FP = 80 (all flagged: 80)
+
+* [Slide 7] Code-along 2. Accuracy
+
+#+begin_src python :results output :exports both :session *Python* :python python3 
+  accuracy = (TP + TN) / (TP + TN + FP + FN)
+  print(f"Accuracy: {accuracy}")
+#+end_src
+
+#+RESULTS:
+: Accuracy: 0.95
+
+* [Slide 9] Code-along 3. The lazy model
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  TP0, FN0, FP0, TN0 = 0, 50, 0, 950
+  print(f"Lazy accuracy: {(TP0 + TN0) / 1000}")
+  print(f"Sick patients caught: {TP0} of {TP0 + FN0}")
+#+end_src
+
+#+RESULTS:
+: Lazy accuracy: 0.95
+: Sick patients caught: 0 of 50
+
+* [Slide 10] Code-along 4. Precision
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  precision = TP / (TP + FP)
+  print(f"Precision: {precision}")
+#+end_src
+
+#+RESULTS:
+: Precision: 0.5
+
+* [Slide 11] Code-along 5. Recall
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  recall = TP / (TP + FN)
+  print(f"Recall: {recall}")
+#+end_src
+
+#+RESULTS:
+: Recall: 0.8
+
+* [Slide 14] Code-along 6. The precision/recall trade-off
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  TP2 = 48
+  FN2 = 50 - TP2
+  FP2 = 200 - TP2
+  TN2 = 950 - FP2
+
+  precision2 = TP2 / (TP2 + FP2)
+  recall2 = TP2 / (TP2 + FN2)
+
+  print(f"t = 0.5: precision {precision:.2f}, "
+        f"recall {recall:.2f}")
+  print(f"t = 0.2: precision {precision2:.2f}, "
+        f"recall {recall2:.2f}")
+#+end_src
+
+#+RESULTS:
+: t = 0.5: precision 0.50, recall 0.80
+: t = 0.2: precision 0.24, recall 0.96
+
+* [Slide 15] Code-along 7. ~confusion_matrix()~
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  import numpy as np
+  from sklearn.metrics import (confusion_matrix, precision_score,
+                               recall_score, f1_score,
+                               classification_report)
+
+  y_true = np.array([0] * 950 + [1] * 50)    # 950 healthy, then 50 sick
+  y_pred = np.array([0] * 910 + [1] * 40     # healthy: TN, FP
+                    + [0] * 10 + [1] * 40)   # sick: FN, TP
+
+  print(confusion_matrix(y_true, y_pred))
+  print(f"Precision: {precision_score(y_true, y_pred):.2f}")
+  print(f"Recall:    {recall_score(y_true, y_pred):.2f}")
+#+end_src
+
+#+RESULTS:
+: [[910  40]
+:  [ 10  40]]
+: Precision: 0.50
+: Recall:    0.80
+
+* [Slide 16] Code-along 8. ~classification_report()~
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  print(classification_report(y_true, y_pred, target_names=["Healthy",
+                              "Disease"]))
+#+end_src
+
+#+RESULTS:
+:               precision    recall  f1-score   support
+: 
+:      Healthy       0.99      0.96      0.97       950
+:      Disease       0.50      0.80      0.62        50
+: 
+:     accuracy                           0.95      1000
+:    macro avg       0.74      0.88      0.79      1000
+: weighted avg       0.96      0.95      0.96      1000
+
+* [Slide 18] Code-along 9. F1 and the harmonic mean
+
+#+begin_src python :results output :exports both :session *Python* :python python3
+  def f1(p, r):
+      return 2 * p * r / (p + r)
+
+  print(f"Our model: F1 = {f1(precision, recall):.2f}")
+  print(f"sklearn:   F1 = {f1_score(y_true, y_pred):.2f}")
+
+  P, R = 1.0, 1 / 50
+  print(f"Extreme model: arithmetic mean {(P + R) / 2:.2f}, F1 {f1(P, R):.2f}")
+#+end_src
+
+#+RESULTS:
+: Our model: F1 = 0.62
+: sklearn:   F1 = 0.62
+: Extreme model: arithmetic mean 0.51, F1 0.04
+
+* [Slide 19] Code-along 10. Which models get a high F1?
+
+#+begin_src python :results output :exports both :session *Python* :python python3 
+  cases = [("high P, high R", 0.90, 0.85),
+           ("low P,  high R", 0.25, 0.90),
+           ("high P, low R ", 0.90, 0.20),
+           ("low P,  low R ", 0.25, 0.20)]
+  for label, p, r in cases:
+      print(f"{label}: P {p:.2f}  R {r:.2f}  F1 {f1(p, r):.2f}")
+#+end_src
+
+#+RESULTS:
+: high P, high R: P 0.90  R 0.85  F1 0.87
+: low P,  high R: P 0.25  R 0.90  F1 0.39
+: high P, low R : P 0.90  R 0.20  F1 0.33
+: low P,  low R : P 0.25  R 0.20  F1 0.22
