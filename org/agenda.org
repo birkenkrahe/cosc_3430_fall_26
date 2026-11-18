@@ -1782,7 +1782,7 @@ Submit the notebook on Canvas.
 - [[https://gist.github.com/birkenkrahe/353ab87a4a73727ac76cad952b2af7e8][The code (confusion matrix code-along, gist)]]
 - [[https://birkenkrahe.github.io/go/confusion-matrix][Starter notebook (Colab)]] - [[https://birkenkrahe.github.io/go/confusion-matrix-solution][solution notebook (Colab)]]
 
-* W13S1: Deep learning and the curse of dimensionality
+* DONE W13S1: Deep learning and the curse of dimensionality
 
 - Why deep learning: classical models such as kNN struggle when order
   matters, when inputs vary in length, and when there are too many
@@ -1798,8 +1798,11 @@ Submit the notebook on Canvas.
   for the parameters with the lowest loss, and see the search on the
   loss surface.
 
-- [[https://birkenkrahe.github.io/go/dl-training][The code (Colab notebook - run it, nothing to type)]]
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/9_dl_1_training_handout.pdf][The lecture (deep learning I handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/3354ee9d0a00305db9ef83da1a2192dc][The code (deep learning I code-along, gist)]]
+- [[https://birkenkrahe.github.io/go/dl-training][Colab notebook (run it, nothing to type)]]
 - [[https://birkenkrahe.github.io/go/dl-training-demo][Interactive companion: Training a Line]]
+- [[https://drive.google.com/file/d/1LzZ5vurhpP9CiERmVHV5IX3q7yob3q1v/view?usp=drive_link][Video overview of the lecture (made with NotebookLM)]]
 
 *Next:* shallow neural networks (ReLU, hidden units, the universal
 approximation theorem), then deep neural networks.
@@ -1808,6 +1811,41 @@ approximation theorem), then deep neural networks.
 special topics course on deep learning only - neural networks from the
 ground up. If this part of the course interests you, keep an eye out
 for it.
+
+* W13S2: Deep learning II - shallow neural networks
+
+- [ ] From a line to a network: several lines, each switched off on part
+  of the input, weighted and added.
+- [ ] The ReLU activation function, and why a network without it is only
+  a line.
+- [ ] A network with three hidden units from scratch: run it, plot every
+  stage, compute the loss, fit it by hand.
+- [ ] The universal approximation theorem; more than one input and
+  output; the names (layers, weights, biases).
+
+- [[https://birkenkrahe.github.io/go/dl-shallow][Colab notebook (run it, nothing to type)]]
+- [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
+
+* W13S3: Deep learning III - deep neural networks
+
+- Why deep networks at all, if a shallow network can approximate any
+  continuous function?
+- Composing two shallow networks: the second network works on the
+  output of the first.
+- From composing to deep networks: hidden layers that feed hidden
+  layers.
+- Shallow vs. deep neural networks.
+
+* W14S1: Last class before Thanksgiving break
+
+- [ ] Project: the fourth sprint (presentation)
+
+** Project: third and fourth sprint
+
+- Third sprint (results report): due today, Mon Nov 23, 11:59 pm, in
+  Canvas. There is no review in class for this sprint.
+- Fourth sprint (presentation): comments in class today. The
+  assignment is in Canvas.
 
 * Project presentations (Nov 30 - Dec 4)
 
