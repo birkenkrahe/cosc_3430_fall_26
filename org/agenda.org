@@ -3,9 +3,9 @@
 #+SUBTITLE: COSC 3430 (AI)Fall 2026 | Augustana U.
 #+STARTUP: overview hideblocks indent entitiespretty
 #+OPTIONS: toc:nil num:nil ^:nil
+#+caption: Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder (1560)
+#+attr_html: :width 400px :float nil: 
 [[../img/breughel_icarus.jpg]]
-Image: Landscape with the Fall of Icarus by Pieter Bruegel the Elder
-(1560)
 
 * DONE Preamble: The Fall of Icarus
 
@@ -1812,32 +1812,50 @@ special topics course on deep learning only - neural networks from the
 ground up. If this part of the course interests you, keep an eye out
 for it.
 
-* W13S2: Deep learning II - shallow neural networks
+* DONE W13S2: Deep learning II - shallow neural networks
 
-- [ ] From a line to a network: several lines, each switched off on part
+- [X] From a line to a network: several lines, each switched off on part
   of the input, weighted and added.
-- [ ] The ReLU activation function, and why a network without it is only
+- [X] The ReLU activation function, and why a network without it is only
   a line.
-- [ ] A network with three hidden units from scratch: run it, plot every
+- [X] A network with three hidden units from scratch: run it, plot every
   stage, compute the loss, fit it by hand.
 - [ ] The universal approximation theorem; more than one input and
   output; the names (layers, weights, biases).
 
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/9_dl_2_shallow_handout.pdf][The lecture (deep learning II handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/810630e5a6e04288ba1c112497e0afff][The code (deep learning II code-along, gist)]]
 - [[https://birkenkrahe.github.io/go/dl-shallow][Colab notebook (run it, nothing to type)]]
 - [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
 
-* W13S3: Deep learning III - deep neural networks
+* W13S3: Deep learning II - shallow neural networks in PyTorch
 
-- Why deep networks at all, if a shallow network can approximate any
-  continuous function?
-- Composing two shallow networks: the second network works on the
-  output of the first.
-- From composing to deep networks: hidden layers that feed hidden
-  layers.
-- Shallow vs. deep neural networks.
+- [ ] Brief review of shallow neural nets
+- [ ] The universal approximation theorem: with enough hidden units, a
+  shallow network can approximate any continuous function.
+- [ ] More than one input and output; the names (layers, weights,
+  biases).
+- [ ] The same network in PyTorch: build it, load the parameters of
+  the fit by hand, check the output and the loss.
+- [ ] Train the network: the optimizer changes all ten parameters to
+  lower the loss.
+- [ ] More hidden units, and why the starting values matter.
+
+- [[https://github.com/birkenkrahe/cosc_3430_fall_26/blob/main/pdf/9_dl_2_shallow_handout.pdf][The lecture (deep learning II handout, PDF)]]
+- [[https://gist.github.com/birkenkrahe/810630e5a6e04288ba1c112497e0afff][The code (deep learning II code-along, gist)]]
+- [[https://birkenkrahe.github.io/go/dl-shallow][Colab notebook: the network from scratch (run it, nothing to type)]]
+- [[https://birkenkrahe.github.io/go/dl-shallow-torch][Colab notebook: the network in PyTorch (run it, nothing to type)]]
+- [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
 
 * W14S1: Last class before Thanksgiving break
 
+- [ ] Deep learning III - deep neural networks: why deep networks at
+  all, if a shallow network can approximate any continuous function?
+- [ ] Composing two shallow networks: the second network works on the
+  output of the first.
+- [ ] From composing to deep networks: hidden layers that feed hidden
+  layers.
+- [ ] Shallow vs. deep neural networks.
 - [ ] Project: the fourth sprint (presentation)
 
 ** Project: third and fourth sprint
