@@ -1830,7 +1830,7 @@ for it.
 
 * W13S3: Deep learning II - shallow neural networks in PyTorch
 
-- [ ] Brief review of shallow neural nets
+- [ ] Brief review of shallow neural nets (graded, paper, in-class)
 - [ ] The universal approximation theorem: with enough hidden units, a
   shallow network can approximate any continuous function.
 - [ ] More than one input and output; the names (layers, weights,
@@ -1847,16 +1847,21 @@ for it.
 - [[https://birkenkrahe.github.io/go/dl-shallow-torch][Colab notebook: the network in PyTorch (run it, nothing to type)]]
 - [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
 
-* W14S1: Last class before Thanksgiving break
+* W14S1: Deep learning III - deep neural networks
 
-- [ ] Deep learning III - deep neural networks: why deep networks at
-  all, if a shallow network can approximate any continuous function?
-- [ ] Composing two shallow networks: the second network works on the
-  output of the first.
-- [ ] From composing to deep networks: hidden layers that feed hidden
-  layers.
-- [ ] Shallow vs. deep neural networks.
 - [ ] Project: the fourth sprint (presentation)
+- [ ] Composing two shallow networks: the second network works on the
+  output of the first, and the number of linear regions multiplies.
+- [ ] From composing to deep networks: hidden layers that feed hidden
+  layers; depth and width.
+- [ ] Matrix notation, and counting the parameters of a deep network.
+- [ ] A deep network in NumPy and in PyTorch.
+- [ ] Shallow vs. deep neural networks: linear regions per parameter,
+  and why deep networks are used in practice.
+
+- [[https://birkenkrahe.github.io/go/dl-deep][Colab notebook: deep neural networks (run it, nothing to type)]]
+
+This is the last class before the Thanksgiving break.
 
 ** Project: third and fourth sprint
 
