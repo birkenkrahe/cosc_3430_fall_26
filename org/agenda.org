@@ -1828,14 +1828,14 @@ for it.
 - [[https://birkenkrahe.github.io/go/dl-shallow][Colab notebook (run it, nothing to type)]]
 - [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
 
-* W13S3: Deep learning II - shallow neural networks in PyTorch
+* DONE W13S3: Deep learning II - shallow neural networks in PyTorch
 
-- [ ] Brief review of shallow neural nets (graded, paper, in-class)
-- [ ] The universal approximation theorem: with enough hidden units, a
+- [X] Brief review of shallow neural nets (graded, paper, in-class)
+- [X] The universal approximation theorem: with enough hidden units, a
   shallow network can approximate any continuous function.
-- [ ] More than one input and output; the names (layers, weights,
+- [X] More than one input and output; the names (layers, weights,
   biases).
-- [ ] The same network in PyTorch: build it, load the parameters of
+- [X] The same network in PyTorch: build it, load the parameters of
   the fit by hand, check the output and the loss.
 - [ ] Train the network: the optimizer changes all ten parameters to
   lower the loss.
@@ -1847,28 +1847,37 @@ for it.
 - [[https://birkenkrahe.github.io/go/dl-shallow-torch][Colab notebook: the network in PyTorch (run it, nothing to type)]]
 - [[https://birkenkrahe.github.io/go/dl-shallow-demo][Interactive companion: Shallow Networks]]
 
-* W14S1: Deep learning III - deep neural networks
+* W14S1: No class (Mon Nov 23) - finish your project
 
-- [ ] Project: the fourth sprint (presentation)
-- [ ] Composing two shallow networks: the second network works on the
-  output of the first, and the number of linear regions multiplies.
-- [ ] From composing to deep networks: hidden layers that feed hidden
-  layers; depth and width.
-- [ ] Matrix notation, and counting the parameters of a deep network.
-- [ ] A deep network in NumPy and in PyTorch.
-- [ ] Shallow vs. deep neural networks: linear regions per parameter,
-  and why deep networks are used in practice.
+There is no class meeting today. Use the class hour (9:00 am) to meet
+with your team and work on your project and your presentation. I am
+in my office, FSC 386, today from 9 am to 5 pm and all day Tuesday:
+drop in with your questions.
 
-- [[https://birkenkrahe.github.io/go/dl-deep][Colab notebook: deep neural networks (run it, nothing to type)]]
+** Deadlines
 
-This is the last class before the Thanksgiving break.
+- Today: [[https://augie.instructure.com/courses/15660/pages/book-your-presentation-time-here][book your presentation time]].
+- Today, 11:59 pm: the [[https://augie.instructure.com/courses/15660/assignments/278489][third sprint results report]]. I grade it and
+  give you feedback over the break.
+- Nov 30 - Dec 4: the fourth sprint, [[https://augie.instructure.com/courses/15660/assignments/279954][your presentation]], with slides,
+  on the day you booked.
 
-** Project: third and fourth sprint
+** Video lecture: Deep learning III - deep neural networks
 
-- Third sprint (results report): due today, Mon Nov 23, 11:59 pm, in
-  Canvas. There is no review in class for this sprint.
-- Fourth sprint (presentation): comments in class today. The
-  assignment is in Canvas.
+The last lecture is an online video lecture with its [[https://birkenkrahe.github.io/go/dl-deep][Colab starter
+notebook]]. I post the link when it is ready; watch it whenever it
+suits you.
+
+- Composing two shallow networks; from composing to deep networks:
+  depth and width.
+- Matrix notation, and counting the parameters of a deep network.
+- A deep network in NumPy and in PyTorch.
+- Shallow vs. deep neural networks: why deep networks are used in
+  practice.
+
+The PyTorch demonstration of the last class is not quite finished:
+the rest is in the [[https://birkenkrahe.github.io/go/dl-shallow-torch][starter notebook]] you already have, and there is a
+new AI-generated video overview.
 
 * Project presentations (Nov 30 - Dec 4)
 
